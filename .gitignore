@@ -1,0 +1,53 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+build/
+dist/
+.eggs/
+
+# --- Environments ---
+.venv/
+venv/
+env/
+.python-version.local
+
+# --- Tooling caches ---
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# --- Generated / regenerable data (docs/06 §2) ---
+00_common/data/world/
+00_common/data/real_cache/
+00_common/reports/
+reports/
+**/data/derived/
+**/data/synthetic/
+
+# --- Model weights & caches ---
+*.pt
+*.pth
+*.onnx
+*.safetensors
+hf/
+torch/
+
+# --- Videos: keep only the provenance file ---
+**/data/video/*
+!**/data/video/SOURCES.md
+!**/data/video/.gitkeep
+
+# --- Delivery artifacts ---
+delivery/
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/*
+!.vscode/settings.json

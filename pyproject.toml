@@ -1,0 +1,68 @@
+# Root pyproject: DEV TOOLING ONLY.
+# The installable package is 00_common (package name "twin_common"); see 00_common/pyproject.toml.
+# Model folders are standalone services, not packages of this project.
+
+[project]
+name = "event-twin-workspace"
+version = "0.1.0"
+description = "Workspace root for the Event Digital Twin model services (dev tooling only)."
+requires-python = ">=3.11,<3.12"
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+extend-exclude = [
+    ".venv",
+    "00_common/data",
+    "docs/reference",
+    "delivery",
+    "**/data/derived",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "F",    # pyflakes
+    "I",    # isort
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "C4",   # comprehensions
+    "SIM",  # flake8-simplify
+    "T20",  # flake8-print  -> enforces "no print in library code" (CLAUDE.md)
+    "PTH",  # flake8-use-pathlib -> enforces pathlib rule (CLAUDE.md)
+    "RUF",
+]
+ignore = [
+    "B008",  # FastAPI Depends() in defaults is idiomatic
+    "RUF012",# mutable class attrs need ClassVar - noisy with pydantic
+]
+
+[tool.ruff.lint.per-file-ignores]
+# CLIs and scripts are allowed to write to stdout; tests may use asserts/prints.
+"scripts/*.py" = ["T20"]
+"**/src/run.py" = ["T20"]
+"**/tests/*.py" = ["T20"]
+"00_common/twin_common/synthetic/report.py" = ["T20"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["twin_common"]
+
+[tool.ruff.format]
+line-ending = "lf"
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-ra --strict-markers"
+testpaths = ["00_common/tests"]
+markers = [
+    "slow: takes more than ~10s (excluded from the fast loop)",
+    "network: needs internet; skipped when TWIN_OFFLINE=1",
+    "sumo: needs eclipse-sumo; skipped unless TWIN_ENABLE_SUMO=1",
+    "weights: needs downloaded model weights",
+]
+filterwarnings = [
+    "error::DeprecationWarning:twin_common.*",
+]
