@@ -128,8 +128,12 @@ adjacency:
   - [Z02, Z06]
 
 # ------------------------------------------------- crowd routing (docs/04 section 5.5)
-# Directed movement graph for the compartment model. `split` weights must sum to 1
-# per (phase, from-zone). `capacity_link` names the link whose capacity throttles the flow.
+# Directed movement graph for the compartment model. Split weights must sum to 1 per
+# (phase, from-zone) - a Phase 1 test asserts this.
+#
+# `inbound` carries people toward the ghats; `outbound` carries them back to the exits.
+# Zones absent from `inbound` (Z01, Z02) are the destinations: arriving crowd dwells there
+# and then turns around, which is how a bathing visit is represented.
 routing:
   inbound:
     Z08: {to: {Z05: 1.00}}
@@ -146,12 +150,55 @@ routing:
     Z05: {to: {E01: 0.60, E02: 0.40}}
     Z07: {to: {Z04: 0.50, E06: 0.50}}
 
+  # Effective walkable width of each zone-to-zone link, metres. The per-step throughput is
+  #     capacity_p_min = crowd.exit_specific_flow_p_per_m_s * width_m * 60
+  # so these widths are what create the bottlenecks and the ACCUMULATION behaviour that
+  # M03 detects. Links to an exit (E01..E06) use that exit's own width from `exits` above.
+  # PLACEHOLDERS: measure the real approach widths on site before relying on them.
+  link_width_m:
+    "Z08>Z05": 24.0    # hub to plaza, the widest approach
+    "Z05>Z04": 18.0    # plaza to the main pedestrian approach
+    "Z05>Z07": 10.0    # plaza to the market street
+    "Z04>Z03": 12.0    # approach into the temple corridor
+    "Z03>Z01": 9.0     # corridor onto Ghat A - the primary chokepoint
+    "Z03>Z02": 8.0     # corridor onto Ghat B
+    "Z07>Z04": 10.0
+    "Z01>Z03": 9.0     # return flows share the same physical width
+    "Z02>Z03": 8.0
+    "Z02>Z06": 6.0     # onto the bridge approach
+    "Z03>Z04": 12.0
+    "Z04>Z05": 18.0
+
+  # A closed link in a scenario (S06 R07, S12 B01) maps onto the pedestrian links it
+  # actually severs. B01 is the river bridge, reached through Z06 and crossed to E05.
+  closure_map:
+    B01: ["Z06>E05"]
+    R07: []            # R07 is a road; it affects M04, not pedestrian movement
+
 # ------------------------------------------------------------- gates (4)
+# `throughput_p_min` is PER GATE and overrides the single assumptions.crowd figure, because
+# the gates are not the same size and that difference is what makes S05 behave correctly.
+# Each value is the project's own pedestrian physics applied to the gate clear width:
+#     1.3 p/m/s * width_m * 60 s
+# Sizing, against a snan-day peak of 10,206 arrivals per 15-min step:
+#   G01  hub gate, the main arrival point off the transit and parking hub, ~19 m  -> 1500
+#   G02  plaza gate A, the primary secure entry, ~11.5 m                          ->  900
+#   G03  plaza gate B, a narrow secondary entry, ~3.2 m                           ->  250
+#   G04  market gate, ~7.7 m                                                      ->  600
+#
+# G03 is deliberately the tight one. Its share of the snan peak is 2,041 per step normally
+# and 2,653 under S02, but 4,184 under S05 once it inherits 70 percent of G02's crowd. Any
+# capacity in [177, 279] persons/min therefore flows freely in S01 and S02 yet saturates in
+# S05, so a queue builds in the Z05 holding area. That is the mechanism behind the docs/07
+# Phase 2 expectation that S05 raises Z05 density, and the docs/05 section 1.2
+# "Z05/Z04 risk up". 250 sits in the middle of that window.
+# PLACEHOLDERS: replace with each real gate's measured clear width and lane count. If the
+# arrivals assumptions change, re-check this window - it is demand-relative, not absolute.
 gates:
-  G01: {zone_id: Z08, name: Hub gate,        secure: false, throughput_p_min: 60}
-  G02: {zone_id: Z05, name: Plaza gate A,    secure: true,  throughput_p_min: 60}
-  G03: {zone_id: Z05, name: Plaza gate B,    secure: true,  throughput_p_min: 60}
-  G04: {zone_id: Z07, name: Market gate,     secure: false, throughput_p_min: 60}
+  G01: {zone_id: Z08, name: Hub gate,     secure: false, throughput_p_min: 1500}
+  G02: {zone_id: Z05, name: Plaza gate A, secure: true,  throughput_p_min: 900}
+  G03: {zone_id: Z05, name: Plaza gate B, secure: true,  throughput_p_min: 250}
+  G04: {zone_id: Z07, name: Market gate,  secure: false, throughput_p_min: 600}
 
 # ------------------------------------------------------------- exits (6)
 exits:
@@ -281,18 +328,26 @@ network_towers:
 # ----------------------------------------------------------- cameras (24)
 # mode: sparse (detection+tracking) or dense (density map). See M02 card.
 # fov is a simple sector: bearing_deg (from north, clockwise), half_angle_deg, range_m.
+#
+# Bearings follow the zone shape, because a camera aimed across the narrow axis of a thin
+# zone covers almost nothing (see _SHAPE_BY_TYPE in synthetic/layout.py):
+#   ghats (Z01, Z02) and the bridge approach (Z06) run east-west  -> aim 90 / 270 along them
+#   corridors (Z03, Z04) and the market street (Z07) run north-south -> aim 0 / 180
+#   the plaza (Z05) and hub (Z08) are open, so their cameras fan outwards
+# Each thin zone also keeps one camera aimed across it, which is how a real mount plan mixes
+# along-the-flow and cross-the-flow views.
 cameras:
   count: 24
   default_bitrate_mbps: 4
   placement:
     # zone_id: [ [camera_id, mode, tower_id, bearing_deg, half_angle_deg, range_m], ... ]
-    Z01: [[CAM01, dense, NT02, 180, 35, 60], [CAM02, dense, NT02, 220, 35, 60], [CAM03, sparse, NT02, 90, 30, 40]]
-    Z02: [[CAM04, dense, NT02, 170, 35, 55], [CAM05, sparse, NT02, 100, 30, 40], [CAM06, dense, NT02, 210, 35, 55]]
-    Z03: [[CAM07, dense, NT01, 0, 30, 50], [CAM08, sparse, NT01, 45, 30, 40], [CAM09, sparse, NT01, 315, 30, 40]]
-    Z04: [[CAM10, dense, NT01, 10, 35, 60], [CAM11, sparse, NT01, 190, 30, 45]]
+    Z01: [[CAM01, dense, NT02, 90, 35, 70], [CAM02, dense, NT02, 270, 35, 70], [CAM03, sparse, NT02, 180, 30, 40]]
+    Z02: [[CAM04, dense, NT02, 90, 35, 65], [CAM05, sparse, NT02, 270, 30, 55], [CAM06, dense, NT02, 170, 35, 40]]
+    Z03: [[CAM07, dense, NT01, 0, 30, 60], [CAM08, sparse, NT01, 180, 30, 50], [CAM09, sparse, NT01, 0, 30, 40]]
+    Z04: [[CAM10, dense, NT01, 0, 35, 70], [CAM11, sparse, NT01, 180, 30, 60]]
     Z05: [[CAM12, dense, NT01, 20, 40, 70], [CAM13, sparse, NT01, 70, 25, 35], [CAM14, sparse, NT01, 110, 25, 35], [CAM15, dense, NT01, 250, 40, 70]]
-    Z06: [[CAM16, sparse, NT02, 160, 25, 35], [CAM17, dense, NT02, 200, 30, 45]]
-    Z07: [[CAM18, dense, NT03, 30, 35, 55], [CAM19, sparse, NT03, 120, 30, 40], [CAM20, sparse, NT03, 300, 30, 40]]
+    Z06: [[CAM16, sparse, NT02, 90, 25, 70], [CAM17, dense, NT02, 270, 30, 70]]
+    Z07: [[CAM18, dense, NT03, 0, 35, 60], [CAM19, sparse, NT03, 180, 30, 50], [CAM20, sparse, NT03, 90, 30, 30]]
     Z08: [[CAM21, dense, NT03, 0, 40, 80], [CAM22, sparse, NT03, 60, 30, 50], [CAM23, sparse, NT03, 180, 30, 50], [CAM24, dense, NT03, 270, 40, 80]]
 
 # --------------------------------------------------- routes and corridors
