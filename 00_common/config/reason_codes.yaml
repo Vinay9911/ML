@@ -1,0 +1,62 @@
+# Allowed reason codes — transcribed verbatim from docs/05 §4.
+# Extend ONLY by editing docs/05 §4 first. UPPER_SNAKE_CASE.
+groups:
+  crowd:
+    - DENSITY_HIGH
+    - DENSITY_RISING_FAST
+    - ACCUMULATION
+    - NEAR_CAPACITY
+    - SUSTAINED_EXPOSURE
+    - EXIT_SATURATED
+    - COUNTERFLOW
+    - SURGE
+    - SUDDEN_DISPERSAL
+    - STALLED_BUILDUP
+    - SPILLOVER_RISK
+    - BOTTLENECK
+  weather:
+    - HEAT_STRESS
+    - HEAVY_RAIN
+    - WATERLOGGING
+    - HEAT_DRY
+  mobility:
+    - CONGESTION
+    - ROAD_CLOSED
+    - BRIDGE_CLOSED
+    - EMERGENCY_CORRIDOR_BLOCKED
+    - PARKING_OVERFLOW
+    - VIP_CONFLICT
+  medical:
+    - MEDICAL_SURGE
+    - HOSPITAL_LOAD_HIGH
+    - RESPONSE_SLA_BREACH
+    - FLEET_SHORTAGE
+  security:
+    - CROWD_DENSITY
+    - CCTV_BLIND_SPOT
+    - SENSITIVE_SITE
+    - ACCESS_VIOLATIONS
+  utilities_assets:
+    - GRID_OUTAGE
+    - ELECTRICAL_OVERLOAD
+    - GENERATOR_OPERATION
+    - NETWORK_OVERLOAD
+    - ASSET_FAILURE_RISK
+  supply:
+    - WATER_GAP
+    - STOCKOUT_RISK
+    - BIN_OVERFLOW
+    - COOKING_DENSITY
+    - ACCESS_DELAY
+  resources_overall:
+    - RESOURCE_SHORTFALL
+    - CROWD_RISK
+    - MEDICAL_LOAD
+    - FIRE_RISK
+    - MOBILITY_RISK
+    - UTILITY_RISK
+    - WEATHER_RISK
+    - ASSET_RISK
+    - SECURITY_RISK
+    - SYNTHETIC_DATA
+    - UPSTREAM_FALLBACK

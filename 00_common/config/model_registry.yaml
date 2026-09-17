@@ -1,0 +1,40 @@
+# Authoritative model registry — transcribed verbatim from docs/02 §13.
+# The dependency graph is acyclic; scripts/refresh_samples.py topologically sorts it.
+models:
+  M01: {folder: M01_footfall_forecast,    name: Footfall Forecast,        port: 8001, engine: forecast, phase: 4, upstream: [M21]}
+  M02: {folder: M02_crowd_density_flow,   name: Crowd Density & Flow,     port: 8002, engine: vision,   phase: 6, upstream: []}
+  M03: {folder: M03_hotspot_risk,         name: Hotspot / Crush Risk,     port: 8003, engine: rules,    phase: 5, upstream: [M01, M02, M21]}
+  M04: {folder: M04_traffic_forecast,     name: Traffic Forecast,         port: 8004, engine: network,  phase: 7, upstream: [M01]}
+  M05: {folder: M05_parking_demand,       name: Parking Demand,           port: 8005, engine: forecast, phase: 4, upstream: [M01]}
+  M06: {folder: M06_transit_demand,       name: Transit / Shuttle Demand, port: 8006, engine: forecast, phase: 4, upstream: [M01, M05]}
+  M07: {folder: M07_medical_demand,       name: Medical Demand,           port: 8007, engine: formula,  phase: 5, upstream: [M01, M21]}
+  M08: {folder: M08_ambulance_staging,    name: Ambulance & First-Aid Staging, port: 8008, engine: location, phase: 7, upstream: [M07, M04]}
+  M09: {folder: M09_security_incident,    name: Security Incident Risk,   port: 8009, engine: rules,    phase: 5, upstream: [M01, M02, M23]}
+  M10: {folder: M10_cctv_anomaly,         name: CCTV Anomaly,             port: 8010, engine: vision,   phase: 6, upstream: []}
+  M11: {folder: M11_evacuation_sim,       name: Evacuation Simulation,    port: 8011, engine: pedsim,   phase: 8, upstream: [M01]}
+  M12: {folder: M12_fire_risk,            name: Fire Risk,                port: 8012, engine: rules,    phase: 5, upstream: [M19, M21, M04]}
+  M13: {folder: M13_vip_route,            name: VIP Route Optimizer,      port: 8013, engine: network,  phase: 7, upstream: [M04, M01]}
+  M14: {folder: M14_route_diversion,      name: Route Diversion Optimizer, port: 8014, engine: network,  phase: 7, upstream: [M04]}
+  M15: {folder: M15_water_demand,         name: Water Demand,             port: 8015, engine: forecast, phase: 4, upstream: [M01, M21]}
+  M16: {folder: M16_toilet_sanitation,    name: Toilets & Sanitation,     port: 8016, engine: optimize, phase: 7, upstream: [M01]}
+  M17: {folder: M17_food_supply,          name: Food & Supply,            port: 8017, engine: forecast, phase: 4, upstream: [M01]}
+  M18: {folder: M18_waste_forecast,       name: Waste Generation,         port: 8018, engine: forecast, phase: 4, upstream: [M01]}
+  M19: {folder: M19_power_load,           name: Power Load,               port: 8019, engine: forecast, phase: 4, upstream: [M01, M21]}
+  M20: {folder: M20_network_capacity,     name: Network Capacity,         port: 8020, engine: forecast, phase: 4, upstream: [M01]}
+  M21: {folder: M21_weather_impact,       name: Weather Impact,           port: 8021, engine: formula,  phase: 3, upstream: []}
+  M22: {folder: M22_environmental_risk,   name: Environmental Risk,       port: 8022, engine: forecast, phase: 4, upstream: [M21, M04]}
+  M23: {folder: M23_asset_failure,        name: Asset Failure,            port: 8023, engine: mlclf,    phase: 5, upstream: []}
+  M24:
+    folder: M24_resource_requirement
+    name: Resource Requirement
+    port: 8024
+    engine: optimize
+    phase: 7
+    upstream: [M01, M03, M06, M07, M08, M09, M12, M15, M16, M17, M18, M19, M20]
+  M25:
+    folder: M25_overall_risk
+    name: Overall Event Risk
+    port: 8025
+    engine: rules
+    phase: 9
+    upstream: [M03, M04, M07, M09, M12, M14, M19, M20, M21, M23, M24]

@@ -1,0 +1,1152 @@
+# KPI registry - generated from docs/05 section 2 (93 study KPIs + 16 implementation extensions).
+#
+# `unit`       MUST equal the unit used in every ModelOutput.results[].unit (docs/02 section 5).
+# `threshold`  is the example threshold from the study. It is a PLACEHOLDER kept for traceability
+#              only; no code may read it as a decision boundary.
+# `direction`  higher_is_worse | higher_is_better. higher_is_better == the "(down bad)" marker in docs/05.
+# `band`       table in risk_bands.yaml used to derive risk_level; null = the owning model decides.
+# `band_input` `value` (default) or `complement_100` for "(down bad)" percentages where the risk is
+#              carried by the shortfall, i.e. 100 - value. See plans/PHASE_1.md decision D1: this
+#              avoids inventing a 5th band table beyond the four defined in docs/05 section 3.
+# `bounds`     per-KPI [min, max] override of unit_bounds; null on a side means unbounded there.
+# `extension`  true for the 16 KPIs this implementation added beyond the 93 study KPIs.
+meta:
+  version: "1.0"
+  study_kpi_count: 93
+  extension_count: 16
+  source: "docs/05_SCENARIOS_KPIS_FORMULAS.md section 2"
+
+# Allowed units - docs/02 section 5, exhaustive. ASCII spellings are canonical:
+# persons/m2 == persons/m^2, ug/m3 == micrograms per cubic metre, degC == degrees Celsius.
+allowed_units:
+  - persons
+  - persons/hr
+  - persons/min
+  - persons/m2
+  - persons/m2/min
+  - m
+  - min
+  - m/s
+  - "%"
+  - ratio
+  - score_0_100
+  - vehicles
+  - vehicles/hr
+  - vehicles/km
+  - km/h
+  - cases/hr
+  - cases
+  - units/day
+  - units
+  - beds
+  - posts
+  - points
+  - routes
+  - teams
+  - personnel
+  - incidents/hr
+  - L/hr
+  - MLD
+  - kg/day
+  - meals/hr
+  - hours
+  - trips/day
+  - cycles/day
+  - MW
+  - dB
+  - ug/m3
+  - index
+  - tCO2e/day
+  - degC
+  - mm/hr
+
+# Default numeric sanity bounds per unit. null = unbounded on that side.
+# persons/m2 max of 9 comes from the docs/04 section 8 physical-sanity invariant.
+unit_bounds:
+  persons: [0, null]
+  persons/hr: [0, null]
+  persons/min: [0, null]
+  persons/m2: [0, 9]
+  persons/m2/min: [null, null]
+  m: [0, null]
+  min: [0, null]
+  m/s: [0, null]
+  "%": [0, 100]
+  ratio: [0, null]
+  score_0_100: [0, 100]
+  vehicles: [0, null]
+  vehicles/hr: [0, null]
+  vehicles/km: [0, null]
+  km/h: [0, null]
+  cases/hr: [0, null]
+  cases: [0, null]
+  units/day: [0, null]
+  units: [0, null]
+  beds: [0, null]
+  posts: [0, null]
+  points: [0, null]
+  routes: [0, null]
+  teams: [0, null]
+  personnel: [0, null]
+  incidents/hr: [0, null]
+  L/hr: [0, null]
+  MLD: [0, null]
+  kg/day: [0, null]
+  meals/hr: [0, null]
+  hours: [0, null]
+  trips/day: [0, null]
+  cycles/day: [0, null]
+  MW: [0, null]
+  dB: [0, null]
+  ug/m3: [0, null]
+  index: [0, null]
+  tCO2e/day: [0, null]
+  degC: [-50, 70]
+  mm/hr: [0, null]
+
+kpis:
+  # ============================== Crowd (17) ==============================
+  expected_footfall:
+    domain: crowd
+    definition: forecast people arriving per period
+    unit: persons/hr
+    threshold: model error band
+    priority: Critical
+    owner: M01
+    direction: higher_is_worse
+    band: null
+  peak_footfall:
+    domain: crowd
+    definition: max persons/hr in operating window
+    unit: persons/hr
+    threshold: safe operating range
+    priority: Critical
+    owner: M01
+    direction: higher_is_worse
+    band: null
+  zone_population:
+    domain: crowd
+    definition: people inside zone
+    unit: persons
+    threshold: below safe capacity
+    priority: Critical
+    owner: M02
+    direction: higher_is_worse
+    band: null
+  crowd_density:
+    domain: crowd
+    definition: population divided by usable area
+    unit: persons/m2
+    threshold: below site safe threshold (bands in docs/05 section 3)
+    priority: Critical
+    owner: M02
+    direction: higher_is_worse
+    band: crowd_density_p_m2
+  density_trend:
+    domain: crowd
+    definition: change in density divided by change in time
+    unit: persons/m2/min
+    threshold: stable or declining near capacity
+    priority: Critical
+    owner: M02
+    direction: higher_is_worse
+    band: null
+  inflow_rate:
+    domain: crowd
+    definition: entries per minute
+    unit: persons/min
+    threshold: below gate or route capacity
+    priority: High
+    owner: M02
+    direction: higher_is_worse
+    band: null
+  outflow_rate:
+    domain: crowd
+    definition: exits per minute
+    unit: persons/min
+    threshold: enough to keep safe density
+    priority: High
+    owner: M02
+    direction: higher_is_better
+    band: null
+  inflow_outflow_ratio:
+    domain: crowd
+    definition: inflow divided by outflow, capped at ratio_max when outflow is 0
+    unit: ratio
+    threshold: below 1 preferred at peak
+    priority: Critical
+    owner: M02
+    direction: higher_is_worse
+    band: null
+  queue_length:
+    domain: crowd
+    definition: detected queue
+    unit: persons
+    threshold: below site threshold
+    priority: High
+    owner: M02
+    direction: higher_is_worse
+    band: null
+  queue_wait_time:
+    domain: crowd
+    definition: average or percentile wait
+    unit: min
+    threshold: below 15
+    priority: High
+    owner: M02
+    direction: higher_is_worse
+    band: null
+  pedestrian_speed:
+    domain: crowd
+    definition: distance divided by time
+    unit: m/s
+    threshold: site baseline
+    priority: High
+    owner: M02
+    direction: higher_is_better
+    band: null
+  counterflow_risk:
+    domain: crowd
+    definition: probability of opposing streams conflict
+    unit: "%"
+    threshold: site threshold
+    priority: High
+    owner: M10
+    direction: higher_is_worse
+    band: probability_pct
+  crowd_spillover_risk:
+    domain: crowd
+    definition: probability of overflow to adjacent zones
+    unit: "%"
+    threshold: below 20
+    priority: Critical
+    owner: M03
+    direction: higher_is_worse
+    band: probability_pct
+  bottleneck_probability:
+    domain: crowd
+    definition: likelihood of capacity bottleneck
+    unit: "%"
+    threshold: below 20
+    priority: Critical
+    owner: M03
+    direction: higher_is_worse
+    band: probability_pct
+  crush_risk_score:
+    domain: crowd
+    definition: composite crowd safety risk (study name - stampede or crush risk)
+    unit: score_0_100
+    threshold: below 40
+    priority: Critical
+    owner: M03
+    direction: higher_is_worse
+    band: score_0_100
+  crowd_dispersion_time:
+    domain: crowd
+    definition: time to return below safe density
+    unit: min
+    threshold: site-specific
+    priority: High
+    owner: M11
+    direction: higher_is_worse
+    band: null
+  zone_capacity_utilization:
+    domain: crowd
+    definition: population divided by safe capacity times 100
+    unit: "%"
+    threshold: below 80
+    priority: Critical
+    owner: M02
+    direction: higher_is_worse
+    band: utilization_pct
+    bounds: [0, null]
+
+  # ============================= Traffic (14) =============================
+  vehicle_volume:
+    domain: traffic
+    definition: vehicles crossing a point per time
+    unit: vehicles/hr
+    threshold: below road capacity
+    priority: High
+    owner: M04
+    direction: higher_is_worse
+    band: null
+  traffic_density:
+    domain: traffic
+    definition: vehicles per km
+    unit: vehicles/km
+    threshold: below saturation
+    priority: High
+    owner: M04
+    direction: higher_is_worse
+    band: null
+  average_speed:
+    domain: traffic
+    definition: mean vehicle speed
+    unit: km/h
+    threshold: above operating floor
+    priority: Medium
+    owner: M04
+    direction: higher_is_better
+    band: null
+  travel_time:
+    domain: traffic
+    definition: arrival minus departure
+    unit: min
+    threshold: below route SLA
+    priority: High
+    owner: M04
+    direction: higher_is_worse
+    band: null
+  delay:
+    domain: traffic
+    definition: actual minus free-flow time
+    unit: min
+    threshold: below 10
+    priority: High
+    owner: M04
+    direction: higher_is_worse
+    band: null
+  vehicle_queue_length:
+    domain: traffic
+    definition: queue extent
+    unit: m
+    threshold: below spillback
+    priority: High
+    owner: M04
+    direction: higher_is_worse
+    band: null
+  volume_capacity_ratio:
+    domain: traffic
+    definition: volume divided by capacity
+    unit: ratio
+    threshold: below 0.80
+    priority: Critical
+    owner: M04
+    direction: higher_is_worse
+    band: null
+  intersection_saturation:
+    domain: traffic
+    definition: demand divided by capacity times 100
+    unit: "%"
+    threshold: below 90
+    priority: High
+    owner: M04
+    direction: higher_is_worse
+    band: utilization_pct
+    bounds: [0, null]
+  route_congestion_index:
+    domain: traffic
+    definition: normalized weighted index
+    unit: score_0_100
+    threshold: below 60
+    priority: High
+    owner: M04
+    direction: higher_is_worse
+    band: score_0_100
+  diversion_delay:
+    domain: traffic
+    definition: scenario minus baseline travel time
+    unit: min
+    threshold: below 15
+    priority: High
+    owner: M14
+    direction: higher_is_worse
+    band: null
+    bounds: [null, null]
+  emergency_route_availability:
+    domain: traffic
+    definition: available divided by required times 100
+    unit: "%"
+    threshold: "100"
+    priority: Critical
+    owner: M14
+    direction: higher_is_better
+    band: probability_pct
+    band_input: complement_100
+  parking_occupancy:
+    domain: traffic
+    definition: occupied divided by total times 100
+    unit: "%"
+    threshold: below 90
+    priority: High
+    owner: M05
+    direction: higher_is_worse
+    band: utilization_pct
+    bounds: [0, null]
+  parking_search_time:
+    domain: traffic
+    definition: arrival to parked
+    unit: min
+    threshold: below 15
+    priority: Medium
+    owner: M05
+    direction: higher_is_worse
+    band: null
+  shuttle_demand:
+    domain: traffic
+    definition: passengers per hour
+    unit: persons/hr
+    threshold: model-specific
+    priority: High
+    owner: M06
+    direction: higher_is_worse
+    band: null
+
+  # ============================= Medical (9) =============================
+  expected_medical_cases:
+    domain: medical
+    definition: predicted cases per time
+    unit: cases/hr
+    threshold: within capacity
+    priority: Critical
+    owner: M07
+    direction: higher_is_worse
+    band: null
+  peak_medical_demand:
+    domain: medical
+    definition: maximum cases per hour
+    unit: cases/hr
+    threshold: below post capacity
+    priority: Critical
+    owner: M07
+    direction: higher_is_worse
+    band: null
+  ambulance_requirement:
+    domain: medical
+    definition: demand divided by dispatch capacity
+    unit: vehicles
+    threshold: available at least required
+    priority: Critical
+    owner: M08
+    direction: higher_is_worse
+    band: null
+  ambulance_response_time:
+    domain: medical
+    definition: arrival minus dispatch
+    unit: min
+    threshold: below 8
+    priority: Critical
+    owner: M08
+    direction: higher_is_worse
+    band: null
+  hospital_load:
+    domain: medical
+    definition: occupied divided by available times 100
+    unit: "%"
+    threshold: below 80
+    priority: Critical
+    owner: M07
+    direction: higher_is_worse
+    band: utilization_pct
+    bounds: [0, null]
+  first_aid_post_requirement:
+    domain: medical
+    definition: cases divided by service capacity
+    unit: posts
+    threshold: demand covered
+    priority: High
+    owner: M08
+    direction: higher_is_worse
+    band: null
+  icu_bed_requirement:
+    domain: medical
+    definition: critical cases versus ICU capacity
+    unit: beds
+    threshold: demand covered
+    priority: Critical
+    owner: M07
+    direction: higher_is_worse
+    band: null
+  medicine_consumption:
+    domain: medical
+    definition: units per time
+    unit: units/day
+    threshold: stock-covered
+    priority: High
+    owner: M07
+    direction: higher_is_worse
+    band: null
+  critical_case_probability:
+    domain: medical
+    definition: chance of severe surge
+    unit: "%"
+    threshold: site-specific
+    priority: High
+    owner: M07
+    direction: higher_is_worse
+    band: probability_pct
+
+  # ============================= Security (8) =============================
+  security_incident_rate:
+    domain: security
+    definition: incidents per time
+    unit: incidents/hr
+    threshold: below baseline
+    priority: High
+    owner: M09
+    direction: higher_is_worse
+    band: null
+  security_risk_score:
+    domain: security
+    definition: composite security risk
+    unit: score_0_100
+    threshold: below 40
+    priority: Critical
+    owner: M09
+    direction: higher_is_worse
+    band: score_0_100
+  predicted_incident_probability:
+    domain: security
+    definition: future incident probability
+    unit: "%"
+    threshold: below 20
+    priority: High
+    owner: M09
+    direction: higher_is_worse
+    band: probability_pct
+  cctv_coverage:
+    domain: security
+    definition: covered divided by required times 100
+    unit: "%"
+    threshold: 100 for critical areas
+    priority: Critical
+    owner: M23
+    direction: higher_is_better
+    band: probability_pct
+    band_input: complement_100
+  camera_availability:
+    domain: security
+    definition: healthy divided by total times 100
+    unit: "%"
+    threshold: at least 99
+    priority: Critical
+    owner: M23
+    direction: higher_is_better
+    band: probability_pct
+    band_input: complement_100
+  unauthorized_entry_count:
+    domain: security
+    definition: access violations
+    unit: incidents/hr
+    threshold: 0 for critical gates
+    priority: Critical
+    owner: M09
+    direction: higher_is_worse
+    band: null
+  lost_person_count:
+    domain: security
+    definition: lost or missing cases per time
+    unit: cases/hr
+    threshold: minimize
+    priority: Medium
+    owner: M09
+    direction: higher_is_worse
+    band: null
+  security_response_time:
+    domain: security
+    definition: arrival minus dispatch
+    unit: min
+    threshold: below 5 to 10
+    priority: Critical
+    owner: M09
+    direction: higher_is_worse
+    band: null
+
+  # ====================== Emergency and evacuation (9) ======================
+  evacuation_population:
+    domain: emergency
+    definition: people in hazard impact zone
+    unit: persons
+    threshold: within route and shelter capacity
+    priority: Critical
+    owner: M11
+    direction: higher_is_worse
+    band: null
+  evacuation_time:
+    domain: emergency
+    definition: last evacuee minus start
+    unit: min
+    threshold: below safe available time
+    priority: Critical
+    owner: M11
+    direction: higher_is_worse
+    band: null
+  exit_capacity:
+    domain: emergency
+    definition: maximum persons through exit per minute
+    unit: persons/min
+    threshold: above demand
+    priority: Critical
+    owner: M11
+    direction: higher_is_better
+    band: null
+  exit_utilization:
+    domain: emergency
+    definition: flow divided by capacity times 100
+    unit: "%"
+    threshold: below 80
+    priority: High
+    owner: M11
+    direction: higher_is_worse
+    band: utilization_pct
+    bounds: [0, null]
+  blocked_route_count:
+    domain: emergency
+    definition: unavailable evacuation routes
+    unit: routes
+    threshold: "0"
+    priority: Critical
+    owner: M11
+    direction: higher_is_worse
+    band: null
+  safe_shelter_capacity:
+    domain: emergency
+    definition: available divided by displaced times 100
+    unit: "%"
+    threshold: demand covered
+    priority: High
+    owner: M11
+    direction: higher_is_better
+    band: probability_pct
+    band_input: complement_100
+    bounds: [0, null]
+  fire_risk_score:
+    domain: emergency
+    definition: probability and severity of fire
+    unit: score_0_100
+    threshold: below 40
+    priority: Critical
+    owner: M12
+    direction: higher_is_worse
+    band: score_0_100
+  fire_response_time:
+    domain: emergency
+    definition: fire dispatch to arrival
+    unit: min
+    threshold: below 8
+    priority: Critical
+    owner: M12
+    direction: higher_is_worse
+    band: null
+  emergency_access_availability:
+    domain: emergency
+    definition: usable divided by required emergency capacity times 100
+    unit: "%"
+    threshold: "100"
+    priority: Critical
+    owner: M14
+    direction: higher_is_better
+    band: probability_pct
+    band_input: complement_100
+
+  # ==================== VIP and route diversion (4) ====================
+  vip_route_clearance_time:
+    domain: vip
+    definition: time to make VIP route safe
+    unit: min
+    threshold: protocol window
+    priority: High
+    owner: M13
+    direction: higher_is_worse
+    band: null
+  vip_route_conflict_probability:
+    domain: vip
+    definition: conflict with public flows
+    unit: "%"
+    threshold: below 10
+    priority: High
+    owner: M13
+    direction: higher_is_worse
+    band: probability_pct
+  route_diversion_effectiveness:
+    domain: vip
+    definition: baseline minus scenario delay, divided by baseline, times 100
+    unit: "%"
+    threshold: positive
+    priority: High
+    owner: M14
+    direction: higher_is_better
+    band: probability_pct
+    band_input: complement_100
+    bounds: [null, 100]
+  alternate_route_capacity:
+    domain: vip
+    definition: capacity minus demand on backup route
+    unit: vehicles/hr
+    threshold: positive margin
+    priority: Critical
+    owner: M14
+    direction: higher_is_better
+    band: null
+    bounds: [null, null]
+
+  # ================= Water, sanitation and supply (12) =================
+  expected_water_demand:
+    domain: supply
+    definition: consumption per time
+    unit: L/hr
+    threshold: within supply
+    priority: High
+    owner: M15
+    direction: higher_is_worse
+    band: null
+  water_supply_demand_gap:
+    domain: supply
+    definition: demand minus supply
+    unit: L/hr
+    threshold: at most 0
+    priority: Critical
+    owner: M15
+    direction: higher_is_worse
+    band: null
+    bounds: [null, null]
+  drinking_water_point_requirement:
+    domain: supply
+    definition: population divided by point service capacity
+    unit: points
+    threshold: demand covered
+    priority: High
+    owner: M15
+    direction: higher_is_worse
+    band: null
+  mobile_toilet_requirement:
+    domain: supply
+    definition: users divided by target users per toilet
+    unit: units
+    threshold: demand covered
+    priority: High
+    owner: M16
+    direction: higher_is_worse
+    band: null
+  toilet_utilization:
+    domain: supply
+    definition: actual divided by capacity times 100
+    unit: "%"
+    threshold: below 80
+    priority: High
+    owner: M16
+    direction: higher_is_worse
+    band: utilization_pct
+    bounds: [0, null]
+  cleaning_frequency:
+    domain: supply
+    definition: cleaning cycles needed
+    unit: cycles/day
+    threshold: at least the plan
+    priority: High
+    owner: M16
+    direction: higher_is_worse
+    band: null
+  waste_generation:
+    domain: supply
+    definition: solid waste produced
+    unit: kg/day
+    threshold: within collection capacity
+    priority: High
+    owner: M18
+    direction: higher_is_worse
+    band: null
+  waste_bin_fill_level:
+    domain: supply
+    definition: fill divided by capacity times 100
+    unit: "%"
+    threshold: below 80
+    priority: High
+    owner: M18
+    direction: higher_is_worse
+    band: utilization_pct
+    bounds: [0, null]
+  sewage_generation:
+    domain: supply
+    definition: wastewater generated
+    unit: MLD
+    threshold: within treatment capacity
+    priority: High
+    owner: M16
+    direction: higher_is_worse
+    band: null
+  food_demand:
+    domain: supply
+    definition: servings expected
+    unit: meals/hr
+    threshold: within supply
+    priority: Medium
+    owner: M17
+    direction: higher_is_worse
+    band: null
+  food_stock_coverage:
+    domain: supply
+    definition: stock divided by consumption rate
+    unit: hours
+    threshold: at least minimum cover
+    priority: High
+    owner: M17
+    direction: higher_is_better
+    band: null
+  delivery_requirement:
+    domain: supply
+    definition: demand divided by payload
+    unit: trips/day
+    threshold: within logistics capacity
+    priority: Medium
+    owner: M17
+    direction: higher_is_worse
+    band: null
+
+  # ============ Utilities, weather and environment (12) ============
+  electricity_demand:
+    domain: utilities
+    definition: forecast event load
+    unit: MW
+    threshold: within available capacity
+    priority: Critical
+    owner: M19
+    direction: higher_is_worse
+    band: null
+  generator_backup_duration:
+    domain: utilities
+    definition: fuel divided by consumption rate
+    unit: hours
+    threshold: at least the emergency need
+    priority: Critical
+    owner: M19
+    direction: higher_is_better
+    band: null
+  network_availability:
+    domain: utilities
+    definition: available divided by expected times 100
+    unit: "%"
+    threshold: above 99.9
+    priority: Critical
+    owner: M20
+    direction: higher_is_better
+    band: probability_pct
+    band_input: complement_100
+  bandwidth_utilization:
+    domain: utilities
+    definition: used divided by capacity times 100
+    unit: "%"
+    threshold: below 80
+    priority: High
+    owner: M20
+    direction: higher_is_worse
+    band: utilization_pct
+    bounds: [0, null]
+  temperature:
+    domain: weather
+    definition: ambient temperature
+    unit: degC
+    threshold: site threshold
+    priority: High
+    owner: M21
+    direction: higher_is_worse
+    band: null
+  heat_index:
+    domain: weather
+    definition: combined heat and humidity (NOAA)
+    unit: degC
+    threshold: site threshold
+    priority: Critical
+    owner: M21
+    direction: higher_is_worse
+    band: null
+  rainfall_intensity:
+    domain: weather
+    definition: rain volume per time
+    unit: mm/hr
+    threshold: site threshold
+    priority: Critical
+    owner: M21
+    direction: higher_is_worse
+    band: null
+  waterlogging_probability:
+    domain: weather
+    definition: flooding probability
+    unit: "%"
+    threshold: below 20
+    priority: Critical
+    owner: M21
+    direction: higher_is_worse
+    band: probability_pct
+  air_quality_index:
+    domain: environment
+    definition: composite AQI (Indian NAQI)
+    unit: index
+    threshold: applicable standard
+    priority: High
+    owner: M22
+    direction: higher_is_worse
+    band: null
+    bounds: [0, 500]
+  pm25:
+    domain: environment
+    definition: fine particulate concentration
+    unit: ug/m3
+    threshold: applicable standard
+    priority: High
+    owner: M22
+    direction: higher_is_worse
+    band: null
+  noise_level:
+    domain: environment
+    definition: ambient noise
+    unit: dB
+    threshold: site threshold
+    priority: Medium
+    owner: M22
+    direction: higher_is_worse
+    band: null
+  co2_emissions:
+    domain: environment
+    definition: from fuel, electricity and traffic factors
+    unit: tCO2e/day
+    threshold: baseline or target
+    priority: Medium
+    owner: M22
+    direction: higher_is_worse
+    band: null
+
+  # ========= Resource optimization and overall risk (8) =========
+  asset_capacity_utilization:
+    domain: resources
+    definition: actual divided by design times 100
+    unit: "%"
+    threshold: below 80 in normal operation
+    priority: High
+    owner: M23
+    direction: higher_is_worse
+    band: utilization_pct
+    bounds: [0, null]
+  asset_availability:
+    domain: resources
+    definition: available divided by total times 100
+    unit: "%"
+    threshold: above 99 for critical assets
+    priority: Critical
+    owner: M23
+    direction: higher_is_better
+    band: probability_pct
+    band_input: complement_100
+  resource_requirement:
+    domain: resources
+    definition: demand divided by service capacity
+    unit: units
+    threshold: demand covered
+    priority: Critical
+    owner: M24
+    direction: higher_is_worse
+    band: null
+  resource_gap:
+    domain: resources
+    definition: required minus available
+    unit: units
+    threshold: at most 0
+    priority: Critical
+    owner: M24
+    direction: higher_is_worse
+    band: null
+    bounds: [null, null]
+  resource_coverage:
+    domain: resources
+    definition: allocated divided by required times 100
+    unit: "%"
+    threshold: at least 100 for critical functions
+    priority: Critical
+    owner: M24
+    direction: higher_is_better
+    band: probability_pct
+    band_input: complement_100
+    bounds: [0, null]
+  response_capacity:
+    domain: resources
+    definition: teams able to respond within SLA
+    unit: teams
+    threshold: above minimum
+    priority: Critical
+    owner: M24
+    direction: higher_is_better
+    band: null
+  overall_event_risk:
+    domain: overall
+    definition: sum of weight times normalized domain risk
+    unit: score_0_100
+    threshold: below 40
+    priority: Critical
+    owner: M25
+    direction: higher_is_worse
+    band: score_0_100
+  decision_confidence:
+    domain: overall
+    definition: calibrated recommendation confidence
+    unit: "%"
+    threshold: above 80 preferred
+    priority: High
+    owner: M25
+    direction: higher_is_better
+    band: probability_pct
+    band_input: complement_100
+
+  # ========================== Extensions (16) ==========================
+  # Added by this implementation; listed in the docs/05 section 2 Extensions table.
+  parking_demand:
+    domain: traffic
+    definition: forecast vehicles seeking parking
+    unit: vehicles
+    threshold: within site capacity
+    priority: High
+    owner: M05
+    direction: higher_is_worse
+    band: null
+    extension: true
+  shuttle_requirement:
+    domain: traffic
+    definition: ceil(demand times round_trip over 60, divided by capacity times load factor)
+    unit: vehicles
+    threshold: within fleet
+    priority: High
+    owner: M06
+    direction: higher_is_worse
+    band: null
+    extension: true
+  passenger_wait_time:
+    domain: traffic
+    definition: headway divided by 2
+    unit: min
+    threshold: site threshold
+    priority: Medium
+    owner: M06
+    direction: higher_is_worse
+    band: null
+    extension: true
+  anomaly_score:
+    domain: crowd
+    definition: 100 times the maximum motion-rule strength
+    unit: score_0_100
+    threshold: below 40
+    priority: Critical
+    owner: M10
+    direction: higher_is_worse
+    band: score_0_100
+    extension: true
+  fire_vehicle_requirement:
+    domain: emergency
+    definition: ceil(risk-weighted demand divided by unit coverage capacity)
+    unit: vehicles
+    threshold: within fleet
+    priority: High
+    owner: M12
+    direction: higher_is_worse
+    band: null
+    extension: true
+  vip_recommended_departure_offset_min:
+    domain: vip
+    definition: minutes to shift departure to minimise conflict
+    unit: min
+    threshold: within protocol window
+    priority: High
+    owner: M13
+    direction: higher_is_worse
+    band: null
+    bounds: [null, null]
+    extension: true
+  water_tanker_requirement:
+    domain: supply
+    definition: ceil(positive gap times hours divided by tanker payload)
+    unit: vehicles
+    threshold: within fleet
+    priority: High
+    owner: M15
+    direction: higher_is_worse
+    band: null
+    extension: true
+  cleaning_staff_requirement:
+    domain: supply
+    definition: cycles times cleaning minutes divided by shift minutes
+    unit: personnel
+    threshold: within roster
+    priority: High
+    owner: M16
+    direction: higher_is_worse
+    band: null
+    extension: true
+  waste_collection_trips:
+    domain: supply
+    definition: ceil(kg per day divided by vehicle payload)
+    unit: trips/day
+    threshold: within fleet
+    priority: High
+    owner: M18
+    direction: higher_is_worse
+    band: null
+    extension: true
+  bin_overflow_time:
+    domain: supply
+    definition: minutes until fill reaches 100 percent
+    unit: min
+    threshold: above the collection interval
+    priority: High
+    owner: M18
+    direction: higher_is_better
+    band: null
+    extension: true
+  backup_generator_requirement:
+    domain: utilities
+    definition: ceil(critical load times redundancy divided by unit kW)
+    unit: units
+    threshold: within fleet
+    priority: Critical
+    owner: M19
+    direction: higher_is_worse
+    band: null
+    extension: true
+  network_capacity_risk:
+    domain: utilities
+    definition: 100 times sigmoid of k times (utilization minus utilization0)
+    unit: "%"
+    threshold: below 20
+    priority: High
+    owner: M20
+    direction: higher_is_worse
+    band: probability_pct
+    extension: true
+  weather_arrival_multiplier:
+    domain: weather
+    definition: 1 minus k_rain_arrival times min(rain, rain_cap) over rain_cap
+    unit: ratio
+    threshold: informational
+    priority: High
+    owner: M21
+    direction: higher_is_worse
+    band: null
+    extension: true
+  weather_medical_multiplier:
+    domain: weather
+    definition: 1 plus k_heat times max(0, heat index minus hi0)
+    unit: ratio
+    threshold: informational
+    priority: High
+    owner: M21
+    direction: higher_is_worse
+    band: null
+    extension: true
+  weather_traffic_speed_multiplier:
+    domain: weather
+    definition: 1 minus k_rain_speed times min(rain, rain_cap) over rain_cap
+    unit: ratio
+    threshold: informational
+    priority: High
+    owner: M21
+    direction: higher_is_better
+    band: null
+    extension: true
+  asset_failure_probability:
+    domain: resources
+    definition: calibrated classifier probability of failure
+    unit: "%"
+    threshold: below 20
+    priority: High
+    owner: M23
+    direction: higher_is_worse
+    band: probability_pct
+    extension: true

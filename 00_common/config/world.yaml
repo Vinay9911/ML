@@ -1,0 +1,318 @@
+# Venue layout and time model - transcribed from docs/04 sections 2 and 3.
+#
+# The schematic layout is generated around `venue_center` using local metric offsets
+# (pyproj UTM 43N) converted to WGS84. If the user supplies 00_common/config/zones.geojson
+# the generator uses that instead and only reads attributes from here.
+meta:
+  version: "1.0"
+  source: "docs/04_DATA_AND_SYNTHETIC_WORLD.md sections 2-3"
+
+venue:
+  event_id: EVENT
+  name: Mega religious gathering (demo)
+  # Approximate Ramkund area, Nashik. docs/04 section 2 says VERIFY on a map;
+  # any coordinates work for the demo. Override here if a real site is chosen.
+  venue_center: {lat: 20.0063, lon: 73.7926}
+  verified_on_map: false
+  utm_epsg: 32643        # UTM zone 43N, metric CRS for areas and buffers
+  wgs84_epsg: 4326
+  sectors:
+    SA: {name: River front sector, zones: [Z01, Z02, Z06]}
+    SB: {name: Approach and holding sector, zones: [Z03, Z04, Z05]}
+    SC: {name: Market and transit sector, zones: [Z07, Z08]}
+
+time:
+  timezone: Asia/Kolkata
+  utc_offset: "+05:30"
+  grid_min: 15              # main time grid
+  network_grid_min: 5       # D19 network telemetry is finer
+  history_start: "2027-07-04T00:00:00+05:30"   # 28 days of normal context
+  event_days:
+    - {date: "2027-08-01", kind: arrival_day,  multiplier_key: arrival_day_multiplier}
+    - {date: "2027-08-02", kind: snan_day,     multiplier_key: snan_day_multiplier}
+    - {date: "2027-08-03", kind: post_peak,    multiplier_key: post_peak_multiplier}
+  demo_now: "2027-08-02T06:00:00+05:30"
+  # Open-Meteo historical weather is fetched for the same month/day of this year
+  # and shifted to the event year.
+  weather_source_year: 2025
+  # The peak date mirrors a reported Amrit Snan date - docs/04 says verify official dates;
+  # the demo only needs "a peak day".
+  peak_date_verified: false
+
+# ---------------------------------------------------------------- zones (8)
+# usable_area_m2 = area_m2 * usable_share
+# safe_capacity  = usable_area_m2 * assumptions.crowd.design_density_p_m2
+zones:
+  Z01:
+    name: Ghat A (river front)
+    type: ghat
+    area_m2: 12000
+    usable_share: 0.70
+    low_lying: true
+    drainage_capacity_mm_hr: 20
+    notes: main bathing ghat
+    attributes: {sensitive_site: true, cooking_stalls: 0, tent_density: 0.1, critical: true}
+  Z02:
+    name: Ghat B
+    type: ghat
+    area_m2: 10000
+    usable_share: 0.70
+    low_lying: true
+    drainage_capacity_mm_hr: 20
+    notes: second ghat
+    attributes: {sensitive_site: true, cooking_stalls: 0, tent_density: 0.1, critical: true}
+  Z03:
+    name: Temple approach corridor
+    type: corridor
+    area_m2: 6000
+    usable_share: 0.80
+    low_lying: false
+    drainage_capacity_mm_hr: 35
+    notes: cooking stalls, fire risk
+    attributes: {sensitive_site: true, cooking_stalls: 40, tent_density: 0.5, critical: true}
+  Z04:
+    name: Main pedestrian approach
+    type: corridor
+    area_m2: 9000
+    usable_share: 0.85
+    low_lying: false
+    drainage_capacity_mm_hr: 35
+    notes: ""
+    attributes: {sensitive_site: false, cooking_stalls: 5, tent_density: 0.2, critical: false}
+  Z05:
+    name: Gate plaza / holding area
+    type: holding
+    area_m2: 15000
+    usable_share: 0.80
+    low_lying: false
+    drainage_capacity_mm_hr: 40
+    notes: gates G02, G03
+    attributes: {sensitive_site: false, cooking_stalls: 8, tent_density: 0.3, critical: true}
+  Z06:
+    name: Bridge B01 approach
+    type: bridge
+    area_m2: 3000
+    usable_share: 0.90
+    low_lying: true
+    drainage_capacity_mm_hr: 15
+    notes: links Z02 to far bank
+    attributes: {sensitive_site: false, cooking_stalls: 0, tent_density: 0.0, critical: true}
+  Z07:
+    name: Market & food street
+    type: market
+    area_m2: 8000
+    usable_share: 0.60
+    low_lying: false
+    drainage_capacity_mm_hr: 30
+    notes: gate G04
+    attributes: {sensitive_site: false, cooking_stalls: 60, tent_density: 0.7, critical: false}
+  Z08:
+    name: Transit & parking hub
+    type: hub
+    area_m2: 20000
+    usable_share: 0.50
+    low_lying: false
+    drainage_capacity_mm_hr: 45
+    notes: gate G01
+    attributes: {sensitive_site: false, cooking_stalls: 10, tent_density: 0.2, critical: false}
+
+# Undirected adjacency, docs/04 section 2.1.
+adjacency:
+  - [Z08, Z05]
+  - [Z05, Z04]
+  - [Z05, Z07]
+  - [Z04, Z03]
+  - [Z04, Z07]
+  - [Z03, Z01]
+  - [Z03, Z02]
+  - [Z02, Z06]
+
+# ------------------------------------------------- crowd routing (docs/04 section 5.5)
+# Directed movement graph for the compartment model. `split` weights must sum to 1
+# per (phase, from-zone). `capacity_link` names the link whose capacity throttles the flow.
+routing:
+  inbound:
+    Z08: {to: {Z05: 1.00}}
+    Z05: {to: {Z04: 0.70, Z07: 0.30}}
+    Z04: {to: {Z03: 1.00}}
+    Z03: {to: {Z01: 0.60, Z02: 0.40}}
+    Z07: {to: {Z04: 1.00}}
+  outbound:
+    Z01: {to: {Z03: 1.00}}
+    Z02: {to: {Z03: 0.50, Z06: 0.50}}
+    Z06: {to: {E05: 1.00}}
+    Z03: {to: {Z04: 1.00}}
+    Z04: {to: {Z05: 1.00}}
+    Z05: {to: {E01: 0.60, E02: 0.40}}
+    Z07: {to: {Z04: 0.50, E06: 0.50}}
+
+# ------------------------------------------------------------- gates (4)
+gates:
+  G01: {zone_id: Z08, name: Hub gate,        secure: false, throughput_p_min: 60}
+  G02: {zone_id: Z05, name: Plaza gate A,    secure: true,  throughput_p_min: 60}
+  G03: {zone_id: Z05, name: Plaza gate B,    secure: true,  throughput_p_min: 60}
+  G04: {zone_id: Z07, name: Market gate,     secure: false, throughput_p_min: 60}
+
+# ------------------------------------------------------------- exits (6)
+exits:
+  E01: {zone_id: Z05, name: Plaza exit,          width_m: 8.0, status: open}
+  E02: {zone_id: Z08, name: Hub exit,            width_m: 12.0, status: open}
+  E03: {zone_id: Z03, name: Corridor side lane,  width_m: 4.0, status: open}
+  E04: {zone_id: Z01, name: Ghat A emergency,    width_m: 6.0, status: open}
+  E05: {zone_id: Z06, name: Far bank exit,       width_m: 5.0, status: open}
+  E06: {zone_id: Z07, name: Market exit,         width_m: 6.0, status: open}
+
+# --------------------------------------------------- bridge and key links
+bridges:
+  B01: {zone_id: Z06, name: River bridge, width_m: 6.0, capacity_p_min: 468, status: open}
+
+# Key road segments R01-R10 and intersections J01-J06 are mapped to OSM edge/node IDs
+# (nearest to the schematic positions) or to synthetic grid IDs in key_links.csv.
+key_links:
+  R01: {name: City approach north, lanes: 2, length_m: 1200, maxspeed_kmh: 50}
+  R02: {name: City approach south, lanes: 2, length_m: 1400, maxspeed_kmh: 50}
+  R03: {name: Hub access road,     lanes: 2, length_m: 600,  maxspeed_kmh: 40}
+  R04: {name: Parking P1 link,     lanes: 1, length_m: 400,  maxspeed_kmh: 30}
+  R05: {name: Parking P2 link,     lanes: 2, length_m: 700,  maxspeed_kmh: 40}
+  R06: {name: Parking P3 link,     lanes: 1, length_m: 500,  maxspeed_kmh: 30}
+  R07: {name: Riverside road,      lanes: 2, length_m: 900,  maxspeed_kmh: 40}
+  R08: {name: Market street,       lanes: 1, length_m: 450,  maxspeed_kmh: 30}
+  R09: {name: Hospital link,       lanes: 2, length_m: 1100, maxspeed_kmh: 50}
+  R10: {name: Fire station link,   lanes: 2, length_m: 800,  maxspeed_kmh: 50}
+key_intersections:
+  J01: {name: North gateway junction,  approaches: [R01, R03]}
+  J02: {name: South gateway junction,  approaches: [R02, R03]}
+  J03: {name: Hub junction,            approaches: [R03, R04, R05]}
+  J04: {name: Riverside junction,      approaches: [R05, R07, R09]}
+  J05: {name: Market junction,         approaches: [R07, R08, R06]}
+  J06: {name: Emergency junction,      approaches: [R09, R10]}
+
+# City entry nodes used as traffic assignment origins (docs/04 section 5, M04 card).
+entry_nodes: [R01, R02]
+
+# ------------------------------------------------------- parking and transit
+parking_sites:
+  P1: {name: North lot,  zone_id: Z08, link: R04}
+  P2: {name: Main lot,   zone_id: Z08, link: R05}
+  P3: {name: Market lot, zone_id: Z07, link: R06}
+shuttle_routes:
+  SH1: {name: P2 to G01, from: P2, to: G01, length_km: 3.2}
+  SH2: {name: P3 to G04, from: P3, to: G04, length_km: 2.4}
+
+# ------------------------------------------------------------- facilities
+hospitals:
+  H01: {name: District hospital, zone_id: null, inside_venue: false, link: R09}
+  H02: {name: Event field hospital, zone_id: Z08, inside_venue: true, link: R03}
+medical_posts:
+  MP01: {zone_id: Z01}
+  MP02: {zone_id: Z03}
+  MP03: {zone_id: Z05}
+  MP04: {zone_id: Z07}
+police_posts:
+  PP01: {zone_id: Z01}
+  PP02: {zone_id: Z04}
+  PP03: {zone_id: Z05}
+  PP04: {zone_id: Z08}
+fire_stations:
+  FS01: {name: Venue fire station, zone_id: Z08, link: R10, turnout_min: 2}
+shelters:
+  SH01: {zone_id: Z08, capacity_persons: 8000}
+  SH02: {zone_id: Z07, capacity_persons: 5000}
+# Ambulance staging candidate sites. NOTE: docs/02 section 3 has no AS prefix in its ID
+# table; docs/04 section 2.2 requires AS01-AS06. See plans/PHASE_1.md decision D2 -
+# AS is treated as a `facility` ID and is the one documented extension to the ID table.
+ambulance_staging:
+  AS01: {zone_id: Z01}
+  AS02: {zone_id: Z03}
+  AS03: {zone_id: Z04}
+  AS04: {zone_id: Z05}
+  AS05: {zone_id: Z07}
+  AS06: {zone_id: Z08}
+
+# -------------------------------------------------- service point candidates
+toilet_clusters:
+  TC01: {zone_id: Z01, max_units: 80, low_lying: true}
+  TC02: {zone_id: Z02, max_units: 60, low_lying: true}
+  TC03: {zone_id: Z03, max_units: 40, low_lying: false}
+  TC04: {zone_id: Z04, max_units: 60, low_lying: false}
+  TC05: {zone_id: Z05, max_units: 100, low_lying: false}
+  TC06: {zone_id: Z06, max_units: 20, low_lying: true}
+  TC07: {zone_id: Z07, max_units: 60, low_lying: false}
+  TC08: {zone_id: Z08, max_units: 100, low_lying: false}
+water_points:
+  WP01: {zone_id: Z01}
+  WP02: {zone_id: Z01}
+  WP03: {zone_id: Z02}
+  WP04: {zone_id: Z03}
+  WP05: {zone_id: Z04}
+  WP06: {zone_id: Z05}
+  WP07: {zone_id: Z05}
+  WP08: {zone_id: Z06}
+  WP09: {zone_id: Z07}
+  WP10: {zone_id: Z08}
+waste_bin_groups:
+  WB01: {zone_id: Z01}
+  WB02: {zone_id: Z02}
+  WB03: {zone_id: Z03}
+  WB04: {zone_id: Z04}
+  WB05: {zone_id: Z05}
+  WB06: {zone_id: Z06}
+  WB07: {zone_id: Z07}
+  WB08: {zone_id: Z08}
+
+# ------------------------------------------------------------------ assets
+substations:
+  SS01: {name: Substation A, feeds_zones: [Z01, Z02, Z03, Z04], design_kw: 2500}
+  SS02: {name: Substation B, feeds_zones: [Z05, Z06, Z07, Z08], design_kw: 3000}
+generators:
+  GEN01: {zone_id: Z01, substation: SS01, serves: [MP01]}
+  GEN02: {zone_id: Z03, substation: SS01, serves: [MP02]}
+  GEN03: {zone_id: Z05, substation: SS02, serves: [MP03]}
+  GEN04: {zone_id: Z08, substation: SS02, serves: [H02]}
+pumps:
+  PMP01: {zone_id: Z01, substation: SS01, design_lph: 20000}
+  PMP02: {zone_id: Z05, substation: SS02, design_lph: 25000}
+  PMP03: {zone_id: Z08, substation: SS02, design_lph: 30000}
+network_towers:
+  NT01: {zone_id: Z05, substation: SS02}
+  NT02: {zone_id: Z01, substation: SS01}
+  NT03: {zone_id: Z08, substation: SS02}
+
+# ----------------------------------------------------------- cameras (24)
+# mode: sparse (detection+tracking) or dense (density map). See M02 card.
+# fov is a simple sector: bearing_deg (from north, clockwise), half_angle_deg, range_m.
+cameras:
+  count: 24
+  default_bitrate_mbps: 4
+  placement:
+    # zone_id: [ [camera_id, mode, tower_id, bearing_deg, half_angle_deg, range_m], ... ]
+    Z01: [[CAM01, dense, NT02, 180, 35, 60], [CAM02, dense, NT02, 220, 35, 60], [CAM03, sparse, NT02, 90, 30, 40]]
+    Z02: [[CAM04, dense, NT02, 170, 35, 55], [CAM05, sparse, NT02, 100, 30, 40], [CAM06, dense, NT02, 210, 35, 55]]
+    Z03: [[CAM07, dense, NT01, 0, 30, 50], [CAM08, sparse, NT01, 45, 30, 40], [CAM09, sparse, NT01, 315, 30, 40]]
+    Z04: [[CAM10, dense, NT01, 10, 35, 60], [CAM11, sparse, NT01, 190, 30, 45]]
+    Z05: [[CAM12, dense, NT01, 20, 40, 70], [CAM13, sparse, NT01, 70, 25, 35], [CAM14, sparse, NT01, 110, 25, 35], [CAM15, dense, NT01, 250, 40, 70]]
+    Z06: [[CAM16, sparse, NT02, 160, 25, 35], [CAM17, dense, NT02, 200, 30, 45]]
+    Z07: [[CAM18, dense, NT03, 30, 35, 55], [CAM19, sparse, NT03, 120, 30, 40], [CAM20, sparse, NT03, 300, 30, 40]]
+    Z08: [[CAM21, dense, NT03, 0, 40, 80], [CAM22, sparse, NT03, 60, 30, 50], [CAM23, sparse, NT03, 180, 30, 50], [CAM24, dense, NT03, 270, 40, 80]]
+
+# --------------------------------------------------- routes and corridors
+# VIP origin/destination and the emergency corridors that M14 must keep open.
+vip_routes:
+  VIP1:
+    name: City entry to Ghat A viewpoint
+    origin: R01
+    destination: Z01
+    window: ["06:30", "08:30"]
+emergency_corridors:
+  EC1: {name: Hospital to temple corridor, from: H01, to: Z03, links: [R09, R07], required_capacity_veh_hr: 600}
+  EC2: {name: Fire station to plaza,       from: FS01, to: Z05, links: [R10, R09, R05], required_capacity_veh_hr: 600}
+# Preferred alternates that M14 may propose per closed link.
+diversion_alternates:
+  R07: [[R09, R05], [R08, R06]]
+  B01: [[R07, R05]]
+evacuation_routes:
+  EVAC1: {from: Z01, exits: [E04, E03]}
+  EVAC2: {from: Z02, exits: [E05, E03]}
+  EVAC3: {from: Z03, exits: [E03, E01]}
+  EVAC4: {from: Z05, exits: [E01, E02]}
+  EVAC5: {from: Z07, exits: [E06, E01]}

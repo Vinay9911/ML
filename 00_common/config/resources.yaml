@@ -1,0 +1,140 @@
+# The 15 resource types - transcribed from docs/05 section 5.
+# `available` quantities mirror assumptions.resources.available (docs/04 section 6) and are
+# PLACEHOLDERS. M24 reads `available` through the scenario availability multiplier
+# (S10 ambulance 0.8, S11 police 0.9).
+meta:
+  version: "1.0"
+  source: "docs/05_SCENARIOS_KPIS_FORMULAS.md section 5"
+  count: 15
+
+resource_types:
+  police:
+    planning_logic: predicted crowd times zone risk divided by service ratio
+    unit: personnel
+    primary_driver: crowd population and density
+    granularity: zone x time
+    objective: maximise safety coverage, minimise travel
+    available: 600
+  crpf:
+    planning_logic: high-risk population divided by service rate
+    unit: personnel
+    primary_driver: security risk
+    granularity: sector x time
+    objective: cover critical zones plus reserve
+    available: 150
+  ambulance:
+    planning_logic: medical demand divided by dispatch capacity
+    unit: vehicles
+    primary_driver: medical demand
+    granularity: hotspot x time
+    objective: meet response SLA
+    available: 20
+  medical_team:
+    planning_logic: cases divided by cases-per-team
+    unit: teams
+    primary_driver: medical demand
+    granularity: zone x shift
+    objective: coverage plus workload balance
+    available: 30
+  fire_vehicle:
+    planning_logic: risk-weighted demand divided by station coverage
+    unit: vehicles
+    primary_driver: fire risk
+    granularity: zone or sector
+    objective: minimise arrival time
+    available: 6
+  mobile_toilet:
+    planning_logic: users divided by users per toilet
+    unit: units
+    primary_driver: footfall
+    granularity: zone x hotspot
+    objective: meet sanitation ratio
+    available: 400
+  cleaning_staff:
+    planning_logic: usage times cycles divided by staff capacity
+    unit: personnel
+    primary_driver: toilet and waste usage
+    granularity: zone x shift
+    objective: hygiene SLA
+    available: 250
+  water_point:
+    planning_logic: population divided by point capacity
+    unit: points
+    primary_driver: population
+    granularity: zone x hotspot
+    objective: minimise queue and shortage
+    available: 60
+  water_tanker:
+    planning_logic: supply gap divided by tanker payload
+    unit: vehicles
+    primary_driver: water gap
+    granularity: zone or depot
+    objective: minimise stockout and travel
+    available: 15
+  shuttle_bus:
+    planning_logic: passenger demand divided by bus capacity
+    unit: vehicles
+    primary_driver: transit demand
+    granularity: route x time
+    objective: minimise waiting and congestion
+    available: 80
+  traffic_police:
+    planning_logic: junction workload divided by staff capacity
+    unit: personnel
+    primary_driver: traffic volume
+    granularity: intersection or route
+    objective: maintain flow
+    available: 120
+  waste_vehicle:
+    planning_logic: waste volume divided by payload
+    unit: vehicles
+    primary_driver: waste generation
+    granularity: zone or depot
+    objective: minimise overflow and route time
+    available: 10
+  food_vehicle:
+    planning_logic: demand divided by payload
+    unit: vehicles
+    primary_driver: food demand
+    granularity: depot or outlet
+    objective: prevent stockout
+    available: 8
+  backup_generator:
+    planning_logic: critical load divided by generator capacity
+    unit: units
+    primary_driver: power load
+    granularity: critical facility
+    objective: redundancy and runtime
+    available: 8
+  network_capacity:
+    planning_logic: data demand divided by capacity
+    unit: units          # Mbps, expressed as generic units in resource KPIs
+    primary_driver: CCTV and IoT load
+    granularity: zone or site
+    objective: latency and availability
+    available: 5000
+
+# Which model produces the requirement for each type (docs/03 M24 card).
+# `own` means M24 computes it from its own formula.
+requirement_owner:
+  police: own
+  crpf: own
+  traffic_police: own
+  medical_team: own
+  ambulance: M08
+  fire_vehicle: M12
+  mobile_toilet: M16
+  cleaning_staff: M16
+  water_point: M15
+  water_tanker: M15
+  shuttle_bus: M06
+  waste_vehicle: M18
+  food_vehicle: M17
+  backup_generator: M19
+  network_capacity: M20
+
+# Shifts used by the M24 allocation MILP and by the D22 roster generator.
+shifts:
+  - {shift_id: A, start: "06:00", end: "14:00"}
+  - {shift_id: B, start: "14:00", end: "22:00"}
+  - {shift_id: C, start: "22:00", end: "06:00"}

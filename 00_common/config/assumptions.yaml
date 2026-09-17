@@ -1,0 +1,130 @@
+# Shared assumptions — transcribed verbatim from docs/04 §6.
+# EVERY NUMBER HERE IS A PLACEHOLDER to be validated by domain experts
+# (police / medical / event-safety). Never copy these into src/ code.
+crowd:
+  normal_day_arrivals_sector: 120000
+  arrival_day_multiplier: 1.8
+  snan_day_multiplier: 4.0
+  post_peak_multiplier: 1.8
+  weekend_multiplier: 1.2
+  arrival_noise_sigma: 0.08
+  hourly_profile_normal: [1, 1, 1, 2, 4, 7, 9, 9, 8, 6, 5, 4, 4, 4, 4, 5, 6, 7, 6, 4, 3, 2, 1, 1]
+  hourly_profile_snan: [3, 6, 9, 12, 13, 12, 10, 8, 6, 4, 3, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1]
+  gate_split: {G01: 0.40, G02: 0.30, G03: 0.20, G04: 0.10}
+  gate_reassignment:
+    G02: {G03: 0.7, G01: 0.3}
+  gate_throughput_p_min: 60
+  mean_dwell_min: {ghat: 45, corridor: 12, holding: 25, bridge: 6, market: 40, hub: 20}
+  design_density_p_m2: 2.0
+  density_bands_p_m2: {amber: 2.0, red: 4.0, critical: 5.0}
+  sustained_exposure: {density_p_m2: 4.0, minutes: 6}
+  exit_specific_flow_p_per_m_s: 1.3
+  walking_speed_m_s: 1.2
+  premovement_min: 2
+
+medical:
+  presentations_per_1000_attendees_per_day: 1.0
+  hospital_transfer_share: 0.03
+  severe_share: 0.05
+  icu_share_of_transfers: 0.15
+  heat_index_threshold_c: 32
+  heat_rate_increase_per_c: 0.04
+  medicine_units_per_case: 3
+  hospital_beds: {H01: 400, H02: 150}
+  hospital_baseline_occupancy: 0.65
+  ambulance_cycle_time_min: 60
+  ambulance_target_utilization: 0.6
+  response_sla_min: 8
+  dispatch_delay_min: 2
+  first_aid_post_cases_per_hr_capacity: 12
+
+water:
+  litres_per_person_per_hour_present: 0.5
+  heat_multiplier_per_c_above_30: 0.03
+  persons_per_water_point: 1500
+  tanker_payload_l: 10000
+
+sanitation:
+  uses_per_person_per_hour_present: 0.2
+  users_per_toilet_per_hour: 12
+  uses_per_cleaning: 50
+  cleaning_minutes: 8
+  shift_minutes: 480
+  litres_per_use: 5
+  walking_radius_m: 250
+
+waste:
+  kg_per_person_per_hour_present: 0.05
+  bin_capacity_kg: 120
+  vehicle_payload_kg: 3000
+
+food:
+  meals_per_person_per_hour_market: 0.15
+  vehicle_payload_meals: 2000
+  lead_time_hours: 6
+  min_stock_cover_hours: 8
+
+transport:
+  car_mode_share: 0.25
+  bus_mode_share: 0.35
+  persons_per_car: 3.5
+  bus_capacity: 50
+  bus_load_factor: 0.85
+  round_trip_min: 40
+  lane_capacity_veh_hr: 1800
+  bpr_alpha: 0.15
+  bpr_beta: 4
+  vehicle_length_m: 7
+  parking_capacity: {P1: 1500, P2: 2500, P3: 800}
+
+security:
+  base_incidents_per_100k_per_hr: 2.0
+  lost_persons_per_100k_per_hr: 5.0
+  unauthorized_entries_per_secure_gate_per_hr: 0.2
+  patrol_walk_speed_m_s: 1.0
+  dispatch_delay_min: 2
+  response_sla_min: 8
+
+power:
+  base_kw_per_zone: 150
+  watts_per_person: 5
+  cooling_kw_per_c_above_30_per_zone: 20
+  generator_unit_kw: 250
+  generator_fuel_l: 400
+  generator_l_per_hr_at_full_load: 60
+  redundancy_factor: 1.25
+
+network:
+  camera_bitrate_mbps: 4
+  active_user_share: 0.3
+  kbps_per_active_user: 50
+  tower_capacity_mbps: {NT01: 2000, NT02: 2000, NT03: 1000}
+
+environment:
+  vehicle_ef_kgco2_per_km: 0.2
+  grid_ef_kgco2_per_kwh: 0.7
+  diesel_ef_kgco2_per_l: 2.7
+  noise_base_db: 60
+
+resources:
+  police_per_1000_persons: 2.0
+  crpf_per_high_risk_zone: 30
+  traffic_police_per_intersection_peak: 4
+  medical_team_cases_per_hr: 6
+  risk_multiplier: {green: 1.0, amber: 1.25, red: 1.5, critical: 2.0}
+  available:
+    police: 600
+    crpf: 150
+    ambulance: 20
+    medical_team: 30
+    fire_vehicle: 6
+    mobile_toilet: 400
+    cleaning_staff: 250
+    water_point: 60
+    water_tanker: 15
+    shuttle_bus: 80
+    traffic_police: 120
+    waste_vehicle: 10
+    food_vehicle: 8
+    backup_generator: 8
+    network_capacity: 5000   # Mbps

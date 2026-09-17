@@ -1,0 +1,152 @@
+{
+  "$defs": {
+    "Engine": {
+      "description": "Shared engine that powers a model (docs/01 section 4).",
+      "enum": [
+        "forecast",
+        "vision",
+        "rules",
+        "network",
+        "formula",
+        "location",
+        "pedsim",
+        "optimize",
+        "mlclf"
+      ],
+      "title": "Engine",
+      "type": "string"
+    },
+    "KpiDescriptor": {
+      "additionalProperties": false,
+      "description": "One entry of Metadata.kpis.",
+      "properties": {
+        "description": {
+          "default": "",
+          "title": "Description",
+          "type": "string"
+        },
+        "kpi": {
+          "title": "Kpi",
+          "type": "string"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kpi",
+        "unit"
+      ],
+      "title": "KpiDescriptor",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Response of GET /metadata (docs/02 section 6).",
+  "properties": {
+    "engine": {
+      "$ref": "#/$defs/Engine"
+    },
+    "horizons_min": {
+      "items": {
+        "type": "integer"
+      },
+      "title": "Horizons Min",
+      "type": "array"
+    },
+    "inputs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Inputs",
+      "type": "array"
+    },
+    "kpis": {
+      "items": {
+        "$ref": "#/$defs/KpiDescriptor"
+      },
+      "title": "Kpis",
+      "type": "array"
+    },
+    "license_notes": {
+      "items": {
+        "type": "string"
+      },
+      "title": "License Notes",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "method_summary": {
+      "minLength": 1,
+      "title": "Method Summary",
+      "type": "string"
+    },
+    "model_id": {
+      "examples": [
+        "M01"
+      ],
+      "pattern": "^M(?:0[1-9]|1\\d|2[0-5])$",
+      "title": "Model Id",
+      "type": "string"
+    },
+    "model_name": {
+      "minLength": 1,
+      "title": "Model Name",
+      "type": "string"
+    },
+    "model_version": {
+      "examples": [
+        "0.1.0"
+      ],
+      "pattern": "^\\d+\\.\\d+\\.\\d+(?:[-+][0-9A-Za-z.\\-]+)?$",
+      "title": "Model Version",
+      "type": "string"
+    },
+    "question": {
+      "description": "The operational question answered",
+      "minLength": 1,
+      "title": "Question",
+      "type": "string"
+    },
+    "scenarios_supported": {
+      "items": {
+        "examples": [
+          "S01"
+        ],
+        "pattern": "^S(?:0[1-9]|1[0-5])$",
+        "type": "string"
+      },
+      "title": "Scenarios Supported",
+      "type": "array"
+    },
+    "upstream": {
+      "items": {
+        "examples": [
+          "M01"
+        ],
+        "pattern": "^M(?:0[1-9]|1\\d|2[0-5])$",
+        "type": "string"
+      },
+      "title": "Upstream",
+      "type": "array"
+    }
+  },
+  "required": [
+    "model_id",
+    "model_name",
+    "model_version",
+    "question",
+    "engine",
+    "method_summary",
+    "kpis"
+  ],
+  "title": "Metadata",
+  "type": "object"
+}

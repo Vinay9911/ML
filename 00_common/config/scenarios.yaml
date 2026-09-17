@@ -1,0 +1,138 @@
+# Scenarios S01-S15 — `overrides` transcribed verbatim from docs/05 §1.1.
+# `affects` / `assertion` transcribed from docs/05 §1.2 (used by tests/test_scenarios.py).
+# Scenarios may be combined in a request; `overrides` are merged left->right.
+scenarios:
+  S01:
+    name: Normal event day
+    overrides: {}
+    affects: []
+    assertion: baseline
+
+  S02:
+    name: 30% more crowd
+    overrides: {footfall_multiplier: 1.3}
+    affects: [M01, M03, M04, M05, M06, M07, M15, M16, M17, M18, M19, M20, M24, M25]
+    assertion: "primary KPI up (M01 total 1.2-1.4x)"
+
+  S03:
+    name: Heavy rain
+    overrides:
+      rain_mm_hr: 50
+      window: ["06:00", "09:00"]
+    affects: [M21, M01, M04, M14, M11, M07]
+    assertion: "waterlogging up; arrivals down; travel_time up"
+
+  S04:
+    name: Extreme heat
+    overrides:
+      temperature_offset_c: 6
+      humidity_pct_min: 60
+    affects: [M21, M07, M15, M19, M03, M12, M25]
+    assertion: "heat_index up; cases up; water up"
+
+  S05:
+    name: Gate closure
+    overrides:
+      closed_gates: [G02]
+    affects: [M01, M02, M03, M11, M24]
+    assertion: "G02 entries 0; Z05/Z04 risk up"
+
+  S06:
+    name: Road closure
+    overrides:
+      closed_links: [R07]
+    affects: [M04, M14, M08, M12]
+    assertion: "alternate travel_time up; emergency availability <= S01"
+
+  S07:
+    name: VIP movement at peak
+    overrides:
+      vip_convoy: {route_id: VIP1, start: "07:00", duration_min: 30}
+    affects: [M13, M04, M09]
+    assertion: "conflict computed; corridor delay up"
+
+  S08:
+    name: Power failure
+    overrides:
+      substations_down: [SS01]
+      window: ["05:30", "08:30"]
+    affects: [M19, M20, M23, M12, M15]
+    assertion: "backup duration finite; availability down; fire risk up"
+
+  S09:
+    name: CCTV failure
+    overrides:
+      camera_outage_share: 0.2
+    affects: [M23, M09, M10]
+    assertion: "camera_availability approx -20%; security_risk up"
+
+  S10:
+    name: Ambulance fleet -20%
+    overrides:
+      resource_availability_multiplier: {ambulance: 0.8}
+    affects: [M08, M24, M25]
+    assertion: "response_time up; coverage down"
+
+  S11:
+    name: Police deployment -10%
+    overrides:
+      resource_availability_multiplier: {police: 0.9}
+    affects: [M09, M24, M25]
+    assertion: "response up; police gap up"
+
+  S12:
+    name: Bridge unavailable
+    overrides:
+      closed_links: [B01]
+    affects: [M04, M14, M11, M03]
+    assertion: "B01 flow 0; Z02/Z06 evacuation_time up"
+
+  S13:
+    name: Food supply disruption
+    overrides:
+      food_lead_time_multiplier: 1.5
+    affects: [M17, M24]
+    assertion: "coverage down"
+
+  S14:
+    name: Mass medical surge
+    overrides:
+      medical_rate_multiplier: 2.0
+    affects: [M07, M08, M24, M25]
+    assertion: "cases approx 2x (+/-5%)"
+
+  S15:
+    name: Evacuation event (fire)
+    overrides:
+      fire_zone: Z03
+      blocked_exits: [E03]
+      start: "07:30"
+    affects: [M11, M03, M07, M12, M22, M24, M25]
+    assertion: "blocked_route_count >= 1; overall risk up"
+
+# Generic adjustment keys understood by twin_common.scenarios.apply_adjustments.
+# A model that cannot honour a key listed for its scenario must return status: degraded
+# with the warning "insensitive to Sxx" (docs/05 §1.2).
+adjustment_keys:
+  multiplicative:
+    - footfall_multiplier
+    - medical_rate_multiplier
+    - food_lead_time_multiplier
+  additive:
+    - temperature_offset_c
+  absolute:
+    - rain_mm_hr
+    - humidity_pct_min
+    - camera_outage_share
+  set_valued:
+    - closed_gates
+    - closed_links
+    - blocked_exits
+    - substations_down
+  mapping:
+    - resource_availability_multiplier
+  structured:
+    - vip_convoy
+    - fire_zone
+    - window
+    - start

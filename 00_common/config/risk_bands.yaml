@@ -1,0 +1,29 @@
+# Risk bands — transcribed verbatim from docs/05 §3.
+# Intervals are [lower, upper); the last band's upper bound is inclusive.
+# Placeholders: set per site with crowd-safety experts before real use.
+#
+# Density rationale (for model cards): crowd-safety literature (Fruin level of service as
+# summarized by G. Keith Still) places flow breakdown around 2-3 persons/m2 and significant
+# crush risk above about 4 persons/m2; Still recommends an alert when anyone is exposed above
+# 4 persons/m2 for more than 6 minutes.
+bands:
+  score_0_100:
+    green: [0, 40]
+    amber: [40, 60]
+    red: [60, 80]
+    critical: [80, 100]
+  crowd_density_p_m2:
+    green: [0, 2.0]
+    amber: [2.0, 4.0]
+    red: [4.0, 5.0]
+    critical: [5.0, 99]
+  probability_pct:
+    green: [0, 20]
+    amber: [20, 40]
+    red: [40, 70]
+    critical: [70, 100]
+  utilization_pct:
+    green: [0, 80]
+    amber: [80, 90]
+    red: [90, 100]
+    critical: [100, 9999]
