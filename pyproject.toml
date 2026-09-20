@@ -46,6 +46,8 @@ ignore = [
 "**/src/run.py" = ["T20"]
 "**/tests/*.py" = ["T20"]
 "00_common/twin_common/synthetic/report.py" = ["T20"]
+# CLI entry points write their summary to stdout on purpose.
+"00_common/twin_common/synthetic/generate.py" = ["T20"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["twin_common"]

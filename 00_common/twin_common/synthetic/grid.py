@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import hashlib
 from dataclasses import dataclass
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, time, timedelta
 from functools import cached_property
 
 import numpy as np
@@ -55,6 +55,12 @@ def parse_ts(value: str | datetime) -> datetime:
     if isinstance(value, datetime):
         return to_ist(value)
     return to_ist(datetime.fromisoformat(value))
+
+
+def _parse_clock(clock: str) -> time:
+    """Parse an "HH:MM" string from config into a naive time."""
+    hour, _, minute = clock.partition(":")
+    return time(int(hour), int(minute or 0))
 
 
 def parse_clock_on(day: date, clock: str) -> datetime:
@@ -233,6 +239,28 @@ def lognormal_noise(
         return np.ones(size)
     raw = rng.lognormal(mean=0.0, sigma=sigma, size=size)
     return raw / np.exp(sigma**2 / 2)
+
+
+def in_window_series(
+    index: pd.DatetimeIndex,
+    window: list[str] | tuple[str, str] | None,
+) -> np.ndarray:
+    """Boolean mask of which timestamps fall inside a scenario ``["HH:MM", "HH:MM"]`` window.
+
+    Used by the S03 rain, S08 power and S09 camera scenarios, which all apply only inside a
+    window. With no window every timestamp is inside, so an override with no window applies
+    all day - the same convention as :func:`twin_common.scenarios.in_window`.
+    """
+    if not window:
+        return np.ones(len(index), dtype=bool)
+    start, end = _parse_clock(str(window[0])), _parse_clock(str(window[1]))
+    minutes = index.hour * 60 + index.minute
+    start_min = start.hour * 60 + start.minute
+    end_min = end.hour * 60 + end.minute
+    if start_min <= end_min:
+        return np.asarray((minutes >= start_min) & (minutes <= end_min))
+    # A window that wraps past midnight is the union of the two ends.
+    return np.asarray((minutes >= start_min) | (minutes <= end_min))
 
 
 def dwell_steps(mean_dwell_min: float, grid_min: int = GRID_MIN) -> float:

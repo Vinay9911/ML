@@ -317,13 +317,47 @@ def test_world_adjacency_only_references_known_zones() -> None:
         assert left in zones and right in zones
 
 
-def test_routing_splits_sum_to_one() -> None:
+#: The movement phases in world.yaml routing. The other keys there (link_width_m,
+#: closure_map) are capacity data, not splits.
+ROUTING_PHASES = ("inbound", "outbound")
+
+
+@pytest.mark.parametrize("phase", ROUTING_PHASES)
+def test_routing_splits_sum_to_one(phase: str) -> None:
     """The compartment model needs each split to be a probability distribution."""
+    table = cfg.world()["routing"][phase]
+    for zone, spec in table.items():
+        total = sum(spec["to"].values())
+        assert total == pytest.approx(1.0), f"routing.{phase}.{zone} sums to {total}, not 1"
+
+
+def test_every_routed_link_has_a_width() -> None:
+    """A routed zone-to-zone link with no width would make its capacity un-configurable."""
     routing = cfg.world()["routing"]
-    for phase, table in routing.items():
-        for zone, spec in table.items():
-            total = sum(spec["to"].values())
-            assert total == pytest.approx(1.0), f"routing.{phase}.{zone} sums to {total}, not 1"
+    widths = set(routing["link_width_m"])
+    exits = set(cfg.world()["exits"])
+    missing: list[str] = []
+    for phase in ROUTING_PHASES:
+        for source, spec in routing[phase].items():
+            for target in spec["to"]:
+                if target in exits:
+                    continue  # exits carry their own width
+                key = f"{source}>{target}"
+                if key not in widths:
+                    missing.append(key)
+    assert not missing, f"routing links with no link_width_m entry: {missing}"
+
+
+def test_closure_map_targets_are_real_links() -> None:
+    routing = cfg.world()["routing"]
+    widths = set(routing["link_width_m"])
+    exits = set(cfg.world()["exits"])
+    for closed, links in (routing.get("closure_map") or {}).items():
+        for link in links:
+            _source, _, target = link.partition(">")
+            assert link in widths or target in exits, (
+                f"closure_map[{closed}] names {link!r}, which is not a routed link"
+            )
 
 
 # ------------------------------------------------------------------------- paths

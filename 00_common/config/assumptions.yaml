@@ -31,14 +31,13 @@ crowd:
     G02: {G03: 0.7, G01: 0.3}
   # CHANGED from the docs/04 section 6 placeholder of 60. See plans/PHASE_2.md decision D3.
   # 60 persons/min is one turnstile: at the project's own exit_specific_flow of 1.3 p/m/s it
-  # implies a gate 0.8 m wide. The four gates together would then pass 3,600 people per
-  # 15-min step against a snan-day peak demand of 14,579 - a 4x shortfall that capped
-  # arrivals at 92 percent, held the ghats below the amber band and compressed the S02/S01
-  # ratio to 1.22. A sector gate is a multi-lane entry, so this is derived from the same
-  # physics as every other flow in the project:
+  # implies a gate 0.8 m wide. Four such gates pass 3,600 people per 15-min step against a
+  # snan-day peak of 10,206 - a 2.8x shortfall that capped arrivals at 92 percent, held the
+  # ghats below the amber band and compressed the S02/S01 ratio to 1.22. A sector gate is a
+  # multi-lane entry, so this is derived from the same physics as every other flow here:
   #     1.3 p/m/s * 19.2 m * 60 s = 1500 persons/min
-  # The binding constraint then moves to the ghat approach links (Z03>Z01 is 9 m wide),
-  # which is where a crowd-safety bottleneck physically belongs.
+  # This value is only the DEFAULT. Each gate carries its own `throughput_p_min` in
+  # world.yaml, because the gates differ in width and that difference is what drives S05.
   # PLACEHOLDER: replace with the measured clear width and lane count of each real gate.
   gate_throughput_p_min: 1500
   mean_dwell_min: {ghat: 45, corridor: 12, holding: 25, bridge: 6, market: 40, hub: 20}
@@ -79,6 +78,11 @@ water:
 
 sanitation:
   uses_per_person_per_hour_present: 0.2
+  # A low-lying toilet cluster loses most of its units once rain exceeds this intensity.
+  # Driven off the weather series, so a wet day in the real Open-Meteo history affects
+  # sanitation as well as the S03 override. PLACEHOLDERS (added by this implementation).
+  flood_rain_mm_hr: 10.0
+  flooded_unit_share: 0.4
   users_per_toilet_per_hour: 12
   uses_per_cleaning: 50
   cleaning_minutes: 8
@@ -132,6 +136,44 @@ network:
   active_user_share: 0.3
   kbps_per_active_user: 50
   tower_capacity_mbps: {NT01: 2000, NT02: 2000, NT03: 1000}
+
+# Asset telemetry and failure rules (added by this implementation). The event assets are
+# given AI4I 2020 feature semantics so M23 can train on the real dataset and score synthetic
+# equipment; the thresholds mirror the published AI4I failure-mode rules, rescaled to the
+# nominal duty of event equipment rather than a milling machine. ALL PLACEHOLDERS - documented
+# in the M23 model card as a stand-in, to be replaced by real CMMS and IoT telemetry.
+asset_failure:
+  process_temp_rise_k: 12.0          # how far process temperature sits above ambient at full load
+  nominal_speed_rpm: 1500.0          # a 50 Hz genset / pump motor
+  speed_load_sensitivity: 0.12       # speed rises as load falls
+  nominal_torque_nm: 45.0
+  torque_noise_frac: 0.09        # torque noise as a fraction of the operating point
+  wear_min_per_hour: 60.0            # one hour of running is one hour of wear
+  running_load_threshold: 0.15       # below this the asset is idle and cannot 'fail'
+  wear_failure_min: 14400.0          # TWF: 240 running hours
+  heat_dissipation_min_diff_k: 8.6   # HDF: AI4I uses 8.6 K
+  heat_dissipation_speed_rpm: 1380.0 # HDF: AI4I uses 1380 rpm
+  # PWF: AI4I uses an absolute 3500-9000 W band, which only makes sense for its one
+  # machine. Event assets run at 0.35-1.0 duty and would sit outside that band permanently
+  # (network towers failed 89 percent of hours). The equivalent rule for heterogeneous
+  # equipment is a deviation from the asset's OWN expected power at its current duty.
+  power_tolerance: 0.20              # +/- 20 percent, about 2 sigma of the torque noise
+  overstrain_min_nm: 480000.0        # OSF: wear x torque limit
+  random_failure_rate_per_hour: 0.0002
+
+# Weather response coefficients (added by this implementation; the docs/03 M21 card names
+# these constants as "k" params without giving values). Shared by the synthetic generator
+# and by M21, so the generated world and the model cannot disagree. ALL PLACEHOLDERS.
+weather_response:
+  # Rain intensity at which the rain effects saturate.
+  rain_cap_mm_hr: 20.0
+  # arrival = 1 - k_rain_arrival * min(rain, cap)/cap  -> heavy rain cuts arrivals by 45%.
+  k_rain_arrival: 0.45
+  # traffic speed = 1 - k_rain_speed * min(rain, cap)/cap -> heavy rain cuts speed by 30%.
+  k_rain_speed: 0.30
+  # waterlogging_probability = 100 * sigmoid(k*(rain - drainage) + bonus*low_lying)
+  waterlogging_k: 0.12
+  waterlogging_low_lying_bonus: 1.1
 
 environment:
   vehicle_ef_kgco2_per_km: 0.2

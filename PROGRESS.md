@@ -7,7 +7,7 @@ Update at the end of every phase and every model. Status: ⬜ not started · �
 |---|---|---|---|---|
 | 0 | Bootstrap | ✅ | chore: bootstrap repository | Python 3.11.16 via uv-managed CPython; ruff+pytest green |
 | 1 | twin_common core | ✅ | feat(common): contracts, config, io, api factory | 423 tests; 93 KPIs asserted; graph acyclic; schemas exported |
-| 2 | Synthetic world + fetchers | ⬜ | | |
+| 2 | Synthetic world + fetchers | ✅ | feat(common): synthetic world generator | 6 scenarios, 123-126 checks each, ~3s; 569 tests; offline OK |
 | 3 | Template, tooling, M21 | ⬜ | | |
 | 4 | Forecast engine + 9 models | ⬜ | | |
 | 5 | Formula/rules/ML + 5 models | ⬜ | | |

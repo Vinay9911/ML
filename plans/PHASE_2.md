@@ -1,6 +1,6 @@
 # Phase 2 — Synthetic world generator + real data fetchers
 
-Status: in progress.
+Status: implemented.
 
 ## Goal
 One consistent, scenario-aware world under `00_common/data/world/<Sxx>/`, so that every model reads the
@@ -99,9 +99,39 @@ attribution (docs/06 section 3) — recorded in the manifest and the report.
 - sanity report written; peak-day ghat density reaches amber in S01
 - deterministic: two runs, same seed -> identical file hashes (manifest timestamps excepted)
 
-## 8. Open questions
+## 8. Decisions taken where the docs needed resolving
+All five are recorded in the config files next to the value they changed, and all are reversible.
+
+**D3 - `gate_throughput_p_min` 60 -> per-gate widths.** 60 persons/min is one turnstile: at the
+project's own `exit_specific_flow_p_per_m_s` of 1.3 it implies a gate 0.8 m wide. Four such gates pass
+3,600 people per 15-min step against a snan peak of 10,206, so arrivals were capped at 92 percent, the
+ghats never reached amber and the S02/S01 ratio was squeezed to 1.22. Gates now carry individual widths
+in `world.yaml`: G01 1500, G02 900, G03 250, G04 600 persons/min.
+
+**D4 - added `max_holding_density_p_m2` (jam density).** The compartment model had no back-pressure, so
+a sealed zone filled without limit: S12 drove Z06 to 302 persons/m2 against the docs/04 section 8 sanity
+limit of 9. Inflow is now capped by the space the receiving zone actually has, allocated to a fixed
+point so a zone cannot accept people it will not be able to shed.
+
+**D5 - `snan_day_multiplier` 4.0 -> 2.8.** The two docs/04 placeholder sets are mutually inconsistent.
+The section 2.1 zone areas give the ghats 41,067 persons/hour of safe throughput; 120000 x 4.0 shaped by
+`hourly_profile_snan` demands 58,318, which is 1.42x over. No link width fixes that - widening the ghat
+approach puts the ghats at 5.9 p/m2 (sustained critical), narrowing it moves the jam into the Z03 temple
+corridor, which is worse. At 2.8 the world reproduces the docs/01 section 5 demo story exactly: Ghat A is
+3.96 p/m2 (amber) at demo_now 06:00 and 4.15 (red) by 06:45.
+
+**D6 - zone link widths and a `closure_map` added to `world.yaml` routing.** Pedestrian capacities had
+no config home, and a closed link ID like B01 had no defined effect on pedestrian movement. Both now live
+in config, so no capacity is hard-coded in `src/`.
+
+**D7 - corridor zones are generated portrait.** The docs/04 section 2.1 adjacency chain runs north-south;
+generating corridors landscape pointed every camera across a 19 m strip and collapsed coverage to 3.8
+percent in Z06. Coverage is now 42-78 percent per zone.
+
+## 9. Open questions
 1. `venue_center` is still the docs/04 default (Ramkund, Nashik 20.0063 / 73.7926), `verified_on_map: false`.
    Supply real coordinates or a `00_common/config/zones.geojson` to replace the schematic layout.
-2. Open-Meteo is fetched once for `weather_source_year: 2025` and shifted to 2027. If the network is
-   unavailable on the first run the world is still generated, but from the synthetic weather model, and
-   every weather row is then flagged `is_synthetic=True`.
+2. Every value changed under D3-D5 is a placeholder that a police / medical / event-safety reviewer should
+   confirm. The gate widths and the snan multiplier are the two that most change the demo.
+3. `osmnx` is not installed, so `real/roads.py` currently serves the synthetic grid fallback. Install the
+   `network` extra before Phase 7 to fetch the real OSM graph.
