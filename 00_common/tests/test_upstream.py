@@ -122,8 +122,13 @@ def test_stub_is_the_last_resort_and_warns(tmp_path: Path) -> None:
 
 
 def test_no_source_at_all_raises_with_guidance(tmp_path: Path) -> None:
+    """With stubs disabled there is genuinely nothing left, and the error must say so.
+
+    The stub provider installs itself on first use, so a plain call can always fall back to
+    step 5; `allow_stub=False` is what removes the last resort.
+    """
     with pytest.raises(UpstreamError, match="UPSTREAM_M01_URL"):
-        resolve_one("M01", as_of=AS_OF, sample_dir=tmp_path)
+        resolve_one("M01", as_of=AS_OF, sample_dir=tmp_path, allow_stub=False)
 
 
 def test_allow_stub_false_skips_the_stub(tmp_path: Path) -> None:

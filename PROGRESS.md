@@ -9,7 +9,7 @@ Update at the end of every phase and every model. Status: ⬜ not started · �
 | 1 | twin_common core | ✅ | feat(common): contracts, config, io, api factory | 423 tests; 93 KPIs asserted; graph acyclic; schemas exported |
 | 2 | Synthetic world + fetchers | ✅ | feat(common): synthetic world generator | 6 scenarios, 123-126 checks each, ~3s; 569 tests; offline OK |
 | 3 | Template, tooling, M21 | ✅ | feat(M21): weather impact + model template tooling | 11/11 DoD; validate_all 21 checks |
-| 4 | Forecast engine + 9 models | ⬜ | | |
+| 4 | Forecast engine + 9 models | 🟨 | | engine + M01 done; M05 M06 M15 M17 M18 M19 M20 M22 to go |
 | 5 | Formula/rules/ML + 5 models | ⬜ | | |
 | 6 | Vision + 2 models | ⬜ | | |
 | 7 | Network/optimization + 6 models | ⬜ | | |
@@ -19,7 +19,7 @@ Update at the end of every phase and every model. Status: ⬜ not started · �
 ## Models
 | ID | Folder | Engine | Phase | Status | Tests | Reviewer | Notes |
 |---|---|---|---|---|---|---|---|
-| M01 | M01_footfall_forecast | forecast | 4 | ⬜ | | | |
+| M01 | M01_footfall_forecast | forecast | 4 | ✅ | 42 pass | self | chronos2 beats naive (MAE 195 vs 310); coverage 62% is under-dispersed |
 | M02 | M02_crowd_density_flow | vision | 6 | ⬜ | | | |
 | M03 | M03_hotspot_risk | rules | 5 | ⬜ | | | |
 | M04 | M04_traffic_forecast | network | 7 | ⬜ | | | |

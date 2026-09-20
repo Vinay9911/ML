@@ -434,6 +434,39 @@ TABLE_SCHEMAS: dict[str, TableSchema] = {
         time_column=None,
         used_by=(),
     ),
+    # --- written by the crowd model; not numbered in docs/04 section 4, but M01 needs the
+    # --- per-gate series ("one series per zone and per gate", docs/03 M01) and M11 needs
+    # --- the per-exit discharge.
+    "gate_entries": _t(
+        "gate_entries",
+        "-",
+        "gate x 15 min",
+        {
+            "timestamp": "timestamp",
+            "gate_id": "str",
+            "zone_id": "str",
+            "entries": "float",
+            "demand": "float",
+            "queue_persons": "float",
+            "capacity_p_min": "float",
+            "closed": "bool",
+        },
+        used_by=("M01", "M02", "M09"),
+    ),
+    "exit_flows": _t(
+        "exit_flows",
+        "-",
+        "exit x 15 min",
+        {
+            "timestamp": "timestamp",
+            "exit_id": "str",
+            "zone_id": "str",
+            "outflow": "float",
+            "capacity_p_min": "float",
+            "blocked": "bool",
+        },
+        used_by=("M11",),
+    ),
     # --- registries written by the layout step, not numbered in docs/04 section 4 ---
     "assets": _t(
         "assets",

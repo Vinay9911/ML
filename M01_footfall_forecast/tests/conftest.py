@@ -1,4 +1,4 @@
-"""Shared fixtures for the {{MODEL_ID}} tests."""
+"""Shared fixtures for the M01 tests."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-MODEL_ID = "{{MODEL_ID}}"
+MODEL_ID = "M01"
 FOLDER = Path(__file__).resolve().parent.parent
 
 
@@ -48,13 +48,13 @@ def model_class() -> type:
 
 
 @pytest.fixture(scope="session")
-def model(model_class: type):  # noqa: ANN201 - the concrete Model of this folder
+def model(model_class: type):
     """The model, loaded once from this folder's config.yaml."""
     return model_class.from_folder(FOLDER)
 
 
 @pytest.fixture(scope="session")
-def app(model_class: type):  # noqa: ANN201 - FastAPI app
+def app(model_class: type):
     from twin_common.api import create_app
 
     return create_app(model_class, root=FOLDER)

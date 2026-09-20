@@ -207,7 +207,17 @@ def resolve_one(
                 ),
             )
 
-    # 5 - stub
+    # 5 - stub. The default provider installs itself on first use, so no caller has to
+    # remember to wire it up; docs/02 section 7 makes the stub the guaranteed last resort,
+    # and a model that forgot to install it would fail instead of degrading.
+    if allow_stub and _STUB_PROVIDER is None:
+        try:
+            from ..synthetic.stubs import install as install_default_stubs
+
+            install_default_stubs()
+        except Exception as exc:  # a missing world is not a reason to crash here
+            log.debug("default stub provider unavailable: %s", exc)
+
     if allow_stub and _STUB_PROVIDER is not None:
         output = _STUB_PROVIDER(
             model_id, as_of=as_of, scenario_id=scenario_id, entity_ids=entity_ids

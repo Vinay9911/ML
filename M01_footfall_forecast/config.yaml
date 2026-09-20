@@ -1,0 +1,73 @@
+# M01 - Footfall Forecast
+#
+# The reference model for the forecast engine. The standard keys are fixed by docs/02
+# section 8; `params` is M01's. EVERY number this model uses is here or in 00_common/config.
+model_id: M01
+model_name: Footfall Forecast
+model_version: 0.1.0
+port: 8001
+engine: forecast
+
+data_source: synthetic
+seed: 42
+demo_now: "2027-08-02T06:00:00+05:30"
+
+# docs/03 M01: default horizon 180 min (12 steps on the 15-min grid), configurable to 24 h.
+horizons_min: [15, 60, 180]
+default_horizon_min: 180
+
+# M21 supplies the rain and heat multipliers; optional, reported in details.
+upstream: [M21]
+
+inputs: [footfall_15min, gate_entries, event_calendar, weather_hourly, zones]
+
+kpis: [expected_footfall, peak_footfall]
+
+# docs/05 section 1.2 lists M01 under S02, S03 and S05.
+#
+# docs/03 M01 also mentions "S04 slight down midday". That is not reachable here: the
+# arrival multiplier in docs/03 M21 is a function of RAIN only
+# (1 - k_rain_arrival * min(rain, cap)/cap), so extreme heat changes nothing M01 reads.
+# Claiming S04 support would mean returning a baseline while pretending otherwise, so M01
+# declares itself insensitive and returns the documented degraded response instead. See the
+# model card. Add a heat term to the M21 arrival multiplier to change this.
+scenarios_supported: [S01, S02, S03, S05]
+
+upstream_timeout_s: 5
+
+# ---------------------------------------------------------------- model parameters
+params:
+  # --- the forecast engine ---------------------------------------------------
+  # Read by twin_common.engines.forecast.ForecastEngine.from_config.
+  forecast:
+    # chronos2 | lightgbm | naive. Chronos-2 is the docs/06 default because it is the only
+    # foundation backend that takes covariates.
+    backend: chronos2
+    # The small hub model, because everything must run on CPU (docs/06 sections 2 and 3).
+    # amazon/chronos-2 (120M) is the larger alternative.
+    hub_model_name: autogluon/chronos-2-small
+    # 0.1 / 0.5 / 0.9 -> lower / value / upper, quantile_level 0.8 (docs/02 section 4).
+    quantiles: [0.1, 0.5, 0.9]
+    # One day of context on the 15-min grid.
+    input_chunk_length: 96
+    lightgbm_lags: 96
+    seasonality: 96
+    # Four weeks of history; docs/06 section 3 asks for at least two.
+    max_context_steps: 2688
+    # Fall back through lightgbm to naive rather than failing the request.
+    allow_fallback: true
+
+  # --- backtest (docs/03 M01: rolling origin over the last 7 synthetic days) --
+  backtest:
+    horizon_steps: 12
+    folds: 7
+    stride_steps: 96
+
+  # --- reporting -------------------------------------------------------------
+  # 15-min counts to persons/hr (docs/03 M01).
+  steps_per_hour: 4
+  # Confidence reported on each record. Heuristic, not calibrated - see the model card.
+  confidence: 0.6
+  # A forecast below this many persons/hr is reported as zero rather than as a small
+  # negative number: a count cannot be negative, and the quantile bands can dip below zero.
+  floor_persons_hr: 0.0

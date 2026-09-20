@@ -61,7 +61,7 @@ minversion = "8.0"
 # "prepend" mode makes them collide on the module name tests.conftest.
 addopts = "-ra --strict-markers --import-mode=importlib"
 consider_namespace_packages = true
-testpaths = ["00_common/tests", "M21_weather_impact/tests"]
+testpaths = ["00_common/tests", "M01_footfall_forecast/tests", "M21_weather_impact/tests"]
 markers = [
     "slow: takes more than ~10s (excluded from the fast loop)",
     "network: needs internet; skipped when TWIN_OFFLINE=1",
