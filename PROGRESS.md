@@ -8,7 +8,7 @@ Update at the end of every phase and every model. Status: ⬜ not started · �
 | 0 | Bootstrap | ✅ | chore: bootstrap repository | Python 3.11.16 via uv-managed CPython; ruff+pytest green |
 | 1 | twin_common core | ✅ | feat(common): contracts, config, io, api factory | 423 tests; 93 KPIs asserted; graph acyclic; schemas exported |
 | 2 | Synthetic world + fetchers | ✅ | feat(common): synthetic world generator | 6 scenarios, 123-126 checks each, ~3s; 569 tests; offline OK |
-| 3 | Template, tooling, M21 | ⬜ | | |
+| 3 | Template, tooling, M21 | ✅ | feat(M21): weather impact + model template tooling | 11/11 DoD; validate_all 21 checks |
 | 4 | Forecast engine + 9 models | ⬜ | | |
 | 5 | Formula/rules/ML + 5 models | ⬜ | | |
 | 6 | Vision + 2 models | ⬜ | | |
@@ -39,7 +39,7 @@ Update at the end of every phase and every model. Status: ⬜ not started · �
 | M18 | M18_waste_forecast | forecast | 4 | ⬜ | | | |
 | M19 | M19_power_load | forecast | 4 | ⬜ | | | |
 | M20 | M20_network_capacity | forecast | 4 | ⬜ | | | |
-| M21 | M21_weather_impact | formula | 3 | ⬜ | | | |
+| M21 | M21_weather_impact | formula | 3 | ✅ | 52 pass | self | 11/11 DoD; NOAA heat index verified vs 15 NWS chart cells |
 | M22 | M22_environmental_risk | forecast | 4 | ⬜ | | | |
 | M23 | M23_asset_failure | mlclf | 5 | ⬜ | | | |
 | M24 | M24_resource_requirement | optimize | 7 | ⬜ | | | |

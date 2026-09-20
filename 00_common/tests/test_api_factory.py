@@ -17,8 +17,6 @@ from twin_common.testing import (
     assert_valid_output,
 )
 
-from .conftest import DummyModel
-
 
 @pytest.fixture
 def client(dummy_app) -> TestClient:
@@ -108,7 +106,7 @@ def test_predict_ignores_kpis_the_model_does_not_own(client: TestClient) -> None
     assert output.kpis_present() == {"heat_index"}
 
 
-def test_predict_is_deterministic(dummy_model: DummyModel) -> None:
+def test_predict_is_deterministic(dummy_model) -> None:
     """docs/02 section 9 item 3."""
     from twin_common.contracts import PredictRequest
 
@@ -195,14 +193,16 @@ def test_unknown_scenario_is_a_404(client: TestClient) -> None:
     assert client.post("/scenario", json={"scenario_id": "S99"}).status_code == 422
 
 
-def test_unknown_scenario_id_raises_404_from_the_handler(dummy_folder: Path) -> None:
+def test_unknown_scenario_id_raises_404_from_the_handler(
+    dummy_folder: Path, dummy_model_class
+) -> None:
     """Bypass the pattern check to prove the UnknownScenarioError handler maps to 404."""
     from fastapi import FastAPI
 
     from twin_common.api import create_app
     from twin_common.errors import UnknownScenarioError
 
-    app: FastAPI = create_app(DummyModel, root=dummy_folder)
+    app: FastAPI = create_app(dummy_model_class, root=dummy_folder)
 
     @app.get("/x/boom")
     def boom() -> None:
@@ -214,11 +214,13 @@ def test_unknown_scenario_id_raises_404_from_the_handler(dummy_folder: Path) -> 
         assert response.json()["status"] == "error"
 
 
-def test_internal_failures_become_a_500_error_envelope(dummy_folder: Path) -> None:
+def test_internal_failures_become_a_500_error_envelope(
+    dummy_folder: Path, dummy_model_class
+) -> None:
     from twin_common.api import create_app
     from twin_common.errors import TwinError
 
-    app = create_app(DummyModel, root=dummy_folder)
+    app = create_app(dummy_model_class, root=dummy_folder)
 
     @app.get("/x/fail")
     def fail() -> None:
@@ -230,11 +232,11 @@ def test_internal_failures_become_a_500_error_envelope(dummy_folder: Path) -> No
         assert response.json() == {"status": "error", "detail": "engine exploded"}
 
 
-def test_live_data_source_surfaces_as_501(dummy_folder: Path) -> None:
+def test_live_data_source_surfaces_as_501(dummy_folder: Path, dummy_model_class) -> None:
     """docs/02 section 8: live must be an explicit NotImplementedError, never faked."""
     from twin_common.api import create_app
 
-    app = create_app(DummyModel, root=dummy_folder)
+    app = create_app(dummy_model_class, root=dummy_folder)
 
     @app.get("/x/live")
     def live() -> None:
@@ -271,14 +273,14 @@ def test_openapi_schema_is_generated(client: TestClient) -> None:
         assert path in schema["paths"], f"{path} missing from the OpenAPI schema"
 
 
-def test_model_id_mismatch_between_class_and_config_fails_fast(tmp_path: Path) -> None:
+def test_model_id_mismatch_between_class_and_config_fails_fast(
+    tmp_path: Path, dummy_model_class, dummy_config
+) -> None:
     import yaml
 
     from twin_common.errors import ConfigError
 
-    from .conftest import DUMMY_CONFIG
-
-    payload = {**DUMMY_CONFIG, "model_id": "M07"}
+    payload = {**dummy_config, "model_id": "M07"}
     (tmp_path / "config.yaml").write_text(yaml.safe_dump(payload), encoding="utf-8")
     with pytest.raises(ConfigError, match="model_id is 'M07'"):
-        DummyModel.from_folder(tmp_path)
+        dummy_model_class.from_folder(tmp_path)

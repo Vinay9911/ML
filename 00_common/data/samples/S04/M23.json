@@ -1,0 +1,1060 @@
+{
+  "schema_version": "1.0",
+  "model_id": "M23",
+  "model_name": "Asset Failure (stub)",
+  "model_version": "0.0.0",
+  "run_id": "89a2bce9-8ba0-4b98-83b5-218a35f6c724",
+  "generated_at": "2026-09-20T19:04:45.981034+05:30",
+  "as_of": "2027-08-02T06:00:00+05:30",
+  "scenario_id": "S04",
+  "scenario_overrides": {},
+  "data_source": "synthetic",
+  "is_synthetic": true,
+  "status": "degraded",
+  "warnings": [
+    "stub output generated from the synthetic world; not a model result"
+  ],
+  "upstream": [],
+  "results": [
+    {
+      "entity_type": "zone",
+      "entity_id": "Z01",
+      "zone_id": "Z01",
+      "kpi": "cctv_coverage",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 43.24,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "red",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z02",
+      "zone_id": "Z02",
+      "kpi": "cctv_coverage",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 32.16,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "red",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z03",
+      "zone_id": "Z03",
+      "kpi": "cctv_coverage",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 26.593,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z04",
+      "zone_id": "Z04",
+      "kpi": "cctv_coverage",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 26.195,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z05",
+      "zone_id": "Z05",
+      "kpi": "cctv_coverage",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 33.887,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "red",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z06",
+      "zone_id": "Z06",
+      "kpi": "cctv_coverage",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 11.689,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z07",
+      "zone_id": "Z07",
+      "kpi": "cctv_coverage",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 19.586,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z08",
+      "zone_id": "Z08",
+      "kpi": "cctv_coverage",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 14.888,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z01",
+      "zone_id": "Z01",
+      "kpi": "camera_availability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 43.24,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "red",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z02",
+      "zone_id": "Z02",
+      "kpi": "camera_availability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 32.16,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "red",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z03",
+      "zone_id": "Z03",
+      "kpi": "camera_availability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 26.593,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z04",
+      "zone_id": "Z04",
+      "kpi": "camera_availability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 26.195,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z05",
+      "zone_id": "Z05",
+      "kpi": "camera_availability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 33.887,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "red",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z06",
+      "zone_id": "Z06",
+      "kpi": "camera_availability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 11.689,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z07",
+      "zone_id": "Z07",
+      "kpi": "camera_availability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 19.586,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z08",
+      "zone_id": "Z08",
+      "kpi": "camera_availability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 14.888,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z01",
+      "zone_id": "Z01",
+      "kpi": "asset_capacity_utilization",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 43.24,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "green",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z02",
+      "zone_id": "Z02",
+      "kpi": "asset_capacity_utilization",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 32.16,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "green",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z03",
+      "zone_id": "Z03",
+      "kpi": "asset_capacity_utilization",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 26.593,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "green",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z04",
+      "zone_id": "Z04",
+      "kpi": "asset_capacity_utilization",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 26.195,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "green",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z05",
+      "zone_id": "Z05",
+      "kpi": "asset_capacity_utilization",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 33.887,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "green",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z06",
+      "zone_id": "Z06",
+      "kpi": "asset_capacity_utilization",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 11.689,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "green",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z07",
+      "zone_id": "Z07",
+      "kpi": "asset_capacity_utilization",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 19.586,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "green",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z08",
+      "zone_id": "Z08",
+      "kpi": "asset_capacity_utilization",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 14.888,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "green",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z01",
+      "zone_id": "Z01",
+      "kpi": "asset_availability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 43.24,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "red",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z02",
+      "zone_id": "Z02",
+      "kpi": "asset_availability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 32.16,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "red",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z03",
+      "zone_id": "Z03",
+      "kpi": "asset_availability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 26.593,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z04",
+      "zone_id": "Z04",
+      "kpi": "asset_availability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 26.195,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z05",
+      "zone_id": "Z05",
+      "kpi": "asset_availability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 33.887,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "red",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z06",
+      "zone_id": "Z06",
+      "kpi": "asset_availability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 11.689,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z07",
+      "zone_id": "Z07",
+      "kpi": "asset_availability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 19.586,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z08",
+      "zone_id": "Z08",
+      "kpi": "asset_availability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 14.888,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z01",
+      "zone_id": "Z01",
+      "kpi": "asset_failure_probability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 43.24,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "red",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z02",
+      "zone_id": "Z02",
+      "kpi": "asset_failure_probability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 32.16,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "amber",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z03",
+      "zone_id": "Z03",
+      "kpi": "asset_failure_probability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 26.593,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "amber",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z04",
+      "zone_id": "Z04",
+      "kpi": "asset_failure_probability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 26.195,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "amber",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z05",
+      "zone_id": "Z05",
+      "kpi": "asset_failure_probability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 33.887,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "amber",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z06",
+      "zone_id": "Z06",
+      "kpi": "asset_failure_probability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 11.689,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "green",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z07",
+      "zone_id": "Z07",
+      "kpi": "asset_failure_probability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 19.586,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "green",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z08",
+      "zone_id": "Z08",
+      "kpi": "asset_failure_probability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 14.888,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "green",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    }
+  ]
+}

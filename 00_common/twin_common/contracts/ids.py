@@ -1,4 +1,4 @@
-"""Entity-ID patterns from docs/02 section 3, plus model and scenario ID patterns.
+r"""Entity-ID patterns from docs/02 section 3, plus model and scenario ID patterns.
 
 Each entity_type owns a regex. `validate_entity_id` checks an ID against the type it was
 declared as; it never guesses the type, because some patterns overlap on purpose

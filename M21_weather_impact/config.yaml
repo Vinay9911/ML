@@ -1,0 +1,85 @@
+# M21 - Weather Impact
+#
+# The standard keys are fixed by docs/02 section 8 and are read by twin_common; `params` is
+# M21's. EVERY number this model uses is here or in 00_common/config - CLAUDE.md forbids
+# thresholds, rates and weights in src/.
+model_id: M21
+model_name: Weather Impact
+model_version: 0.1.0
+port: 8021
+engine: formula
+
+# synthetic | replay | live. `live` raises NotImplementedError through twin_common.io
+# rather than fabricating data (docs/02 section 8).
+data_source: synthetic
+
+# All randomness derives from this (CLAUDE.md). M21 is deterministic - it replays a stored
+# series - so the seed only matters if a future version adds forecast sampling.
+seed: 42
+
+# The instant an empty /predict answers for.
+demo_now: "2027-08-02T06:00:00+05:30"
+
+horizons_min: [15, 60, 180]
+default_horizon_min: 180
+
+# M21 is the root of the dependency graph.
+upstream: []
+
+inputs: [weather_hourly, zones]
+
+kpis:
+  - temperature
+  - heat_index
+  - rainfall_intensity
+  - waterlogging_probability
+  - weather_arrival_multiplier
+  - weather_medical_multiplier
+  - weather_traffic_speed_multiplier
+
+# S03 heavy rain and S04 extreme heat are the two M21 must react to (docs/05 section 1.2).
+# Every other scenario returns the baseline with status: degraded.
+scenarios_supported: [S01, S03, S04]
+
+upstream_timeout_s: 5
+
+# ---------------------------------------------------------------- model parameters
+# ALL PLACEHOLDERS. The five response coefficients mirror
+# 00_common/config/assumptions.yaml -> weather_response, so the model and the synthetic
+# generator compute the same multipliers; a test asserts they have not drifted apart.
+params:
+  # --- rain response ---------------------------------------------------------
+  # Rain intensity at which the rain effects saturate.
+  rain_cap_mm_hr: 20.0
+  # arrival = 1 - k_rain_arrival * min(rain, cap)/cap
+  k_rain_arrival: 0.45
+  # traffic speed = 1 - k_rain_speed * min(rain, cap)/cap
+  k_rain_speed: 0.30
+
+  # --- heat response ---------------------------------------------------------
+  # medical = 1 + k_heat_medical * max(0, heat_index - hi_threshold_c).
+  # Mirrors assumptions.medical.heat_rate_increase_per_c and heat_index_threshold_c, which
+  # is what M07 uses, so the two models agree on when heat starts to matter.
+  k_heat_medical: 0.04
+  hi_threshold_c: 32.0
+
+  # --- waterlogging ----------------------------------------------------------
+  # probability = 100 * sigmoid(k * (rain - drainage) + bonus * low_lying + offset)
+  # The offset sets the dry-weather baseline: with no rain a well-drained zone sits near
+  # 2 percent rather than 50 percent, which is what a bare sigmoid would give at z = 0.
+  waterlogging_k: 0.12
+  waterlogging_low_lying_bonus: 1.1
+  waterlogging_offset: -3.9
+
+  # --- reason-code thresholds ------------------------------------------------
+  # Rainfall at which HEAVY_RAIN is raised.
+  heavy_rain_mm_hr: 10.0
+  # Humidity at or below which hot weather is flagged HEAT_DRY rather than HEAT_STRESS only.
+  dry_humidity_pct: 35.0
+  # Waterlogging probability at which WATERLOGGING is raised on a zone.
+  waterlogging_alert_pct: 20.0
+
+  # --- reporting -------------------------------------------------------------
+  # Fixed confidence: this is a replay of observed weather, not a forecast, so there is no
+  # sampled uncertainty to report. Flagged as heuristic in the model card.
+  confidence: 0.8

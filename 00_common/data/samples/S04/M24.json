@@ -1,0 +1,216 @@
+{
+  "schema_version": "1.0",
+  "model_id": "M24",
+  "model_name": "Resource Requirement (stub)",
+  "model_version": "0.0.0",
+  "run_id": "db1031c2-4f51-43ba-af6a-4196c7248310",
+  "generated_at": "2026-09-20T19:04:46.591738+05:30",
+  "as_of": "2027-08-02T06:00:00+05:30",
+  "scenario_id": "S04",
+  "scenario_overrides": {},
+  "data_source": "synthetic",
+  "is_synthetic": true,
+  "status": "degraded",
+  "warnings": [
+    "stub output generated from the synthetic world; not a model result"
+  ],
+  "upstream": [],
+  "results": [
+    {
+      "entity_type": "resource_pool",
+      "entity_id": "police",
+      "zone_id": null,
+      "kpi": "resource_requirement",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 1.0,
+      "unit": "units",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": null,
+      "reason_codes": [],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "resource_pool",
+      "entity_id": "ambulance",
+      "zone_id": null,
+      "kpi": "resource_requirement",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 1.0,
+      "unit": "units",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": null,
+      "reason_codes": [],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "resource_pool",
+      "entity_id": "police",
+      "zone_id": null,
+      "kpi": "resource_gap",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 1.0,
+      "unit": "units",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": null,
+      "reason_codes": [],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "resource_pool",
+      "entity_id": "ambulance",
+      "zone_id": null,
+      "kpi": "resource_gap",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 1.0,
+      "unit": "units",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": null,
+      "reason_codes": [],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "resource_pool",
+      "entity_id": "police",
+      "zone_id": null,
+      "kpi": "resource_coverage",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 11.0,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "resource_pool",
+      "entity_id": "ambulance",
+      "zone_id": null,
+      "kpi": "resource_coverage",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 11.0,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "resource_pool",
+      "entity_id": "police",
+      "zone_id": null,
+      "kpi": "response_capacity",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 1.0,
+      "unit": "teams",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": null,
+      "reason_codes": [],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "resource_pool",
+      "entity_id": "ambulance",
+      "zone_id": null,
+      "kpi": "response_capacity",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 1.0,
+      "unit": "teams",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": null,
+      "reason_codes": [],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    }
+  ]
+}

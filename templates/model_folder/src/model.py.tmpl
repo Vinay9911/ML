@@ -1,0 +1,136 @@
+"""{{MODEL_ID}} - {{MODEL_NAME}}.
+
+{{QUESTION}}
+
+Scaffolded by ``scripts/new_model.py``. Fill in :meth:`Model.predict`; the rest of the
+structure is already correct for docs/02.
+
+Rules that the scaffold sets up and you must keep:
+
+- every number lives in ``config.yaml`` under ``params`` (CLAUDE.md hard rule), read with
+  ``self.require_param("name")``
+- results go through ``OutputBuilder``, which fills the unit from the KPI registry and
+  derives ``risk_level`` from ``risk_bands.yaml``
+- upstream outputs are resolved by the base class, never imported from another model folder
+"""
+
+from __future__ import annotations
+
+from typing import Any
+
+from twin_common.contracts import Metadata, ModelOutput, PredictRequest, ScenarioRequest
+from twin_common.contracts import registry as reg
+from twin_common.contracts.enums import EntityType, State
+from twin_common.logging import get_logger
+from twin_common.model import TwinModel
+from twin_common.output import OutputBuilder
+
+log = get_logger(__name__)
+
+
+class Model(TwinModel):
+    """{{MODEL_NAME}} ({{MODEL_ID}})."""
+
+    model_id = "{{MODEL_ID}}"
+
+    def load(self) -> None:
+        """Read tables and fitted artifacts once at startup.
+
+        Called by :meth:`TwinModel.from_folder`, so anything expensive belongs here rather
+        than in ``predict``.
+        """
+        # Example:
+        # self.footfall = load_table(
+        #     "footfall_15min", self.data_source, base_dir=self.synthetic_dir
+        # )
+        return None
+
+    # ------------------------------------------------------------------ metadata
+    def metadata(self) -> Metadata:
+        return Metadata(
+            model_id=self.model_id,
+            model_name=self.model_name,
+            model_version=self.model_version,
+            question="{{QUESTION}}",
+            engine=self.engine,
+            method_summary="TODO: one line on the method, for the frontend and the model card",
+            kpis=[
+                {
+                    "kpi": kpi,
+                    "unit": reg.kpi_unit(kpi),
+                    "description": reg.kpi_info(kpi).definition,
+                }
+                for kpi in self.owned_kpis
+            ],
+            upstream=self.upstream_ids,
+            inputs=self.input_tables,
+            horizons_min=self.horizons_min,
+            scenarios_supported=self.scenarios_supported,
+            limitations=[
+                "Runs on synthetic data; metrics measure pipeline correctness, not "
+                "real-world accuracy.",
+                "TODO: the real limitations of this method.",
+            ],
+            license_notes=[],
+        )
+
+    # ------------------------------------------------------------------ prediction
+    def _compute(
+        self,
+        request: PredictRequest,
+        builder: OutputBuilder,
+        *,
+        state: State,
+        overrides: dict[str, Any] | None = None,
+    ) -> OutputBuilder:
+        """Shared body of predict and scenario.
+
+        Writing it once keeps the two endpoints from drifting: a scenario run differs only
+        by its overrides and its record ``state``.
+        """
+        overrides = overrides or {}
+        as_of = self.resolve_as_of(request)
+        horizon = self.resolve_horizon(request)
+        kpis = self.resolve_kpis(request)
+        entities = self.resolve_entities(request, self.entity_ids())
+
+        upstream = self.resolve_upstream(
+            request, scenario_id=builder.scenario_id, entity_ids=entities
+        )
+        self.record_upstream(builder, upstream)
+
+        # TODO: the model. One builder.add per (entity, KPI, timestamp).
+        for entity in entities:
+            for kpi in kpis:
+                builder.add(
+                    EntityType.ZONE,
+                    entity,
+                    kpi,
+                    as_of,
+                    0.0,
+                    zone_id=entity,
+                    horizon_min=0 if state is State.CURRENT else horizon,
+                    state=state,
+                )
+        return builder
+
+    def entity_ids(self) -> list[str]:
+        """The entities this model reports on. Override for non-zone models."""
+        from twin_common.config import world
+
+        return list(world()["zones"])
+
+    def predict(self, request: PredictRequest) -> ModelOutput:
+        builder = self.new_builder(request)
+        self._compute(request, builder, state=State.FORECAST)
+        return builder.build()
+
+    def scenario(self, request: ScenarioRequest) -> ModelOutput:
+        overrides = self.scenario_overrides(request)
+        builder = self.new_builder(
+            request, scenario_id=request.scenario_id, overrides=overrides
+        )
+        self._compute(request, builder, state=State.SCENARIO, overrides=overrides)
+        if request.compare_to_baseline:
+            builder.apply_baseline(self.predict(self.as_predict(request)))
+        return builder.build()

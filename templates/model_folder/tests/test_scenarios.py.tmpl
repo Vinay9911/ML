@@ -1,0 +1,51 @@
+"""{{MODEL_ID}} scenario directions (docs/05 section 1.2)."""
+
+from __future__ import annotations
+
+import pytest
+
+from twin_common.contracts import PredictRequest, ScenarioRequest
+from twin_common.scenarios import get_scenario
+from twin_common.testing import assert_insensitive, assert_valid_output
+
+
+
+MODEL_ID = "{{MODEL_ID}}"
+
+def test_every_supported_scenario_answers(model) -> None:
+    for scenario_id in model.scenarios_supported:
+        output = model.scenario(ScenarioRequest(scenario_id=scenario_id))
+        assert_valid_output(output, model_id=MODEL_ID)
+        assert output.scenario_id == scenario_id
+
+
+def test_baseline_scenario_matches_predict(model) -> None:
+    baseline = model.predict(PredictRequest())
+    scenario = model.scenario(ScenarioRequest(scenario_id="S01"))
+    assert scenario.kpis_present() == baseline.kpis_present()
+
+
+def test_scenario_records_use_the_scenario_state(model) -> None:
+    supported = [s for s in model.scenarios_supported if s != "S01"]
+    if not supported:
+        pytest.skip("this model supports only the baseline")
+    output = model.scenario(ScenarioRequest(scenario_id=supported[0]))
+    assert all(record.state.value in ("scenario", "current") for record in output.results)
+
+
+def test_scenario_echoes_its_overrides(model) -> None:
+    supported = [s for s in model.scenarios_supported if s != "S01"]
+    if not supported:
+        pytest.skip("this model supports only the baseline")
+    scenario_id = supported[0]
+    output = model.scenario(ScenarioRequest(scenario_id=scenario_id))
+    assert output.scenario_overrides == get_scenario(scenario_id).overrides
+
+
+# TODO: add the docs/05 section 1.2 direction assertions for this model, e.g.
+#
+# def test_s02_raises_the_primary_kpi(model) -> None:
+#     from twin_common.testing import assert_scenario_direction
+#     baseline = model.predict(PredictRequest())
+#     scenario = model.scenario(ScenarioRequest(scenario_id="S02"))
+#     assert_scenario_direction(baseline, scenario, "<kpi>", direction="up")

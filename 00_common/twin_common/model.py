@@ -89,7 +89,11 @@ class TwinModel(ABC):
 
     @abstractmethod
     def scenario(self, request: ScenarioRequest) -> ModelOutput:
-        """Answer POST /scenario."""
+        """Compute this model's response to a scenario it supports.
+
+        Called through :meth:`handle_scenario`, which has already checked that the scenario
+        exists and that this model responds to it, so an implementation can assume both.
+        """
 
     @abstractmethod
     def metadata(self) -> Metadata:
@@ -213,6 +217,14 @@ class TwinModel(ABC):
     def supports_scenario(self, scenario_id: str) -> bool:
         return scenario_id in set(self.scenarios_supported)
 
+    def as_predict(self, request: ScenarioRequest) -> PredictRequest:
+        """Narrow a ScenarioRequest to the PredictRequest that produces its baseline.
+
+        Every scenario implementation needs this to fill ``baseline_value`` and ``delta``,
+        so it lives here rather than being re-derived in 25 model folders.
+        """
+        return PredictRequest(**request.model_dump(include=_PREDICT_FIELDS))
+
     # ------------------------------------------------------------------ upstream
     def resolve_upstream(
         self,
@@ -261,6 +273,28 @@ class TwinModel(ABC):
             scenario_overrides=overrides,
         )
 
+    def handle_scenario(self, request: ScenarioRequest) -> ModelOutput:
+        """The entry point for a scenario request: check support, then delegate.
+
+        This lives on the model rather than only in `twin_common.api` because the
+        "insensitive to Sxx" response is a contract requirement of the MODEL (docs/05
+        section 1.2), not of the HTTP layer. `scripts/scenario_e2e.py` and any test that
+        drives a model directly must get the same behaviour as a caller going through
+        `/scenario`.
+
+        Raises UnknownScenarioError (mapped to HTTP 404) for a scenario that does not exist.
+        """
+        # Raises for an unknown scenario ID before any work is done.
+        self.scenario_overrides(request)
+        if not self.supports_scenario(request.scenario_id):
+            log.info(
+                "%s is insensitive to %s; returning the baseline as degraded",
+                self.model_id or type(self).__name__,
+                request.scenario_id,
+            )
+            return self.insensitive_response(request)
+        return self.scenario(request)
+
     def insensitive_response(self, request: ScenarioRequest) -> ModelOutput:
         """The docs/02 section 6 answer for a scenario this model does not support.
 
@@ -268,7 +302,7 @@ class TwinModel(ABC):
         model is insensitive to the scenario. Record states are rewritten to ``scenario``
         so the response still satisfies the contract.
         """
-        baseline = self.predict(PredictRequest(**request.model_dump(include=_PREDICT_FIELDS)))
+        baseline = self.predict(self.as_predict(request))
         # model_copy does not coerce, so the enum member is passed rather than a bare string;
         # a raw "scenario" str would leave the field untyped and break JSON serialization.
         rewritten = [

@@ -57,8 +57,11 @@ line-ending = "lf"
 
 [tool.pytest.ini_options]
 minversion = "8.0"
-addopts = "-ra --strict-markers"
-testpaths = ["00_common/tests"]
+# importlib import mode: each model folder has its own tests/ package, and the default
+# "prepend" mode makes them collide on the module name tests.conftest.
+addopts = "-ra --strict-markers --import-mode=importlib"
+consider_namespace_packages = true
+testpaths = ["00_common/tests", "M21_weather_impact/tests"]
 markers = [
     "slow: takes more than ~10s (excluded from the fast loop)",
     "network: needs internet; skipped when TWIN_OFFLINE=1",

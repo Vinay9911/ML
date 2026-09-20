@@ -150,17 +150,9 @@ def create_app(
     @app.post("/scenario", response_model=ModelOutput, tags=["model"])
     def scenario(request: ScenarioRequest) -> ModelOutput:
         started = time.perf_counter()
-        # Raises UnknownScenarioError -> 404 before any work is done.
-        model.scenario_overrides(request)
-        if not model.supports_scenario(request.scenario_id):
-            log.info(
-                "%s is insensitive to %s; returning baseline as degraded",
-                meta.model_id,
-                request.scenario_id,
-            )
-            result = model.insensitive_response(request)
-        else:
-            result = model.scenario(request)
+        # handle_scenario raises UnknownScenarioError (-> 404) for an unknown ID and returns
+        # the documented degraded baseline for a scenario this model does not respond to.
+        result = model.handle_scenario(request)
         _log_timing(f"scenario {request.scenario_id}", started)
         return result
 

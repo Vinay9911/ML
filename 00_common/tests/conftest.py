@@ -166,6 +166,21 @@ def demo_now() -> datetime:
 
 
 @pytest.fixture
+def dummy_model_class() -> type:
+    """The dummy model class.
+
+    Exposed as a fixture rather than imported from conftest, because each model folder has
+    its own tests/ directory and importing across them collides on the module name.
+    """
+    return DummyModel
+
+
+@pytest.fixture
+def dummy_config() -> dict[str, Any]:
+    return dict(DUMMY_CONFIG)
+
+
+@pytest.fixture
 def dummy_folder(tmp_path: Path) -> Path:
     """A minimal model folder with a valid config.yaml."""
     import yaml

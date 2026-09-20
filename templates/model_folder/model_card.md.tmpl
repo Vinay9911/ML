@@ -1,0 +1,49 @@
+# Model card — {{MODEL_ID}}
+
+## Question / decision supported
+{{QUESTION}}
+
+## Method
+- **Engine:** `twin_common.engines.{{ENGINE}}`
+- **Algorithm:** TODO
+- **Library + version:** TODO
+- **Licence:** TODO
+
+## Inputs and features
+| Source | Detail |
+|---|---|
+| Tables | {{INPUTS_MD}} |
+| Upstream models | {{UPSTREAM_MD}} |
+
+## Assumptions
+Every value is a **placeholder** pending expert review, and every one is a config key rather
+than a literal in the code.
+
+| Config key | Meaning | Source |
+|---|---|---|
+| TODO | TODO | `config.yaml` / `assumptions.yaml` |
+
+## Evaluation
+> These metrics are computed on **synthetic** data. They measure pipeline correctness, not
+> real-world accuracy. Nothing here is evidence the model would perform this way at a real
+> event.
+
+| Metric | Value | Notes |
+|---|---|---|
+| TODO | TODO | |
+
+## Limitations and failure modes
+- Trained and evaluated on a synthetic world with placeholder rates.
+- TODO: what this method cannot see, and how it fails.
+
+## Real-data readiness
+| Step | What is needed |
+|---|---|
+| Data | TODO: which real feed replaces which table |
+| Recalibration | TODO: which params must be refitted |
+| Retraining | TODO, or "not applicable - this is a formula/rules model" |
+
+## Traceability
+- KPIs: {{KPIS_MD}}
+- Datasets: {{DATASETS_MD}}
+- Model card in the study: {{MODEL_ID}}

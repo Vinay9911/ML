@@ -1,0 +1,42 @@
+# {{MODEL_ID}} - {{MODEL_NAME}}
+#
+# The standard keys are fixed by docs/02 section 8 and are read by twin_common; `params` is
+# yours. EVERY number this model uses belongs under `params` or in 00_common/config -
+# CLAUDE.md forbids thresholds, rates and weights in src/.
+model_id: {{MODEL_ID}}
+model_name: {{MODEL_NAME}}
+model_version: 0.1.0
+port: {{PORT}}
+engine: {{ENGINE}}
+
+# synthetic | replay | live. `live` raises NotImplementedError through twin_common.io
+# rather than fabricating data (docs/02 section 8).
+data_source: synthetic
+
+# All randomness derives from this (CLAUDE.md): same seed, same output.
+seed: 42
+
+# The instant an empty /predict answers for.
+demo_now: "2027-08-02T06:00:00+05:30"
+
+horizons_min: {{HORIZONS}}
+default_horizon_min: {{DEFAULT_HORIZON}}
+
+# Resolved by twin_common.upstream in the docs/02 section 7 order:
+# inline -> UPSTREAM_<ID>_URL -> sample file -> stub.
+upstream: {{UPSTREAM}}
+
+# Tables from docs/04 section 4 that this model reads.
+inputs: {{INPUTS}}
+
+# KPIs this model owns. Must match kpi_registry.yaml, which is generated from docs/05.
+kpis: {{KPIS}}
+
+# Scenarios this model responds to. Anything else returns the baseline with
+# status: degraded and an "insensitive to Sxx" warning (docs/05 section 1.2).
+scenarios_supported: {{SCENARIOS}}
+
+upstream_timeout_s: 5
+
+# ---------------------------------------------------------------- model parameters
+params: {}
