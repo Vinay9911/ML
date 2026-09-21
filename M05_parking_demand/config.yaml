@@ -1,0 +1,88 @@
+# M05 - Parking Demand
+#
+# The standard keys are fixed by docs/02 section 8 and are read by twin_common; `params` is
+# yours. EVERY number this model uses belongs under `params` or in 00_common/config -
+# CLAUDE.md forbids thresholds, rates and weights in src/.
+model_id: M05
+model_name: Parking Demand
+model_version: 0.1.0
+port: 8005
+engine: forecast
+
+data_source: synthetic
+seed: 42
+demo_now: "2027-08-02T06:00:00+05:30"
+
+# docs/03 M05 shares M01's horizon: three hours is long enough to divert vehicles before a
+# lot fills, which is the decision this model exists to support.
+horizons_min: [15, 60, 180]
+default_horizon_min: 180
+
+# M01 supplies the forecast arrivals that drive the future half of the arrivals covariate.
+upstream: [M01]
+
+# D06 is the history. D01 gives the arrivals covariate its PAST half, D21 the snan flag.
+# Site capacities come from assumptions.yaml (transport.parking_capacity), not from here.
+inputs: [parking_15min, footfall_15min, event_calendar]
+
+kpis: [parking_occupancy, parking_search_time, parking_demand]
+
+# docs/05 section 1.2 lists M05 under S02 only.
+#
+# The docs/03 M05 card adds "S06/S12 may shift demand between sites". The mechanism for that
+# is implemented - demand moves off any site whose access link is closed - but neither
+# scenario closes one: S06 closes R07 (Riverside road) and S12 closes B01 (the bridge), while
+# the parking access links are R04/R05/R06. Declaring support would mean returning an
+# unchanged baseline while implying a response, so M05 reports itself insensitive to both and
+# says why. Close R04, R05 or R06 in a scenario and the reallocation fires. See the model card.
+scenarios_supported: [S01, S02]
+
+upstream_timeout_s: 5
+
+# ---------------------------------------------------------------- model parameters
+params:
+  # --- the forecast engine ---------------------------------------------------
+  # Same settings as M01: one shared engine, one set of backends (docs/06 section 3).
+  forecast:
+    backend: chronos2
+    hub_model_name: autogluon/chronos-2-small
+    quantiles: [0.1, 0.5, 0.9]
+    input_chunk_length: 96
+    lightgbm_lags: 96
+    seasonality: 96
+    max_context_steps: 2688
+    allow_fallback: true
+
+  # --- search time (docs/03 M05) ---------------------------------------------
+  # search = base_min + k_min * max(0, occ - knee) / (1 - knee), with occ as a FRACTION.
+  # Below the knee a driver parks straight away; past it the search grows linearly. The
+  # curve is deliberately calibrated against the docs/05 section 2 threshold of 15 min:
+  # at 90 percent it gives 9 min (green) and at 100 percent exactly 15 min (the threshold).
+  # It is not capped at the knee, so an oversubscribed lot keeps getting worse - which is
+  # what makes the KPI monotonic in occupancy, as the card's test requires.
+  search_time:
+    base_min: 3.0
+    k_min: 12.0
+    occupancy_knee: 0.8
+
+  # Occupancy at or above which PARKING_OVERFLOW is raised and a diversion recommended.
+  # 100 means literally "more vehicles than bays". The amber (80) and red (90) bands in
+  # risk_bands.yaml already give the earlier warning, so this code means overflow, not
+  # "overflow soon".
+  overflow_pct: 100.0
+
+  # Reporting ceiling for occupancy. Demand-based occupancy is unbounded above; a forecast
+  # that ran away would otherwise emit a meaningless number. 400 is far above the 152
+  # percent that S02 reaches, so it only ever catches a broken forecast.
+  max_occupancy_pct: 400.0
+
+  # A vehicle count cannot be negative, but a quantile band can dip below zero.
+  floor_vehicles: 0.0
+
+  # M01 reports expected_footfall in persons/hr; the covariate is per 15-min step, so its
+  # values are divided back down by this. Same grid constant as M01's own config.
+  steps_per_hour: 4
+
+  # Reported on each record. A heuristic, not a calibrated probability - see the model card.
+  # Lower than M01's 0.6 because M05 inherits M01's error on top of its own.
+  confidence: 0.5

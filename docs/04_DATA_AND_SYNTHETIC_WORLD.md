@@ -123,6 +123,17 @@ Also: `assets.csv`, `camera_registry.csv`, `world_manifest.json` (tables, rows, 
 Performance target: one scenario world (31 days × 8 zones) in < 2 minutes on CPU.
 
 ## 6. `assumptions.yaml` defaults (ALL placeholders — validate with experts)
+
+> **The live values are in `00_common/config/assumptions.yaml`, not in this block.** Two of
+> the defaults below were found to be inconsistent with the rest of the study and were changed
+> during implementation; each carries a comment in `assumptions.yaml` deriving the new value.
+> Read that file before sizing anything against these numbers.
+>
+> | Key | This block | Live | Why |
+> |---|---:|---:|---|
+> | `crowd.snan_day_multiplier` | 4.0 | **2.8** | 4.0 demands 1.42× more ghat throughput than the §2.1 zone areas can safely hold; 2.8 reproduces the docs/01 §5 demo story exactly |
+> | `transport.parking_capacity` | 4,800 total | **23,200 total** | 4,800 puts an ordinary day at 140–180 % occupancy and the snan peak at 583 %, making `parking_occupancy` and `parking_search_time` carry no information |
+
 ```yaml
 crowd:
   normal_day_arrivals_sector: 120000

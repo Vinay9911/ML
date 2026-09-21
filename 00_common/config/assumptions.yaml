@@ -112,7 +112,22 @@ transport:
   bpr_alpha: 0.15
   bpr_beta: 4
   vehicle_length_m: 7
-  parking_capacity: {P1: 1500, P2: 2500, P3: 800}
+  # CHANGED from the docs/04 section 6 placeholder {P1: 1500, P2: 2500, P3: 800} (4,800
+  # total). That number is inconsistent with the arrival assumptions directly above it and
+  # made `parking_occupancy` carry no information.
+  #
+  # Cars present at once = arrivals x car_mode_share / persons_per_car, accumulated over the
+  # car dwell (2 x the ghat dwell, so ~3.3 h). Against 4,800 spaces that peaks at 140-180
+  # percent on an ORDINARY day and 583 percent on the snan morning, so the lot would read
+  # "critical" at every hour of every day and the < 90 percent threshold in docs/05 section 2
+  # would be unreachable. Search time, which is monotonic in occupancy, would saturate too.
+  #
+  # Sized instead for the design peak, which is how event parking is actually planned:
+  # snan-morning demand is 27,995 vehicles, and 23,200 spaces put that at 121 percent - a
+  # real overflow that fires PARKING_OVERFLOW - while an ordinary day sits near 31 percent.
+  # The 15 : 25 : 8 split between the three sites is kept from the placeholder.
+  # STILL A PLACEHOLDER: replace with the real surveyed bay count per site.
+  parking_capacity: {P1: 7300, P2: 12000, P3: 3900}
 
 security:
   base_incidents_per_100k_per_hr: 2.0

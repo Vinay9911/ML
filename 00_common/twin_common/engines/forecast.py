@@ -382,11 +382,36 @@ class ForecastEngine:
 
         raise EngineError("every forecast backend failed: " + "; ".join(collected))
 
+    @staticmethod
+    def _covariate_signature(covariates: list[Any] | None) -> tuple[str, ...] | None:
+        """The component names of a prepared covariate list, or None when there are none."""
+        if not covariates:
+            return None
+        return tuple(str(name) for name in covariates[0].components)
+
     def _cache_key(
         self, backend: str, horizon_steps: int, context: int, past: Any, future: Any
     ) -> tuple:
-        """What makes a fitted model reusable for a later call."""
-        return (backend, horizon_steps, context, past is not None, future is not None)
+        """What makes a fitted model reusable for a later call.
+
+        The covariate COMPONENTS are part of the key, not merely whether any were given. A
+        Darts global model records how many covariate components it was fitted with and
+        rejects a different number at predict time:
+
+            "The provided `historic_future_covariates` must have equal number of components
+             as the `historic_future_covariates` used to train the model."
+
+        A model whose covariates are optional - M05 drops its arrivals column when M01 is
+        unavailable - would otherwise reuse a model fitted with a different set and fail the
+        whole request instead of just re-fitting.
+        """
+        return (
+            backend,
+            horizon_steps,
+            context,
+            self._covariate_signature(past),
+            self._covariate_signature(future),
+        )
 
     def warmup(
         self,

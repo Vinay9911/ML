@@ -9,7 +9,7 @@ Update at the end of every phase and every model. Status: ⬜ not started · �
 | 1 | twin_common core | ✅ | feat(common): contracts, config, io, api factory | 423 tests; 93 KPIs asserted; graph acyclic; schemas exported |
 | 2 | Synthetic world + fetchers | ✅ | feat(common): synthetic world generator | 6 scenarios, 123-126 checks each, ~3s; 569 tests; offline OK |
 | 3 | Template, tooling, M21 | ✅ | feat(M21): weather impact + model template tooling | 11/11 DoD; validate_all 21 checks |
-| 4 | Forecast engine + 9 models | 🟨 | | engine + M01 done; M05 M06 M15 M17 M18 M19 M20 M22 to go |
+| 4 | Forecast engine + 9 models | 🟨 | | engine + M01 + M05 done; M06 M15 M17 M18 M19 M20 M22 to go |
 | 5 | Formula/rules/ML + 5 models | ⬜ | | |
 | 6 | Vision + 2 models | ⬜ | | |
 | 7 | Network/optimization + 6 models | ⬜ | | |
@@ -23,7 +23,7 @@ Update at the end of every phase and every model. Status: ⬜ not started · �
 | M02 | M02_crowd_density_flow | vision | 6 | ⬜ | | | |
 | M03 | M03_hotspot_risk | rules | 5 | ⬜ | | | |
 | M04 | M04_traffic_forecast | network | 7 | ⬜ | | | |
-| M05 | M05_parking_demand | forecast | 4 | ⬜ | | | |
+| M05 | M05_parking_demand | forecast | 4 | ✅ | 57 pass | model-reviewer: no blocking gaps | forecasts uncapped demand, so occupancy can exceed 100%; parking capacity raised 4,800 -> 23,200 |
 | M06 | M06_transit_demand | forecast | 4 | ⬜ | | | |
 | M07 | M07_medical_demand | formula | 5 | ⬜ | | | |
 | M08 | M08_ambulance_staging | location | 7 | ⬜ | | | |
@@ -50,6 +50,8 @@ Update at the end of every phase and every model. Status: ⬜ not started · �
 |---|---|---|---|
 | 2026-09-21 | Installed every remaining engine extra (network, opt, vision, pedsim) ahead of Phases 6-8 | All resolve on Windows/Python 3.11 with no change to the CPU torch build, so the later phases start unblocked. jupedsim needed no WSL, contrary to the docs/06 §2 warning. | Vinay |
 | 2026-09-21 | Accept PySide6 (LGPL-3.0 OR GPL-2.0 OR GPL-3.0) as a transitive dependency of jupedsim | jupedsim hard-requires it for its visualizer. We elect the LGPL-3.0 option, which CLAUDE.md allows; no twin code imports PySide6. | Vinay |
+| 2026-09-21 | `transport.parking_capacity` raised from 4,800 to 23,200 bays | The docs/04 §6 placeholder put an ordinary day at 140-180% occupancy and the snan peak at 583%, so `parking_occupancy` would read critical at every hour and its <90% threshold was unreachable. Sized for the design peak instead: 121% at the snan peak, 31% on an ordinary day. | Vinay |
+| 2026-09-21 | M05 forecasts uncapped demand rather than the `occupied` column | D06 clips `occupied` at capacity, so a model trained on it can never predict the overflow M05 exists to warn about. Occupancy is therefore demand/capacity and may exceed 100%, which `risk_bands.yaml` already anticipates (critical = 100-9999). | Vinay |
 | 2026-09-21 | Road graph switched from the synthetic grid to real OSM data | Installing osmnx exposed two bugs in `real/roads.py` (see below). Fixed; 3,098 nodes / 7,510 edges now cached for Phase 7. | Vinay |
 
 ## Open questions

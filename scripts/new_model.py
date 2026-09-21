@@ -161,10 +161,12 @@ def scaffold(model_id: str, *, force: bool = False, dry_run: bool = False) -> Pa
         )
         written.append(str(destination.relative_to(target)))
 
-    # `tests` is a package so `from .conftest import MODEL_ID` resolves.
-    (target / "tests" / "__init__.py").write_text(
-        f'"""Tests for {model_id}."""\n', encoding="utf-8"
-    )
+    # Deliberately NO `tests/__init__.py`. It would make every model folder's tests the same
+    # package `tests`, and pytest refuses the second conftest it meets under that name:
+    #   "Plugin already registered under a different name:
+    #    .../M05.../tests/conftest.py=<module 'tests.conftest' from '.../M01.../conftest.py'>"
+    # It was originally added so `from .conftest import MODEL_ID` would resolve; the conftest
+    # shares fixtures instead now, so nothing needs the package.
 
     # The contract schemas, so a delivered zip is self-describing (docs/02 section 2).
     from twin_common.contracts import export_schemas

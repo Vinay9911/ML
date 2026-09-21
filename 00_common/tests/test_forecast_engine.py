@@ -437,3 +437,54 @@ def test_covariates_reach_the_backend(history) -> None:
     assert not np.allclose(
         with_covariates.values["Z01"].to_numpy(), without.values["Z01"].to_numpy()
     )
+
+
+def test_the_fit_cache_notices_a_different_covariate_set(history) -> None:
+    """Regression: an optional covariate must not poison the cached fitted model.
+
+    A Darts global model records how many covariate components it was fitted with and
+    rejects a different number at predict time. M05 drops its arrivals covariate when M01 is
+    unavailable, so the same engine legitimately sees both a 4-column and a 5-column frame;
+    keying the cache on "covariates: yes/no" made the second call fail the whole request.
+    """
+    index = pd.DatetimeIndex(history["Z01"].index)
+    full_index = pd.date_range(
+        start=index[0], periods=len(index) + HORIZON, freq="15min", tz=index.tz
+    )
+    narrow = {entity: calendar_covariates(full_index) for entity in history}
+    wide = {
+        entity: calendar_covariates(
+            full_index,
+            extra={"arrivals": pd.Series(1.0, index=full_index)},
+        )
+        for entity in history
+    }
+    assert wide["Z01"].shape[1] == narrow["Z01"].shape[1] + 1
+
+    engine = ForecastEngine(backend=BACKEND_LIGHTGBM, seed=42, allow_fallback=False)
+    first = engine.predict(history, HORIZON, future_covariates=narrow)
+    second = engine.predict(history, HORIZON, future_covariates=wide)
+    assert len(first.values["Z01"]) == HORIZON
+    assert len(second.values["Z01"]) == HORIZON
+
+
+def test_the_fit_cache_is_reused_for_an_identical_call(history) -> None:
+    """The other half of the contract: the same shape must NOT re-fit."""
+    engine = ForecastEngine(backend=BACKEND_LIGHTGBM, seed=42, allow_fallback=False)
+    engine.predict(history, HORIZON)
+    fitted_after_first = len(engine._fitted)
+    engine.predict(history, HORIZON)
+    assert len(engine._fitted) == fitted_after_first
+
+
+def test_dropping_covariates_entirely_also_re_fits(history) -> None:
+    """Covariates present then absent is the same trap in the other direction."""
+    index = pd.DatetimeIndex(history["Z01"].index)
+    full_index = pd.date_range(
+        start=index[0], periods=len(index) + HORIZON, freq="15min", tz=index.tz
+    )
+    frames = {entity: calendar_covariates(full_index) for entity in history}
+    engine = ForecastEngine(backend=BACKEND_LIGHTGBM, seed=42, allow_fallback=False)
+    engine.predict(history, HORIZON, future_covariates=frames)
+    plain = engine.predict(history, HORIZON)
+    assert len(plain.values["Z01"]) == HORIZON
