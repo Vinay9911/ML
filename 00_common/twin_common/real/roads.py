@@ -177,15 +177,56 @@ def _key_link_table(graph: nx.MultiDiGraph | None, is_real: bool) -> pd.DataFram
 
 
 def _load_graphml(path: Path) -> nx.MultiDiGraph | None:
+    """Read a cached graph, preferring OSMnx's reader when it is available.
+
+    ``ox.load_graphml`` restores the typed attributes (``length`` as float, ``geometry`` as a
+    shapely LineString) that ``ox.save_graphml`` stringified. The plain networkx reader gives
+    every attribute back as ``str``, which would silently turn ``length`` into text and break
+    the travel-time maths, so it is only the fallback.
+    """
     if not path.is_file():
         return None
     try:
-        graph = nx.read_graphml(path)
-    except Exception as exc:  # a truncated cache must not be fatal
+        import osmnx as ox
+
+        graph = ox.load_graphml(path)
+    except ImportError:
+        try:
+            graph = nx.read_graphml(path)
+        except Exception as exc:  # a truncated cache must not be fatal
+            log.warning("ignoring unreadable road cache %s: %s", path, exc)
+            return None
+    except Exception as exc:
         log.warning("ignoring unreadable road cache %s: %s", path, exc)
         return None
     log.info("using cached road graph %s (%d nodes)", path.name, graph.number_of_nodes())
     return nx.MultiDiGraph(graph)
+
+
+def _save_graphml(graph: nx.MultiDiGraph, path: Path) -> None:
+    """Write the graph to GraphML, via OSMnx when it is installed.
+
+    An OSMnx v2 graph carries shapely ``LineString`` geometry on its edges and a CRS dict on
+    the graph itself. GraphML holds only scalars, and the plain networkx writer raises
+    "does not support <class shapely...LineString> as data values" rather than coercing them.
+    ``ox.save_graphml`` knows how to serialise exactly these attributes, so it is preferred and
+    the manual stringify is kept for the case where the graph did not come from OSMnx.
+    """
+    ensure_dir(path.parent)
+    try:
+        import osmnx as ox
+
+        ox.save_graphml(graph, path)
+        return
+    except ImportError:
+        pass
+    writable = nx.MultiDiGraph(graph)
+    writable.graph = {key: str(value) for key, value in writable.graph.items()}
+    for _, _, data in writable.edges(data=True):
+        for key, value in list(data.items()):
+            if not isinstance(value, str | int | float | bool) or value is None:
+                data[key] = str(value)
+    nx.write_graphml(writable, path)
 
 
 def _fetch_osm(latitude: float, longitude: float, radius_m: float) -> nx.MultiDiGraph:
@@ -196,6 +237,11 @@ def _fetch_osm(latitude: float, longitude: float, radius_m: float) -> nx.MultiDi
     guessing at the installed version.
     """
     import osmnx as ox
+
+    # OSMnx caches the raw Overpass response in ``./cache`` relative to the working
+    # directory. Point it at the repository cache instead, so it lands with every other
+    # downloaded artefact (docs/06 section 2) rather than wherever the service was started.
+    ox.settings.cache_folder = str(ensure_dir(real_cache_dir() / "osmnx"))
 
     north, south, east, west = _bbox(latitude, longitude, radius_m)
     log.info("fetching the OSM drive network around %.4f, %.4f", latitude, longitude)
@@ -234,30 +280,29 @@ def get_road_network(
     if not is_offline():
         try:
             graph = _fetch_osm(latitude, longitude, radius_m)
-            ensure_dir(cache_path.parent)
-            # GraphML cannot hold nested attributes, so they are stringified on write.
-            writable = nx.MultiDiGraph(graph)
-            for _, _, data in writable.edges(data=True):
-                for key, value in list(data.items()):
-                    if isinstance(value, list | dict):
-                        data[key] = str(value)
-            nx.write_graphml(writable, cache_path)
-            log.info(
-                "cached road graph to %s (%d nodes, %d edges)",
-                cache_path,
-                graph.number_of_nodes(),
-                graph.number_of_edges(),
-            )
+        except ImportError:
+            log.warning("osmnx is not installed; using the synthetic grid graph")
+        except Exception as exc:  # any network or Overpass problem falls back
+            log.warning("OSM fetch failed (%s); using the synthetic grid graph", exc)
+        else:
+            # A failure to CACHE must not discard a graph that downloaded correctly: the
+            # next run simply fetches again. Only a failed fetch falls back to the grid.
+            try:
+                _save_graphml(graph, cache_path)
+                log.info(
+                    "cached road graph to %s (%d nodes, %d edges)",
+                    cache_path,
+                    graph.number_of_nodes(),
+                    graph.number_of_edges(),
+                )
+            except Exception as exc:
+                log.warning("could not cache the road graph (%s); continuing uncached", exc)
             return RoadNetwork(
                 graph=graph,
                 key_links=_key_link_table(graph, is_real=True),
                 source="osmnx",
                 is_real=True,
             )
-        except ImportError:
-            log.warning("osmnx is not installed; using the synthetic grid graph")
-        except Exception as exc:  # any network or Overpass problem falls back
-            log.warning("OSM fetch failed (%s); using the synthetic grid graph", exc)
     else:
         log.info("TWIN_OFFLINE is set; skipping the OSM request")
 

@@ -48,6 +48,9 @@ Update at the end of every phase and every model. Status: ⬜ not started · �
 ## Decisions log
 | Date | Decision | Why | Approved by |
 |---|---|---|---|
+| 2026-09-21 | Installed every remaining engine extra (network, opt, vision, pedsim) ahead of Phases 6-8 | All resolve on Windows/Python 3.11 with no change to the CPU torch build, so the later phases start unblocked. jupedsim needed no WSL, contrary to the docs/06 §2 warning. | Vinay |
+| 2026-09-21 | Accept PySide6 (LGPL-3.0 OR GPL-2.0 OR GPL-3.0) as a transitive dependency of jupedsim | jupedsim hard-requires it for its visualizer. We elect the LGPL-3.0 option, which CLAUDE.md allows; no twin code imports PySide6. | Vinay |
+| 2026-09-21 | Road graph switched from the synthetic grid to real OSM data | Installing osmnx exposed two bugs in `real/roads.py` (see below). Fixed; 3,098 nodes / 7,510 edges now cached for Phase 7. | Vinay |
 
 ## Open questions
 -
