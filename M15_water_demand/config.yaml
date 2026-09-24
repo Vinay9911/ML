@@ -1,0 +1,74 @@
+# M15 - Water Demand
+#
+# The standard keys are fixed by docs/02 section 8 and are read by twin_common; `params` is
+# yours. EVERY number this model uses belongs under `params` or in 00_common/config -
+# CLAUDE.md forbids thresholds, rates and weights in src/.
+model_id: M15
+model_name: Water Demand
+model_version: 0.1.0
+port: 8015
+engine: forecast
+
+data_source: synthetic
+seed: 42
+demo_now: "2027-08-02T06:00:00+05:30"
+
+horizons_min: [15, 60, 180]
+default_horizon_min: 180
+
+# M01 gives forecast arrivals for the covariate; M21 gives the temperature that drives the
+# heat term, which is the whole mechanism behind S04.
+upstream: [M01, M21]
+
+inputs: [water_15min, footfall_15min, weather_hourly, event_calendar]
+
+kpis:
+  - expected_water_demand
+  - water_supply_demand_gap
+  - drinking_water_point_requirement
+  - water_tanker_requirement
+
+# docs/05 section 1.2 and the docs/03 M15 card: S02 up, S04 up, S08 raises the gap.
+# S04 has no generated world, so its heat is applied through M21's temperature (see the model
+# card). S08 has a generated world and is read directly.
+scenarios_supported: [S01, S02, S04, S08]
+
+upstream_timeout_s: 5
+
+# ---------------------------------------------------------------- model parameters
+params:
+  forecast:
+    backend: chronos2
+    hub_model_name: autogluon/chronos-2-small
+    quantiles: [0.1, 0.5, 0.9]
+    input_chunk_length: 96
+    lightgbm_lags: 96
+    seasonality: 96
+    max_context_steps: 2688
+    allow_fallback: true
+    calibration:
+      enabled: true
+      folds: 24
+      stride_steps: 24
+      min_factor: 1.0
+      max_factor: 12.0
+
+  # 15-min litres to litres/hr.
+  steps_per_hour: 4
+
+  # Supply is a PLANNED quantity, not a stochastic one: a pump's design output does not vary
+  # with the crowd. It is therefore carried forward from the last observed value rather than
+  # forecast, which is why reading it across the forecast window is not peeking. A scenario
+  # that downs a substation scales it by assumptions.water.pump_outage_supply_factor.
+  carry_supply_forward: true
+
+  # Tanker sizing covers the gap for this many hours (docs/03 M15: gap x hours / payload).
+  # One shift's worth of shortfall, so a tanker run is planned against a sustained gap rather
+  # than a single 15-minute spike.
+  tanker_cover_hours: 4.0
+
+  # A demand, gap or count below this is reported as zero; quantile bands can dip below zero.
+  floor_value: 0.0
+
+  # Reported on each record. Heuristic, not calibrated.
+  confidence: 0.5

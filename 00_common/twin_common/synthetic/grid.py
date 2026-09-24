@@ -45,9 +45,31 @@ def stable_seed(base_seed: int, *parts: str) -> int:
     return int.from_bytes(digest[:8], "big") >> 1
 
 
+#: Label used in place of the scenario when seeding. See :func:`rng_for`.
+COMMON_RANDOM_LABEL = "COMMON"
+
+
 def rng_for(base_seed: int, scenario_id: str, step_name: str) -> np.random.Generator:
-    """The generator one pipeline step should use."""
-    return np.random.default_rng(stable_seed(base_seed, scenario_id, step_name))
+    """The generator one pipeline step should use.
+
+    **The scenario deliberately does NOT affect the seed.** Every scenario draws the same
+    random numbers, so the only thing that differs between two worlds is the intervention
+    itself. This is the common-random-numbers technique, and without it a what-if comparison
+    is confounded by noise:
+
+        ``arrival_noise_sigma`` is 0.08, so two independently-seeded worlds differ by several
+        percent before any override is applied. Measured on S04, whose heat uplift on water
+        demand at the demo instant is 1.8 percent: the S04 world came out 0.2 percent LOWER
+        than S01 over the same window. The signal was inside the noise, and a model asserting
+        "S04 raises water demand" failed against data that genuinely did not show it.
+
+    A scenario still changes the world through its overrides - closed gates, a downed
+    substation, a temperature offset - which is exactly what a what-if is meant to isolate.
+
+    ``scenario_id`` is kept in the signature because call sites read better with it, and
+    because reverting to per-scenario noise is then a one-line change.
+    """
+    return np.random.default_rng(stable_seed(base_seed, COMMON_RANDOM_LABEL, step_name))
 
 
 def parse_ts(value: str | datetime) -> datetime:

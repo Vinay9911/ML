@@ -1,0 +1,452 @@
+{
+  "schema_version": "1.0",
+  "model_id": "M10",
+  "model_name": "CCTV Anomaly (stub)",
+  "model_version": "0.0.0",
+  "run_id": "b7127075-3f21-4f87-b8d8-f5043aa9d3d4",
+  "generated_at": "2026-09-24T18:55:12.755366+05:30",
+  "as_of": "2027-08-02T06:00:00+05:30",
+  "scenario_id": "S02",
+  "scenario_overrides": {},
+  "data_source": "synthetic",
+  "is_synthetic": true,
+  "status": "degraded",
+  "warnings": [
+    "stub output generated from the synthetic world; not a model result"
+  ],
+  "upstream": [],
+  "results": [
+    {
+      "entity_type": "zone",
+      "entity_id": "Z01",
+      "zone_id": "Z01",
+      "kpi": "counterflow_risk",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 100.0,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z01",
+      "zone_id": "Z01",
+      "kpi": "anomaly_score",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 100.0,
+      "unit": "score_0_100",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z02",
+      "zone_id": "Z02",
+      "kpi": "counterflow_risk",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 81.91687169256404,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z02",
+      "zone_id": "Z02",
+      "kpi": "anomaly_score",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 81.91687169256404,
+      "unit": "score_0_100",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z03",
+      "zone_id": "Z03",
+      "kpi": "counterflow_risk",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 91.80998557297517,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z03",
+      "zone_id": "Z03",
+      "kpi": "anomaly_score",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 91.80998557297517,
+      "unit": "score_0_100",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z04",
+      "zone_id": "Z04",
+      "kpi": "counterflow_risk",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 55.44337735811396,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "red",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z04",
+      "zone_id": "Z04",
+      "kpi": "anomaly_score",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 55.44337735811396,
+      "unit": "score_0_100",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "amber",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z05",
+      "zone_id": "Z05",
+      "kpi": "counterflow_risk",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 51.37661919415781,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "red",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z05",
+      "zone_id": "Z05",
+      "kpi": "anomaly_score",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 51.37661919415781,
+      "unit": "score_0_100",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "amber",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z06",
+      "zone_id": "Z06",
+      "kpi": "counterflow_risk",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 16.341552739031364,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "green",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z06",
+      "zone_id": "Z06",
+      "kpi": "anomaly_score",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 16.341552739031364,
+      "unit": "score_0_100",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "green",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z07",
+      "zone_id": "Z07",
+      "kpi": "counterflow_risk",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 52.36233309870193,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "red",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z07",
+      "zone_id": "Z07",
+      "kpi": "anomaly_score",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 52.36233309870193,
+      "unit": "score_0_100",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "amber",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z08",
+      "zone_id": "Z08",
+      "kpi": "counterflow_risk",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 12.74082342597559,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "green",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z08",
+      "zone_id": "Z08",
+      "kpi": "anomaly_score",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 12.74082342597559,
+      "unit": "score_0_100",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "green",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    }
+  ]
+}

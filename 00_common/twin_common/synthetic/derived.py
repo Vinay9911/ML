@@ -417,6 +417,7 @@ def build_derived(
     litres_per_person_hour = float(water["litres_per_person_per_hour_present"])
     heat_bonus = float(water["heat_multiplier_per_c_above_30"])
     pumps = {pump_id: float(spec["design_lph"]) for pump_id, spec in world_cfg["pumps"].items()}
+    outage_supply_factor = float(water["pump_outage_supply_factor"])
     substations_down = set(overrides.get("substations_down") or [])
     outage = in_window_series(steps, overrides.get("window"))
     water_rows: list[dict[str, Any]] = []
@@ -435,7 +436,7 @@ def build_derived(
         )
         supply = np.full(len(steps), supply_per_zone)
         if pump_down:
-            supply = np.where(outage, supply * 0.2, supply)
+            supply = np.where(outage, supply * outage_supply_factor, supply)
         storage = np.clip(np.cumsum(supply - consumption) + supply_per_zone * 4.0, 0.0, None)
         water_rows.append(
             pd.DataFrame(

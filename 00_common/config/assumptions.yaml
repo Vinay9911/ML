@@ -75,6 +75,10 @@ water:
   heat_multiplier_per_c_above_30: 0.03
   persons_per_water_point: 1500
   tanker_payload_l: 10000
+  # Share of design output a pump still delivers while its substation is down (S08). Was a
+  # literal in the generator; lifted here so M15 and the generator cannot drift apart. The
+  # value is unchanged, so no world needs regenerating.
+  pump_outage_supply_factor: 0.2
 
 sanitation:
   uses_per_person_per_hour_present: 0.2

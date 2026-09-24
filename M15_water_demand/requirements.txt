@@ -1,0 +1,6 @@
+# M15 - Water Demand
+#
+# The shared package plus the extra this model's engine needs. Installed from the local
+# path during development; scripts/package_delivery.py rewrites this to pinned versions and
+# a vendored copy of twin_common for the delivery zip (docs/02 section 10).
+-e ../00_common[forecast]

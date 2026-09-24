@@ -66,6 +66,7 @@ testpaths = [
     "M01_footfall_forecast/tests",
     "M05_parking_demand/tests",
     "M06_transit_demand/tests",
+    "M15_water_demand/tests",
     "M21_weather_impact/tests",
 ]
 markers = [

@@ -1,0 +1,116 @@
+{
+  "schema_version": "1.0",
+  "model_id": "M22",
+  "model_name": "Environmental Risk (stub)",
+  "model_version": "0.0.0",
+  "run_id": "4d7cf0e1-482c-42a7-ba89-84208c710e04",
+  "generated_at": "2026-09-24T18:56:30.575088+05:30",
+  "as_of": "2027-08-02T06:00:00+05:30",
+  "scenario_id": "S08",
+  "scenario_overrides": {},
+  "data_source": "synthetic",
+  "is_synthetic": true,
+  "status": "degraded",
+  "warnings": [
+    "stub output generated from the synthetic world; not a model result"
+  ],
+  "upstream": [],
+  "results": [
+    {
+      "entity_type": "event",
+      "entity_id": "EVENT",
+      "zone_id": null,
+      "kpi": "air_quality_index",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 1.0,
+      "unit": "index",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": null,
+      "reason_codes": [],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "event",
+      "entity_id": "EVENT",
+      "zone_id": null,
+      "kpi": "pm25",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 1.0,
+      "unit": "ug/m3",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": null,
+      "reason_codes": [],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "event",
+      "entity_id": "EVENT",
+      "zone_id": null,
+      "kpi": "noise_level",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 1.0,
+      "unit": "dB",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": null,
+      "reason_codes": [],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    },
+    {
+      "entity_type": "event",
+      "entity_id": "EVENT",
+      "zone_id": null,
+      "kpi": "co2_emissions",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 1.0,
+      "unit": "tCO2e/day",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": null,
+      "reason_codes": [],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.2,
+      "details": {
+        "stub": true
+      }
+    }
+  ]
+}

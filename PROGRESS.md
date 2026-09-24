@@ -9,7 +9,7 @@ Update at the end of every phase and every model. Status: ⬜ not started · �
 | 1 | twin_common core | ✅ | feat(common): contracts, config, io, api factory | 423 tests; 93 KPIs asserted; graph acyclic; schemas exported |
 | 2 | Synthetic world + fetchers | ✅ | feat(common): synthetic world generator | 6 scenarios, 123-126 checks each, ~3s; 569 tests; offline OK |
 | 3 | Template, tooling, M21 | ✅ | feat(M21): weather impact + model template tooling | 11/11 DoD; validate_all 21 checks |
-| 4 | Forecast engine + 9 models | 🟨 | | engine + M01 M05 M06 done; M15 M17 M18 M19 M20 M22 to go |
+| 4 | Forecast engine + 9 models | 🟨 | | engine + M01 M05 M06 M15 done; M17 M18 M19 M20 M22 to go |
 | 5 | Formula/rules/ML + 5 models | ⬜ | | |
 | 6 | Vision + 2 models | ⬜ | | |
 | 7 | Network/optimization + 6 models | ⬜ | | |
@@ -19,7 +19,7 @@ Update at the end of every phase and every model. Status: ⬜ not started · �
 ## Models
 | ID | Folder | Engine | Phase | Status | Tests | Reviewer | Notes |
 |---|---|---|---|---|---|---|---|
-| M01 | M01_footfall_forecast | forecast | 4 | ✅ | 42 pass | self | chronos2 beats naive (MAE 195 vs 310); coverage 62% is under-dispersed |
+| M01 | M01_footfall_forecast | forecast | 4 | ✅ | 42 pass | self | chronos2 beats naive (MAE 190 vs 335); bands now conformally calibrated |
 | M02 | M02_crowd_density_flow | vision | 6 | ⬜ | | | |
 | M03 | M03_hotspot_risk | rules | 5 | ⬜ | | | |
 | M04 | M04_traffic_forecast | network | 7 | ⬜ | | | |
@@ -33,7 +33,7 @@ Update at the end of every phase and every model. Status: ⬜ not started · �
 | M12 | M12_fire_risk | rules | 5 | ⬜ | | | |
 | M13 | M13_vip_route | network | 7 | ⬜ | | | |
 | M14 | M14_route_diversion | network | 7 | ⬜ | | | |
-| M15 | M15_water_demand | forecast | 4 | ⬜ | | | |
+| M15 | M15_water_demand | forecast | 4 | ✅ | 60 pass | self | S04 heat response is real but decays with horizon; trustworthy ~1 h |
 | M16 | M16_toilet_sanitation | optimize | 7 | ⬜ | | | |
 | M17 | M17_food_supply | forecast | 4 | ⬜ | | | |
 | M18 | M18_waste_forecast | forecast | 4 | ⬜ | | | |
@@ -48,6 +48,9 @@ Update at the end of every phase and every model. Status: ⬜ not started · �
 ## Decisions log
 | Date | Decision | Why | Approved by |
 |---|---|---|---|
+| 2026-09-24 | Synthetic world switched to COMMON RANDOM NUMBERS across scenarios | `rng_for` seeded on the scenario, so every scenario drew different noise. With `arrival_noise_sigma` 0.08 that swamped small signals: S04's 1.8% water uplift came out 0.2% NEGATIVE. Scenario deltas are now attributable to the intervention alone - S02 is exactly 1.3000x. All 9 worlds regenerated. | Vinay |
+| 2026-09-24 | Conformal band calibration enabled on every forecasting model | A band labelled 80% held the truth ~50% of the time because error grows far faster across the horizon than the quantiles do. Calibrated at startup from held-out origins. | Vinay |
+| 2026-09-24 | `water.pump_outage_supply_factor` lifted from the generator into assumptions.yaml | It was a literal in `derived.py`; M15 needed the same value, and two copies could drift. Value unchanged. | Vinay |
 | 2026-09-21 | Installed every remaining engine extra (network, opt, vision, pedsim) ahead of Phases 6-8 | All resolve on Windows/Python 3.11 with no change to the CPU torch build, so the later phases start unblocked. jupedsim needed no WSL, contrary to the docs/06 §2 warning. | Vinay |
 | 2026-09-21 | Accept PySide6 (LGPL-3.0 OR GPL-2.0 OR GPL-3.0) as a transitive dependency of jupedsim | jupedsim hard-requires it for its visualizer. We elect the LGPL-3.0 option, which CLAUDE.md allows; no twin code imports PySide6. | Vinay |
 | 2026-09-21 | `transport.parking_capacity` raised from 4,800 to 23,200 bays | The docs/04 §6 placeholder put an ordinary day at 140-180% occupancy and the snan peak at 583%, so `parking_occupancy` would read critical at every hour and its <90% threshold was unreachable. Sized for the design peak instead: 121% at the snan peak, 31% on an ordinary day. | Vinay |
