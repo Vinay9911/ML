@@ -3,11 +3,13 @@
   "model_id": "M05",
   "model_name": "Parking Demand",
   "model_version": "0.1.0",
-  "run_id": "f941214b-a9c9-4345-91d5-ea3c62f9df74",
-  "generated_at": "2026-09-24T18:31:09.639329+05:30",
+  "run_id": "68178afe-73c4-49a6-85ef-7496aab52af9",
+  "generated_at": "2026-09-24T18:31:18.081561+05:30",
   "as_of": "2027-08-02T06:00:00+05:30",
-  "scenario_id": "S01",
-  "scenario_overrides": {},
+  "scenario_id": "S02",
+  "scenario_overrides": {
+    "footfall_multiplier": 1.3
+  },
   "data_source": "synthetic",
   "is_synthetic": true,
   "status": "degraded",
@@ -17,9 +19,9 @@
   "upstream": [
     {
       "model_id": "M01",
-      "run_id": "fedb1f20-a0b2-4445-b0bb-6dd2d47c59e9",
+      "run_id": "7addb724-194a-4d5e-8de7-d2412e932541",
       "source": "sample",
-      "generated_at": "2026-09-24T18:30:43.113132+05:30"
+      "generated_at": "2026-09-24T18:31:01.600111+05:30"
     }
   ],
   "results": [
@@ -30,14 +32,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T06:15:00+05:30",
       "horizon_min": 15,
-      "state": "forecast",
-      "value": 9047.41015625,
+      "state": "scenario",
+      "value": 11284.83984375,
       "unit": "vehicles",
-      "lower": 8992.448928176644,
-      "upper": 9515.258488566666,
+      "lower": 11192.295391807284,
+      "upper": 11765.54423057646,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 9047.41015625,
+      "delta": 2237.4296875,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -51,7 +53,7 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 1747.4,
+        "overflow_vehicles": 3984.8,
         "arrivals_covariate": "M01"
       }
     },
@@ -62,14 +64,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T06:15:00+05:30",
       "horizon_min": 15,
-      "state": "forecast",
-      "value": 123.9371254280822,
+      "state": "scenario",
+      "value": 154.58684717465755,
       "unit": "%",
-      "lower": 123.18423189283074,
-      "upper": 130.34600669269406,
+      "lower": 153.31911495626414,
+      "upper": 161.17183877502,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 123.9371254280822,
+      "delta": 30.649721746575352,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -78,10 +80,10 @@
       "recommendation": {
         "action": "divert arrivals from North lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 143.9,
+        "quantity": 328.2,
         "target_entity_id": "P1",
         "from_entity_id": null,
-        "rationale": "North lot is forecast at 9,047 vehicles against 7,300 bays, so about 1,747 will not fit",
+        "rationale": "North lot is forecast at 11,285 vehicles against 7,300 bays, so about 3,985 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -91,7 +93,7 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 1747.4,
+        "overflow_vehicles": 3984.8,
         "arrivals_covariate": "M01"
       }
     },
@@ -102,14 +104,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T06:15:00+05:30",
       "horizon_min": 15,
-      "state": "forecast",
-      "value": 29.36227525684932,
+      "state": "scenario",
+      "value": 47.75210830479454,
       "unit": "min",
-      "lower": 28.91053913569845,
-      "upper": 33.20760401561645,
+      "lower": 46.991468973758494,
+      "upper": 51.703103265012025,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 29.36227525684932,
+      "delta": 18.38983304794522,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -123,9 +125,9 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 1747.4,
+        "overflow_vehicles": 3984.8,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 123.9
+        "occupancy_pct": 154.6
       }
     },
     {
@@ -135,14 +137,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T06:30:00+05:30",
       "horizon_min": 30,
-      "state": "forecast",
-      "value": 8842.826171875,
+      "state": "scenario",
+      "value": 11008.3154296875,
       "unit": "vehicles",
-      "lower": 8201.415122261164,
-      "upper": 9567.891297026594,
+      "lower": 10175.429318837909,
+      "upper": 11828.550847940216,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 8842.826171875,
+      "delta": 2165.4892578125,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -156,7 +158,7 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 1542.8,
+        "overflow_vehicles": 3708.3,
         "arrivals_covariate": "M01"
       }
     },
@@ -167,14 +169,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T06:30:00+05:30",
       "horizon_min": 30,
-      "state": "forecast",
-      "value": 121.13460509417808,
+      "state": "scenario",
+      "value": 150.7988415025685,
       "unit": "%",
-      "lower": 112.34815235974196,
-      "upper": 131.06700406885744,
+      "lower": 139.38944272380698,
+      "upper": 162.03494312246872,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 121.13460509417808,
+      "delta": 29.664236408390423,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -183,10 +185,10 @@
       "recommendation": {
         "action": "divert arrivals from North lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 127.1,
+        "quantity": 305.4,
         "target_entity_id": "P1",
         "from_entity_id": null,
-        "rationale": "North lot is forecast at 8,843 vehicles against 7,300 bays, so about 1,543 will not fit",
+        "rationale": "North lot is forecast at 11,008 vehicles against 7,300 bays, so about 3,708 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -196,7 +198,7 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 1542.8,
+        "overflow_vehicles": 3708.3,
         "arrivals_covariate": "M01"
       }
     },
@@ -207,14 +209,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T06:30:00+05:30",
       "horizon_min": 30,
-      "state": "forecast",
-      "value": 27.68076305650685,
+      "state": "scenario",
+      "value": 45.479304901541106,
       "unit": "min",
-      "lower": 22.408891415845176,
-      "upper": 33.64020244131447,
+      "lower": 38.63366563428419,
+      "upper": 52.220965873481234,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 27.68076305650685,
+      "delta": 17.798541845034254,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -228,9 +230,9 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 1542.8,
+        "overflow_vehicles": 3708.3,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 121.1
+        "occupancy_pct": 150.8
       }
     },
     {
@@ -240,14 +242,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T06:45:00+05:30",
       "horizon_min": 45,
-      "state": "forecast",
-      "value": 8665.904296875,
+      "state": "scenario",
+      "value": 10760.6103515625,
       "unit": "vehicles",
-      "lower": 8041.67585857714,
-      "upper": 9631.336568977173,
+      "lower": 9953.74738330935,
+      "upper": 11915.493972845923,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 8665.904296875,
+      "delta": 2094.7060546875,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -261,7 +263,7 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 1365.9,
+        "overflow_vehicles": 3460.6,
         "arrivals_covariate": "M01"
       }
     },
@@ -272,14 +274,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T06:45:00+05:30",
       "horizon_min": 45,
-      "state": "forecast",
-      "value": 118.71101776541096,
+      "state": "scenario",
+      "value": 147.40562125428082,
       "unit": "%",
-      "lower": 110.15994326818002,
-      "upper": 131.93611738324893,
+      "lower": 136.35270388095,
+      "upper": 163.2259448335058,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 118.71101776541096,
+      "delta": 28.69460348886986,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -288,10 +290,10 @@
       "recommendation": {
         "action": "divert arrivals from North lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 112.5,
+        "quantity": 285.0,
         "target_entity_id": "P1",
         "from_entity_id": null,
-        "rationale": "North lot is forecast at 8,666 vehicles against 7,300 bays, so about 1,366 will not fit",
+        "rationale": "North lot is forecast at 10,761 vehicles against 7,300 bays, so about 3,461 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -301,7 +303,7 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 1365.9,
+        "overflow_vehicles": 3460.6,
         "arrivals_covariate": "M01"
       }
     },
@@ -312,14 +314,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T06:45:00+05:30",
       "horizon_min": 45,
-      "state": "forecast",
-      "value": 26.226610659246575,
+      "state": "scenario",
+      "value": 43.4433727525685,
       "unit": "min",
-      "lower": 21.09596596090801,
-      "upper": 34.16167042994936,
+      "lower": 36.81162232857,
+      "upper": 52.93556690010349,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 26.226610659246575,
+      "delta": 17.216762093321925,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -333,9 +335,9 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 1365.9,
+        "overflow_vehicles": 3460.6,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 118.7
+        "occupancy_pct": 147.4
       }
     },
     {
@@ -345,14 +347,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T07:00:00+05:30",
       "horizon_min": 60,
-      "state": "forecast",
-      "value": 8622.392578125,
+      "state": "scenario",
+      "value": 10692.84765625,
       "unit": "vehicles",
-      "lower": 7697.679785125423,
-      "upper": 9632.183023417916,
+      "lower": 9518.123681612518,
+      "upper": 11872.496329187605,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 8622.392578125,
+      "delta": 2070.455078125,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -366,7 +368,7 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 1322.4,
+        "overflow_vehicles": 3392.8,
         "arrivals_covariate": "M01"
       }
     },
@@ -377,14 +379,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T07:00:00+05:30",
       "horizon_min": 60,
-      "state": "forecast",
-      "value": 118.11496682363014,
+      "state": "scenario",
+      "value": 146.47736515410958,
       "unit": "%",
-      "lower": 105.44766828938936,
-      "upper": 131.9477126495605,
+      "lower": 130.38525591250024,
+      "upper": 162.63693601626855,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 118.11496682363014,
+      "delta": 28.362398330479436,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -393,10 +395,10 @@
       "recommendation": {
         "action": "divert arrivals from North lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 108.9,
+        "quantity": 279.4,
         "target_entity_id": "P1",
         "from_entity_id": null,
-        "rationale": "North lot is forecast at 8,622 vehicles against 7,300 bays, so about 1,322 will not fit",
+        "rationale": "North lot is forecast at 10,693 vehicles against 7,300 bays, so about 3,393 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -406,7 +408,7 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 1322.4,
+        "overflow_vehicles": 3392.8,
         "arrivals_covariate": "M01"
       }
     },
@@ -417,14 +419,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T07:00:00+05:30",
       "horizon_min": 60,
-      "state": "forecast",
-      "value": 25.868980094178088,
+      "state": "scenario",
+      "value": 42.88641909246576,
       "unit": "min",
-      "lower": 18.268600973633617,
-      "upper": 34.168627589736296,
+      "lower": 33.23115354750014,
+      "upper": 52.58216160976114,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 25.868980094178088,
+      "delta": 17.01743899828767,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -438,9 +440,9 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 1322.4,
+        "overflow_vehicles": 3392.8,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 118.1
+        "occupancy_pct": 146.5
       }
     },
     {
@@ -450,14 +452,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T07:15:00+05:30",
       "horizon_min": 75,
-      "state": "forecast",
-      "value": 8452.591796875,
+      "state": "scenario",
+      "value": 10454.302734375,
       "unit": "vehicles",
-      "lower": 7501.664456000923,
-      "upper": 9557.353154771057,
+      "lower": 9283.616214821628,
+      "upper": 11738.109773262697,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 8452.591796875,
+      "delta": 2001.7109375,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -471,7 +473,7 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 1152.6,
+        "overflow_vehicles": 3154.3,
         "arrivals_covariate": "M01"
       }
     },
@@ -482,14 +484,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T07:15:00+05:30",
       "horizon_min": 75,
-      "state": "forecast",
-      "value": 115.78892872431507,
+      "state": "scenario",
+      "value": 143.2096264982877,
       "unit": "%",
-      "lower": 102.76252679453319,
-      "upper": 130.9226459557679,
+      "lower": 127.17282486057024,
+      "upper": 160.79602429126982,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 115.78892872431507,
+      "delta": 27.42069777397262,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -498,10 +500,10 @@
       "recommendation": {
         "action": "divert arrivals from North lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 94.9,
+        "quantity": 259.8,
         "target_entity_id": "P1",
         "from_entity_id": null,
-        "rationale": "North lot is forecast at 8,453 vehicles against 7,300 bays, so about 1,153 will not fit",
+        "rationale": "North lot is forecast at 10,454 vehicles against 7,300 bays, so about 3,154 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -511,7 +513,7 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 1152.6,
+        "overflow_vehicles": 3154.3,
         "arrivals_covariate": "M01"
       }
     },
@@ -522,14 +524,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T07:15:00+05:30",
       "horizon_min": 75,
-      "state": "forecast",
-      "value": 24.47335723458905,
+      "state": "scenario",
+      "value": 40.925775898972624,
       "unit": "min",
-      "lower": 16.657516076719915,
-      "upper": 33.553587573460746,
+      "lower": 31.30369491634215,
+      "upper": 51.4776145747619,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 24.47335723458905,
+      "delta": 16.452418664383575,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -543,9 +545,9 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 1152.6,
+        "overflow_vehicles": 3154.3,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 115.8
+        "occupancy_pct": 143.2
       }
     },
     {
@@ -555,14 +557,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T07:30:00+05:30",
       "horizon_min": 90,
-      "state": "forecast",
-      "value": 8208.69921875,
+      "state": "scenario",
+      "value": 10127.11328125,
       "unit": "vehicles",
-      "lower": 7107.552629282332,
-      "upper": 9308.119173105155,
+      "lower": 8796.36409791773,
+      "upper": 11426.521844104685,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 8208.69921875,
+      "delta": 1918.4140625,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -576,7 +578,7 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 908.7,
+        "overflow_vehicles": 2827.1,
         "arrivals_covariate": "M01"
       }
     },
@@ -587,14 +589,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T07:30:00+05:30",
       "horizon_min": 90,
-      "state": "forecast",
-      "value": 112.44793450342465,
+      "state": "scenario",
+      "value": 138.7275791952055,
       "unit": "%",
-      "lower": 97.36373464770318,
-      "upper": 127.50848182335828,
+      "lower": 120.49813832764013,
+      "upper": 156.52769649458475,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 112.44793450342465,
+      "delta": 26.279644691780845,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -603,10 +605,10 @@
       "recommendation": {
         "action": "divert arrivals from North lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 74.8,
+        "quantity": 232.8,
         "target_entity_id": "P1",
         "from_entity_id": null,
-        "rationale": "North lot is forecast at 8,209 vehicles against 7,300 bays, so about 909 will not fit",
+        "rationale": "North lot is forecast at 10,127 vehicles against 7,300 bays, so about 2,827 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -616,7 +618,7 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 908.7,
+        "overflow_vehicles": 2827.1,
         "arrivals_covariate": "M01"
       }
     },
@@ -627,14 +629,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T07:30:00+05:30",
       "horizon_min": 90,
-      "state": "forecast",
-      "value": 22.46876070205479,
+      "state": "scenario",
+      "value": 38.2365475171233,
       "unit": "min",
-      "lower": 13.418240788621908,
-      "upper": 31.50508909401497,
+      "lower": 27.298882996584084,
+      "upper": 48.91661789675086,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 22.46876070205479,
+      "delta": 15.767786815068508,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -648,9 +650,9 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 908.7,
+        "overflow_vehicles": 2827.1,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 112.4
+        "occupancy_pct": 138.7
       }
     },
     {
@@ -660,14 +662,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T07:45:00+05:30",
       "horizon_min": 105,
-      "state": "forecast",
-      "value": 8049.91845703125,
+      "state": "scenario",
+      "value": 9919.8935546875,
       "unit": "vehicles",
-      "lower": 6958.477710205282,
-      "upper": 9309.61540920063,
+      "lower": 8345.686826685951,
+      "upper": 11321.089849371287,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 8049.91845703125,
+      "delta": 1869.97509765625,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -681,7 +683,7 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 749.9,
+        "overflow_vehicles": 2619.9,
         "arrivals_covariate": "M01"
       }
     },
@@ -692,14 +694,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T07:45:00+05:30",
       "horizon_min": 105,
-      "state": "forecast",
-      "value": 110.27285557577056,
+      "state": "scenario",
+      "value": 135.88895280393837,
       "unit": "%",
-      "lower": 95.3216124685655,
-      "upper": 127.52897820822781,
+      "lower": 114.32447707788972,
+      "upper": 155.08342259412723,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 110.27285557577056,
+      "delta": 25.616097228167803,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -708,10 +710,10 @@
       "recommendation": {
         "action": "divert arrivals from North lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 61.8,
+        "quantity": 215.8,
         "target_entity_id": "P1",
         "from_entity_id": null,
-        "rationale": "North lot is forecast at 8,050 vehicles against 7,300 bays, so about 750 will not fit",
+        "rationale": "North lot is forecast at 9,920 vehicles against 7,300 bays, so about 2,620 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -721,7 +723,7 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 749.9,
+        "overflow_vehicles": 2619.9,
         "arrivals_covariate": "M01"
       }
     },
@@ -732,14 +734,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T07:45:00+05:30",
       "horizon_min": 105,
-      "state": "forecast",
-      "value": 21.163713345462334,
+      "state": "scenario",
+      "value": 36.53337168236302,
       "unit": "min",
-      "lower": 12.192967481139304,
-      "upper": 31.517386924936694,
+      "lower": 23.59468624673384,
+      "upper": 48.050053556476335,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 21.163713345462334,
+      "delta": 15.369658336900685,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -753,9 +755,9 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 749.9,
+        "overflow_vehicles": 2619.9,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 110.3
+        "occupancy_pct": 135.9
       }
     },
     {
@@ -765,14 +767,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T08:00:00+05:30",
       "horizon_min": 120,
-      "state": "forecast",
-      "value": 7844.04931640625,
+      "state": "scenario",
+      "value": 9637.796875,
       "unit": "vehicles",
-      "lower": 6245.257976101192,
-      "upper": 9157.977764026378,
+      "lower": 7790.558493063695,
+      "upper": 11125.418634143476,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 7844.04931640625,
+      "delta": 1793.74755859375,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -786,7 +788,7 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 544.0,
+        "overflow_vehicles": 2337.8,
         "arrivals_covariate": "M01"
       }
     },
@@ -797,14 +799,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T08:00:00+05:30",
       "horizon_min": 120,
-      "state": "forecast",
-      "value": 107.45273036172944,
+      "state": "scenario",
+      "value": 132.0246147260274,
       "unit": "%",
-      "lower": 85.55147912467388,
-      "upper": 125.45175019214216,
+      "lower": 106.71997935703692,
+      "upper": 152.40299498826678,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 107.45273036172944,
+      "delta": 24.571884364297972,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -813,10 +815,10 @@
       "recommendation": {
         "action": "divert arrivals from North lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 44.8,
+        "quantity": 192.5,
         "target_entity_id": "P1",
         "from_entity_id": null,
-        "rationale": "North lot is forecast at 7,844 vehicles against 7,300 bays, so about 544 will not fit",
+        "rationale": "North lot is forecast at 9,638 vehicles against 7,300 bays, so about 2,338 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -826,7 +828,7 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 544.0,
+        "overflow_vehicles": 2337.8,
         "arrivals_covariate": "M01"
       }
     },
@@ -837,14 +839,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T08:00:00+05:30",
       "horizon_min": 120,
-      "state": "forecast",
-      "value": 19.47163821703767,
+      "state": "scenario",
+      "value": 34.21476883561644,
       "unit": "min",
-      "lower": 6.330887474804326,
-      "upper": 30.271050115285302,
+      "lower": 19.031987614222153,
+      "upper": 46.441796992960086,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 19.47163821703767,
+      "delta": 14.743130618578771,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -858,9 +860,9 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 544.0,
+        "overflow_vehicles": 2337.8,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 107.5
+        "occupancy_pct": 132.0
       }
     },
     {
@@ -870,14 +872,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T08:15:00+05:30",
       "horizon_min": 135,
-      "state": "forecast",
-      "value": 7591.037109375,
+      "state": "scenario",
+      "value": 9326.02734375,
       "unit": "vehicles",
-      "lower": 5752.114393919727,
-      "upper": 9490.14822881444,
+      "lower": 7174.866892799059,
+      "upper": 11559.330036351324,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 7591.037109375,
+      "delta": 1734.990234375,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -891,7 +893,7 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 291.0,
+        "overflow_vehicles": 2026.0,
         "arrivals_covariate": "M01"
       }
     },
@@ -902,14 +904,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T08:15:00+05:30",
       "horizon_min": 135,
-      "state": "forecast",
-      "value": 103.98680971746575,
+      "state": "scenario",
+      "value": 127.75379922945204,
       "unit": "%",
-      "lower": 78.79608758794147,
-      "upper": 130.00203053170466,
+      "lower": 98.28584784656246,
+      "upper": 158.34698679933322,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 103.98680971746575,
+      "delta": 23.766989511986296,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -918,10 +920,10 @@
       "recommendation": {
         "action": "divert arrivals from North lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 24.0,
+        "quantity": 166.8,
         "target_entity_id": "P1",
         "from_entity_id": null,
-        "rationale": "North lot is forecast at 7,591 vehicles against 7,300 bays, so about 291 will not fit",
+        "rationale": "North lot is forecast at 9,326 vehicles against 7,300 bays, so about 2,026 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -931,7 +933,7 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 291.0,
+        "overflow_vehicles": 2026.0,
         "arrivals_covariate": "M01"
       }
     },
@@ -942,14 +944,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T08:15:00+05:30",
       "horizon_min": 135,
-      "state": "forecast",
-      "value": 17.392085830479445,
+      "state": "scenario",
+      "value": 31.652279537671234,
       "unit": "min",
-      "lower": 3.0,
-      "upper": 33.00121831902281,
+      "lower": 13.971508707937474,
+      "upper": 50.008192079599944,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 17.392085830479445,
+      "delta": 14.260193707191789,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -963,9 +965,9 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 291.0,
+        "overflow_vehicles": 2026.0,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 104.0
+        "occupancy_pct": 127.8
       }
     },
     {
@@ -975,14 +977,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T08:30:00+05:30",
       "horizon_min": 150,
-      "state": "forecast",
-      "value": 7408.3623046875,
+      "state": "scenario",
+      "value": 9078.0048828125,
       "unit": "vehicles",
-      "lower": 5126.776004817153,
-      "upper": 9236.930971136975,
+      "lower": 6452.294389876018,
+      "upper": 11152.574628035029,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 7408.3623046875,
+      "delta": 1669.642578125,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -996,7 +998,7 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 108.4,
+        "overflow_vehicles": 1778.0,
         "arrivals_covariate": "M01"
       }
     },
@@ -1007,14 +1009,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T08:30:00+05:30",
       "horizon_min": 150,
-      "state": "forecast",
-      "value": 101.48441513270548,
+      "state": "scenario",
+      "value": 124.35623127140411,
       "unit": "%",
-      "lower": 70.22980828516648,
-      "upper": 126.5333009744791,
+      "lower": 88.38759438186325,
+      "upper": 152.77499490458945,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 101.48441513270548,
+      "delta": 22.871816138698634,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -1023,10 +1025,10 @@
       "recommendation": {
         "action": "divert arrivals from North lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 8.9,
+        "quantity": 146.4,
         "target_entity_id": "P1",
         "from_entity_id": null,
-        "rationale": "North lot is forecast at 7,408 vehicles against 7,300 bays, so about 108 will not fit",
+        "rationale": "North lot is forecast at 9,078 vehicles against 7,300 bays, so about 1,778 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -1036,7 +1038,7 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 108.4,
+        "overflow_vehicles": 1778.0,
         "arrivals_covariate": "M01"
       }
     },
@@ -1047,14 +1049,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T08:30:00+05:30",
       "horizon_min": 150,
-      "state": "forecast",
-      "value": 15.890649079623286,
+      "state": "scenario",
+      "value": 29.613738762842473,
       "unit": "min",
-      "lower": 3.0,
-      "upper": 30.919980584687465,
+      "lower": 8.032556629117952,
+      "upper": 46.66499694275368,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 15.890649079623286,
+      "delta": 13.723089683219188,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -1068,9 +1070,9 @@
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
         "occupied_spaces": 7300.0,
-        "overflow_vehicles": 108.4,
+        "overflow_vehicles": 1778.0,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 101.5
+        "occupancy_pct": 124.4
       }
     },
     {
@@ -1080,17 +1082,17 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T08:45:00+05:30",
       "horizon_min": 165,
-      "state": "forecast",
-      "value": 7244.4033203125,
+      "state": "scenario",
+      "value": 8811.708984375,
       "unit": "vehicles",
-      "lower": 4209.855370227523,
-      "upper": 9214.2732429353,
+      "lower": 5429.932261855609,
+      "upper": 11141.672449202593,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 7244.4033203125,
+      "delta": 1567.3056640625,
       "risk_level": null,
       "reason_codes": [
-        "CONGESTION"
+        "PARKING_OVERFLOW"
       ],
       "resource_type": null,
       "recommendation": null,
@@ -1100,8 +1102,8 @@
         "band_calibrated": true,
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
-        "occupied_spaces": 7244.4,
-        "overflow_vehicles": 0.0,
+        "occupied_spaces": 7300.0,
+        "overflow_vehicles": 1511.7,
         "arrivals_covariate": "M01"
       }
     },
@@ -1112,28 +1114,36 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T08:45:00+05:30",
       "horizon_min": 165,
-      "state": "forecast",
-      "value": 99.23840164811644,
+      "state": "scenario",
+      "value": 120.70834225171232,
       "unit": "%",
-      "lower": 57.66925164695237,
-      "upper": 126.22292113610001,
+      "lower": 74.38263372404944,
+      "upper": 152.6256499890766,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
-      "risk_level": "red",
+      "baseline_value": 99.23840164811644,
+      "delta": 21.469940603595887,
+      "risk_level": "critical",
       "reason_codes": [
-        "CONGESTION"
+        "PARKING_OVERFLOW"
       ],
       "resource_type": null,
-      "recommendation": null,
+      "recommendation": {
+        "action": "divert arrivals from North lot and run a shuttle from the overflow area",
+        "resource_type": "shuttle_bus",
+        "quantity": 124.5,
+        "target_entity_id": "P1",
+        "from_entity_id": null,
+        "rationale": "North lot is forecast at 8,812 vehicles against 7,300 bays, so about 1,512 will not fit",
+        "requires_approval": true
+      },
       "confidence": 0.5,
       "details": {
         "backend": "chronos2",
         "band_calibrated": true,
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
-        "occupied_spaces": 7244.4,
-        "overflow_vehicles": 0.0,
+        "occupied_spaces": 7300.0,
+        "overflow_vehicles": 1511.7,
         "arrivals_covariate": "M01"
       }
     },
@@ -1144,17 +1154,17 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T08:45:00+05:30",
       "horizon_min": 165,
-      "state": "forecast",
-      "value": 14.543040988869862,
+      "state": "scenario",
+      "value": 27.425005351027394,
       "unit": "min",
       "lower": 3.0,
-      "upper": 30.733752681660008,
+      "upper": 46.575389993445974,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 14.543040988869862,
+      "delta": 12.881964362157532,
       "risk_level": null,
       "reason_codes": [
-        "CONGESTION"
+        "PARKING_OVERFLOW"
       ],
       "resource_type": null,
       "recommendation": null,
@@ -1164,10 +1174,10 @@
         "band_calibrated": true,
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
-        "occupied_spaces": 7244.4,
-        "overflow_vehicles": 0.0,
+        "occupied_spaces": 7300.0,
+        "overflow_vehicles": 1511.7,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 99.2
+        "occupancy_pct": 120.7
       }
     },
     {
@@ -1177,17 +1187,17 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T09:00:00+05:30",
       "horizon_min": 180,
-      "state": "forecast",
-      "value": 6966.9404296875,
+      "state": "scenario",
+      "value": 8494.8759765625,
       "unit": "vehicles",
-      "lower": 3996.1880541246933,
-      "upper": 9367.388700677238,
+      "lower": 5084.82592218856,
+      "upper": 11239.43945408582,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 6966.9404296875,
+      "delta": 1527.935546875,
       "risk_level": null,
       "reason_codes": [
-        "CONGESTION"
+        "PARKING_OVERFLOW"
       ],
       "resource_type": null,
       "recommendation": null,
@@ -1197,8 +1207,8 @@
         "band_calibrated": true,
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
-        "occupied_spaces": 6966.9,
-        "overflow_vehicles": 0.0,
+        "occupied_spaces": 7300.0,
+        "overflow_vehicles": 1194.9,
         "arrivals_covariate": "M01"
       }
     },
@@ -1209,28 +1219,36 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T09:00:00+05:30",
       "horizon_min": 180,
-      "state": "forecast",
-      "value": 95.43754013270548,
+      "state": "scenario",
+      "value": 116.36816406249999,
       "unit": "%",
-      "lower": 54.74230211129717,
-      "upper": 128.32039315996218,
+      "lower": 69.65514961902137,
+      "upper": 153.96492402857288,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
-      "risk_level": "red",
+      "baseline_value": 95.43754013270548,
+      "delta": 20.930623929794507,
+      "risk_level": "critical",
       "reason_codes": [
-        "CONGESTION"
+        "PARKING_OVERFLOW"
       ],
       "resource_type": null,
-      "recommendation": null,
+      "recommendation": {
+        "action": "divert arrivals from North lot and run a shuttle from the overflow area",
+        "resource_type": "shuttle_bus",
+        "quantity": 98.4,
+        "target_entity_id": "P1",
+        "from_entity_id": null,
+        "rationale": "North lot is forecast at 8,495 vehicles against 7,300 bays, so about 1,195 will not fit",
+        "requires_approval": true
+      },
       "confidence": 0.5,
       "details": {
         "backend": "chronos2",
         "band_calibrated": true,
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
-        "occupied_spaces": 6966.9,
-        "overflow_vehicles": 0.0,
+        "occupied_spaces": 7300.0,
+        "overflow_vehicles": 1194.9,
         "arrivals_covariate": "M01"
       }
     },
@@ -1241,17 +1259,17 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T09:00:00+05:30",
       "horizon_min": 180,
-      "state": "forecast",
-      "value": 12.262524079623287,
+      "state": "scenario",
+      "value": 24.820898437499995,
       "unit": "min",
       "lower": 3.0,
-      "upper": 31.99223589597731,
+      "upper": 47.37895441714374,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 12.262524079623287,
+      "delta": 12.558374357876708,
       "risk_level": null,
       "reason_codes": [
-        "CONGESTION"
+        "PARKING_OVERFLOW"
       ],
       "resource_type": null,
       "recommendation": null,
@@ -1261,10 +1279,10 @@
         "band_calibrated": true,
         "site_name": "North lot",
         "capacity_spaces": 7300.0,
-        "occupied_spaces": 6966.9,
-        "overflow_vehicles": 0.0,
+        "occupied_spaces": 7300.0,
+        "overflow_vehicles": 1194.9,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 95.4
+        "occupancy_pct": 116.4
       }
     },
     {
@@ -1274,14 +1292,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T06:15:00+05:30",
       "horizon_min": 15,
-      "state": "forecast",
-      "value": 14870.591796875,
+      "state": "scenario",
+      "value": 18548.390625,
       "unit": "vehicles",
-      "lower": 14780.300344559466,
-      "upper": 15640.411862408318,
+      "lower": 18396.219441331177,
+      "upper": 19337.53066078765,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 14870.591796875,
+      "delta": 3677.798828125,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -1295,7 +1313,7 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 2870.6,
+        "overflow_vehicles": 6548.4,
         "arrivals_covariate": "M01"
       }
     },
@@ -1306,14 +1324,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T06:15:00+05:30",
       "horizon_min": 15,
-      "state": "forecast",
-      "value": 123.92159830729166,
+      "state": "scenario",
+      "value": 154.569921875,
       "unit": "%",
-      "lower": 123.16916953799554,
-      "upper": 130.33676552006932,
+      "lower": 153.3018286777598,
+      "upper": 161.14608883989706,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 123.92159830729166,
+      "delta": 30.648323567708346,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -1322,10 +1340,10 @@
       "recommendation": {
         "action": "divert arrivals from Main lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 236.4,
+        "quantity": 539.3,
         "target_entity_id": "P2",
         "from_entity_id": null,
-        "rationale": "Main lot is forecast at 14,871 vehicles against 12,000 bays, so about 2,871 will not fit",
+        "rationale": "Main lot is forecast at 18,548 vehicles against 12,000 bays, so about 6,548 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -1335,7 +1353,7 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 2870.6,
+        "overflow_vehicles": 6548.4,
         "arrivals_covariate": "M01"
       }
     },
@@ -1346,14 +1364,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T06:15:00+05:30",
       "horizon_min": 15,
-      "state": "forecast",
-      "value": 29.352958984374997,
+      "state": "scenario",
+      "value": 47.74195312500001,
       "unit": "min",
-      "lower": 28.90150172279733,
-      "upper": 33.2020593120416,
+      "lower": 46.981097206655896,
+      "upper": 51.687653303938234,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 29.352958984374997,
+      "delta": 18.388994140625012,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -1367,9 +1385,9 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 2870.6,
+        "overflow_vehicles": 6548.4,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 123.9
+        "occupancy_pct": 154.6
       }
     },
     {
@@ -1379,14 +1397,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T06:30:00+05:30",
       "horizon_min": 30,
-      "state": "forecast",
-      "value": 14534.986328125,
+      "state": "scenario",
+      "value": 18093.2734375,
       "unit": "vehicles",
-      "lower": 13480.11595223865,
-      "upper": 15726.703502605376,
+      "lower": 16724.21129767576,
+      "upper": 19441.328848056994,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 14534.986328125,
+      "delta": 3558.287109375,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -1400,7 +1418,7 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 2535.0,
+        "overflow_vehicles": 6093.3,
         "arrivals_covariate": "M01"
       }
     },
@@ -1411,14 +1429,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T06:30:00+05:30",
       "horizon_min": 30,
-      "state": "forecast",
-      "value": 121.12488606770833,
+      "state": "scenario",
+      "value": 150.77727864583332,
       "unit": "%",
-      "lower": 112.33429960198875,
-      "upper": 131.05586252171148,
+      "lower": 139.36842748063134,
+      "upper": 162.01107373380827,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 121.12488606770833,
+      "delta": 29.65239257812499,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -1427,10 +1445,10 @@
       "recommendation": {
         "action": "divert arrivals from Main lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 208.8,
+        "quantity": 501.8,
         "target_entity_id": "P2",
         "from_entity_id": null,
-        "rationale": "Main lot is forecast at 14,535 vehicles against 12,000 bays, so about 2,535 will not fit",
+        "rationale": "Main lot is forecast at 18,093 vehicles against 12,000 bays, so about 6,093 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -1440,7 +1458,7 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 2535.0,
+        "overflow_vehicles": 6093.3,
         "arrivals_covariate": "M01"
       }
     },
@@ -1451,14 +1469,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T06:30:00+05:30",
       "horizon_min": 30,
-      "state": "forecast",
-      "value": 27.674931640624997,
+      "state": "scenario",
+      "value": 45.4663671875,
       "unit": "min",
-      "lower": 22.400579761193253,
-      "upper": 33.633517513026895,
+      "lower": 38.62105648837881,
+      "upper": 52.20664424028497,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 27.674931640624997,
+      "delta": 17.791435546875,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -1472,9 +1490,9 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 2535.0,
+        "overflow_vehicles": 6093.3,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 121.1
+        "occupancy_pct": 150.8
       }
     },
     {
@@ -1484,14 +1502,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T06:45:00+05:30",
       "horizon_min": 45,
-      "state": "forecast",
-      "value": 14244.634765625,
+      "state": "scenario",
+      "value": 17685.7109375,
       "unit": "vehicles",
-      "lower": 13218.451255788112,
-      "upper": 15832.1660923066,
+      "lower": 16359.10089330581,
+      "upper": 19583.79334022636,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 14244.634765625,
+      "delta": 3441.076171875,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -1505,7 +1523,7 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 2244.6,
+        "overflow_vehicles": 5685.7,
         "arrivals_covariate": "M01"
       }
     },
@@ -1516,14 +1534,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T06:45:00+05:30",
       "horizon_min": 45,
-      "state": "forecast",
-      "value": 118.70528971354166,
+      "state": "scenario",
+      "value": 147.38092447916665,
       "unit": "%",
-      "lower": 110.15376046490093,
-      "upper": 131.93471743588833,
+      "lower": 136.32584077754842,
+      "upper": 163.19827783521964,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 118.70528971354166,
+      "delta": 28.67563476562499,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -1532,10 +1550,10 @@
       "recommendation": {
         "action": "divert arrivals from Main lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 184.9,
+        "quantity": 468.2,
         "target_entity_id": "P2",
         "from_entity_id": null,
-        "rationale": "Main lot is forecast at 14,245 vehicles against 12,000 bays, so about 2,245 will not fit",
+        "rationale": "Main lot is forecast at 17,686 vehicles against 12,000 bays, so about 5,686 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -1545,7 +1563,7 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 2244.6,
+        "overflow_vehicles": 5685.7,
         "arrivals_covariate": "M01"
       }
     },
@@ -1556,14 +1574,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T06:45:00+05:30",
       "horizon_min": 45,
-      "state": "forecast",
-      "value": 26.223173828125,
+      "state": "scenario",
+      "value": 43.42855468749999,
       "unit": "min",
-      "lower": 21.09225627894056,
-      "upper": 34.16083046153301,
+      "lower": 36.79550446652905,
+      "upper": 52.9189667011318,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 26.223173828125,
+      "delta": 17.20538085937499,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -1577,9 +1595,9 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 2244.6,
+        "overflow_vehicles": 5685.7,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 118.7
+        "occupancy_pct": 147.4
       }
     },
     {
@@ -1589,14 +1607,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T07:00:00+05:30",
       "horizon_min": 60,
-      "state": "forecast",
-      "value": 14173.759765625,
+      "state": "scenario",
+      "value": 17574.009765625,
       "unit": "vehicles",
-      "lower": 12653.280100414308,
-      "upper": 15833.307328177223,
+      "lower": 15642.706584325097,
+      "upper": 19513.20442703498,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 14173.759765625,
+      "delta": 3400.25,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -1610,7 +1628,7 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 2173.8,
+        "overflow_vehicles": 5574.0,
         "arrivals_covariate": "M01"
       }
     },
@@ -1621,14 +1639,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T07:00:00+05:30",
       "horizon_min": 60,
-      "state": "forecast",
-      "value": 118.11466471354166,
+      "state": "scenario",
+      "value": 146.45008138020833,
       "unit": "%",
-      "lower": 105.44400083678589,
-      "upper": 131.94422773481017,
+      "lower": 130.35588820270914,
+      "upper": 162.61003689195817,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 118.11466471354166,
+      "delta": 28.335416666666674,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -1637,10 +1655,10 @@
       "recommendation": {
         "action": "divert arrivals from Main lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 179.0,
+        "quantity": 459.0,
         "target_entity_id": "P2",
         "from_entity_id": null,
-        "rationale": "Main lot is forecast at 14,174 vehicles against 12,000 bays, so about 2,174 will not fit",
+        "rationale": "Main lot is forecast at 17,574 vehicles against 12,000 bays, so about 5,574 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -1650,7 +1668,7 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 2173.8,
+        "overflow_vehicles": 5574.0,
         "arrivals_covariate": "M01"
       }
     },
@@ -1661,14 +1679,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T07:00:00+05:30",
       "horizon_min": 60,
-      "state": "forecast",
-      "value": 25.868798828124998,
+      "state": "scenario",
+      "value": 42.87004882812501,
       "unit": "min",
-      "lower": 18.266400502071534,
-      "upper": 34.1665366408861,
+      "lower": 33.213532921625486,
+      "upper": 52.56602213517491,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 25.868798828124998,
+      "delta": 17.00125000000001,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -1682,9 +1700,9 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 2173.8,
+        "overflow_vehicles": 5574.0,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 118.1
+        "occupancy_pct": 146.5
       }
     },
     {
@@ -1694,14 +1712,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T07:15:00+05:30",
       "horizon_min": 75,
-      "state": "forecast",
-      "value": 13894.650390625,
+      "state": "scenario",
+      "value": 17181.525390625,
       "unit": "vehicles",
-      "lower": 12331.475385576723,
-      "upper": 15711.1821820673,
+      "lower": 15257.01310908632,
+      "upper": 19291.317981327174,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 13894.650390625,
+      "delta": 3286.875,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -1715,7 +1733,7 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 1894.7,
+        "overflow_vehicles": 5181.5,
         "arrivals_covariate": "M01"
       }
     },
@@ -1726,14 +1744,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T07:15:00+05:30",
       "horizon_min": 75,
-      "state": "forecast",
-      "value": 115.78875325520835,
+      "state": "scenario",
+      "value": 143.17937825520832,
       "unit": "%",
-      "lower": 102.76229487980602,
-      "upper": 130.92651818389416,
+      "lower": 127.14177590905267,
+      "upper": 160.76098317772644,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 115.78875325520835,
+      "delta": 27.39062499999997,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -1742,10 +1760,10 @@
       "recommendation": {
         "action": "divert arrivals from Main lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 156.0,
+        "quantity": 426.7,
         "target_entity_id": "P2",
         "from_entity_id": null,
-        "rationale": "Main lot is forecast at 13,895 vehicles against 12,000 bays, so about 1,895 will not fit",
+        "rationale": "Main lot is forecast at 17,182 vehicles against 12,000 bays, so about 5,182 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -1755,7 +1773,7 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 1894.7,
+        "overflow_vehicles": 5181.5,
         "arrivals_covariate": "M01"
       }
     },
@@ -1766,14 +1784,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T07:15:00+05:30",
       "horizon_min": 75,
-      "state": "forecast",
-      "value": 24.473251953125008,
+      "state": "scenario",
+      "value": 40.907626953124996,
       "unit": "min",
-      "lower": 16.65737692788361,
-      "upper": 33.5559109103365,
+      "lower": 31.285065545431603,
+      "upper": 51.456589906635884,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 24.473251953125008,
+      "delta": 16.43437499999999,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -1787,9 +1805,9 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 1894.7,
+        "overflow_vehicles": 5181.5,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 115.8
+        "occupancy_pct": 143.2
       }
     },
     {
@@ -1799,14 +1817,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T07:30:00+05:30",
       "horizon_min": 90,
-      "state": "forecast",
-      "value": 13494.40234375,
+      "state": "scenario",
+      "value": 16643.181640625,
       "unit": "vehicles",
-      "lower": 11684.0712857949,
-      "upper": 15302.312922459614,
+      "lower": 14455.794147718701,
+      "upper": 18778.857807575027,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 13494.40234375,
+      "delta": 3148.779296875,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -1820,7 +1838,7 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 1494.4,
+        "overflow_vehicles": 4643.2,
         "arrivals_covariate": "M01"
       }
     },
@@ -1831,14 +1849,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T07:30:00+05:30",
       "horizon_min": 90,
-      "state": "forecast",
-      "value": 112.45335286458334,
+      "state": "scenario",
+      "value": 138.69318033854168,
       "unit": "%",
-      "lower": 97.36726071495751,
-      "upper": 127.51927435383013,
+      "lower": 120.46495123098917,
+      "upper": 156.4904817297919,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 112.45335286458334,
+      "delta": 26.239827473958343,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -1847,10 +1865,10 @@
       "recommendation": {
         "action": "divert arrivals from Main lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 123.1,
+        "quantity": 382.4,
         "target_entity_id": "P2",
         "from_entity_id": null,
-        "rationale": "Main lot is forecast at 13,494 vehicles against 12,000 bays, so about 1,494 will not fit",
+        "rationale": "Main lot is forecast at 16,643 vehicles against 12,000 bays, so about 4,643 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -1860,7 +1878,7 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 1494.4,
+        "overflow_vehicles": 4643.2,
         "arrivals_covariate": "M01"
       }
     },
@@ -1871,14 +1889,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T07:30:00+05:30",
       "horizon_min": 90,
-      "state": "forecast",
-      "value": 22.47201171875,
+      "state": "scenario",
+      "value": 38.21590820312501,
       "unit": "min",
-      "lower": 13.42035642897451,
-      "upper": 31.51156461229808,
+      "lower": 27.278970738593504,
+      "upper": 48.89428903787515,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 22.47201171875,
+      "delta": 15.74389648437501,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -1892,9 +1910,9 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 1494.4,
+        "overflow_vehicles": 4643.2,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 112.5
+        "occupancy_pct": 138.7
       }
     },
     {
@@ -1904,14 +1922,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T07:45:00+05:30",
       "horizon_min": 105,
-      "state": "forecast",
-      "value": 13233.7578125,
+      "state": "scenario",
+      "value": 16302.078125,
       "unit": "vehicles",
-      "lower": 11443.380754782807,
-      "upper": 15305.073954701862,
+      "lower": 13714.398393907832,
+      "upper": 18604.615830710067,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 13233.7578125,
+      "delta": 3068.3203125,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -1925,7 +1943,7 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 1233.8,
+        "overflow_vehicles": 4302.1,
         "arrivals_covariate": "M01"
       }
     },
@@ -1936,14 +1954,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T07:45:00+05:30",
       "horizon_min": 105,
-      "state": "forecast",
-      "value": 110.28131510416668,
+      "state": "scenario",
+      "value": 135.85065104166668,
       "unit": "%",
-      "lower": 95.36150628985672,
-      "upper": 127.54228295584883,
+      "lower": 114.28665328256527,
+      "upper": 155.03846525591723,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 110.28131510416668,
+      "delta": 25.5693359375,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -1952,10 +1970,10 @@
       "recommendation": {
         "action": "divert arrivals from Main lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 101.6,
+        "quantity": 354.3,
         "target_entity_id": "P2",
         "from_entity_id": null,
-        "rationale": "Main lot is forecast at 13,234 vehicles against 12,000 bays, so about 1,234 will not fit",
+        "rationale": "Main lot is forecast at 16,302 vehicles against 12,000 bays, so about 4,302 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -1965,7 +1983,7 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 1233.8,
+        "overflow_vehicles": 4302.1,
         "arrivals_covariate": "M01"
       }
     },
@@ -1976,14 +1994,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T07:45:00+05:30",
       "horizon_min": 105,
-      "state": "forecast",
-      "value": 21.168789062500007,
+      "state": "scenario",
+      "value": 36.51039062500001,
       "unit": "min",
-      "lower": 12.216903773914034,
-      "upper": 31.525369773509308,
+      "lower": 23.571991969539162,
+      "upper": 48.023079153550334,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 21.168789062500007,
+      "delta": 15.3416015625,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -1997,9 +2015,9 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 1233.8,
+        "overflow_vehicles": 4302.1,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 110.3
+        "occupancy_pct": 135.9
       }
     },
     {
@@ -2009,14 +2027,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T08:00:00+05:30",
       "horizon_min": 120,
-      "state": "forecast",
-      "value": 12895.80859375,
+      "state": "scenario",
+      "value": 15838.228515625,
       "unit": "vehicles",
-      "lower": 10267.96964275456,
-      "upper": 15056.116227420562,
+      "lower": 12801.902787976685,
+      "upper": 18282.984330544692,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 12895.80859375,
+      "delta": 2942.419921875,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -2030,7 +2048,7 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 895.8,
+        "overflow_vehicles": 3838.2,
         "arrivals_covariate": "M01"
       }
     },
@@ -2041,14 +2059,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T08:00:00+05:30",
       "horizon_min": 120,
-      "state": "forecast",
-      "value": 107.46507161458334,
+      "state": "scenario",
+      "value": 131.98523763020833,
       "unit": "%",
-      "lower": 85.56641368962133,
-      "upper": 125.46763522850468,
+      "lower": 106.68252323313905,
+      "upper": 152.3582027545391,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 107.46507161458334,
+      "delta": 24.520166015624994,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -2057,10 +2075,10 @@
       "recommendation": {
         "action": "divert arrivals from Main lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 73.8,
+        "quantity": 316.1,
         "target_entity_id": "P2",
         "from_entity_id": null,
-        "rationale": "Main lot is forecast at 12,896 vehicles against 12,000 bays, so about 896 will not fit",
+        "rationale": "Main lot is forecast at 15,838 vehicles against 12,000 bays, so about 3,838 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -2070,7 +2088,7 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 895.8,
+        "overflow_vehicles": 3838.2,
         "arrivals_covariate": "M01"
       }
     },
@@ -2081,14 +2099,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T08:00:00+05:30",
       "horizon_min": 120,
-      "state": "forecast",
-      "value": 19.479042968750004,
+      "state": "scenario",
+      "value": 34.191142578125,
       "unit": "min",
-      "lower": 6.339848213772792,
-      "upper": 30.28058113710281,
+      "lower": 19.00951393988343,
+      "upper": 46.41492165272346,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 19.479042968750004,
+      "delta": 14.712099609374999,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -2102,9 +2120,9 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 895.8,
+        "overflow_vehicles": 3838.2,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 107.5
+        "occupancy_pct": 132.0
       }
     },
     {
@@ -2114,14 +2132,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T08:15:00+05:30",
       "horizon_min": 135,
-      "state": "forecast",
-      "value": 12480.578125,
+      "state": "scenario",
+      "value": 15325.859375,
       "unit": "vehicles",
-      "lower": 9457.38127715746,
-      "upper": 15601.14160014567,
+      "lower": 11789.441858356344,
+      "upper": 18996.65971355873,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 12480.578125,
+      "delta": 2845.28125,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -2135,7 +2153,7 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 480.6,
+        "overflow_vehicles": 3325.9,
         "arrivals_covariate": "M01"
       }
     },
@@ -2146,14 +2164,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T08:15:00+05:30",
       "horizon_min": 135,
-      "state": "forecast",
-      "value": 104.00481770833335,
+      "state": "scenario",
+      "value": 127.71549479166666,
       "unit": "%",
-      "lower": 78.81151064297883,
-      "upper": 130.00951333454725,
+      "lower": 98.2453488196362,
+      "upper": 158.3054976129894,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 104.00481770833335,
+      "delta": 23.71067708333331,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -2162,10 +2180,10 @@
       "recommendation": {
         "action": "divert arrivals from Main lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 39.6,
+        "quantity": 273.9,
         "target_entity_id": "P2",
         "from_entity_id": null,
-        "rationale": "Main lot is forecast at 12,481 vehicles against 12,000 bays, so about 481 will not fit",
+        "rationale": "Main lot is forecast at 15,326 vehicles against 12,000 bays, so about 3,326 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -2175,7 +2193,7 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 480.6,
+        "overflow_vehicles": 3325.9,
         "arrivals_covariate": "M01"
       }
     },
@@ -2186,14 +2204,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T08:15:00+05:30",
       "horizon_min": 135,
-      "state": "forecast",
-      "value": 17.402890625000005,
+      "state": "scenario",
+      "value": 31.629296875,
       "unit": "min",
-      "lower": 3.0,
-      "upper": 33.00570800072835,
+      "lower": 13.947209291781721,
+      "upper": 49.98329856779364,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 17.402890625000005,
+      "delta": 14.226406249999997,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -2207,9 +2225,9 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 480.6,
+        "overflow_vehicles": 3325.9,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 104.0
+        "occupancy_pct": 127.7
       }
     },
     {
@@ -2219,14 +2237,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T08:30:00+05:30",
       "horizon_min": 150,
-      "state": "forecast",
-      "value": 12180.462890625,
+      "state": "scenario",
+      "value": 14917.171875,
       "unit": "vehicles",
-      "lower": 8430.525695768885,
-      "upper": 15186.991405041425,
+      "lower": 10601.990035675462,
+      "upper": 18327.89183307396,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 12180.462890625,
+      "delta": 2736.708984375,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -2240,7 +2258,7 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 180.5,
+        "overflow_vehicles": 2917.2,
         "arrivals_covariate": "M01"
       }
     },
@@ -2251,14 +2269,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T08:30:00+05:30",
       "horizon_min": 150,
-      "state": "forecast",
-      "value": 101.503857421875,
+      "state": "scenario",
+      "value": 124.309765625,
       "unit": "%",
-      "lower": 70.25438079807404,
-      "upper": 126.55826170867854,
+      "lower": 88.34991696396219,
+      "upper": 152.732431942283,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 101.503857421875,
+      "delta": 22.805908203125,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -2267,10 +2285,10 @@
       "recommendation": {
         "action": "divert arrivals from Main lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 14.9,
+        "quantity": 240.2,
         "target_entity_id": "P2",
         "from_entity_id": null,
-        "rationale": "Main lot is forecast at 12,180 vehicles against 12,000 bays, so about 180 will not fit",
+        "rationale": "Main lot is forecast at 14,917 vehicles against 12,000 bays, so about 2,917 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -2280,7 +2298,7 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 180.5,
+        "overflow_vehicles": 2917.2,
         "arrivals_covariate": "M01"
       }
     },
@@ -2291,14 +2309,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T08:30:00+05:30",
       "horizon_min": 150,
-      "state": "forecast",
-      "value": 15.902314453125,
+      "state": "scenario",
+      "value": 29.585859375000005,
       "unit": "min",
-      "lower": 3.0,
-      "upper": 30.93495702520713,
+      "lower": 8.00995017837731,
+      "upper": 46.639459165369814,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 15.902314453125,
+      "delta": 13.683544921875006,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -2312,9 +2330,9 @@
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
         "occupied_spaces": 12000.0,
-        "overflow_vehicles": 180.5,
+        "overflow_vehicles": 2917.2,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 101.5
+        "occupancy_pct": 124.3
       }
     },
     {
@@ -2324,17 +2342,17 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T08:45:00+05:30",
       "horizon_min": 165,
-      "state": "forecast",
-      "value": 11912.19140625,
+      "state": "scenario",
+      "value": 14479.685546875,
       "unit": "vehicles",
-      "lower": 6923.170879610901,
-      "upper": 15149.981408277503,
+      "lower": 8922.652347628036,
+      "upper": 18309.699112553382,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 11912.19140625,
+      "delta": 2567.494140625,
       "risk_level": null,
       "reason_codes": [
-        "CONGESTION"
+        "PARKING_OVERFLOW"
       ],
       "resource_type": null,
       "recommendation": null,
@@ -2344,8 +2362,8 @@
         "band_calibrated": true,
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
-        "occupied_spaces": 11912.2,
-        "overflow_vehicles": 0.0,
+        "occupied_spaces": 12000.0,
+        "overflow_vehicles": 2479.7,
         "arrivals_covariate": "M01"
       }
     },
@@ -2356,28 +2374,36 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T08:45:00+05:30",
       "horizon_min": 165,
-      "state": "forecast",
-      "value": 99.26826171875,
+      "state": "scenario",
+      "value": 120.66404622395834,
       "unit": "%",
-      "lower": 57.69309066342417,
-      "upper": 126.24984506897918,
+      "lower": 74.35543623023364,
+      "upper": 152.58082593794484,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
-      "risk_level": "red",
+      "baseline_value": 99.26826171875,
+      "delta": 21.39578450520834,
+      "risk_level": "critical",
       "reason_codes": [
-        "CONGESTION"
+        "PARKING_OVERFLOW"
       ],
       "resource_type": null,
-      "recommendation": null,
+      "recommendation": {
+        "action": "divert arrivals from Main lot and run a shuttle from the overflow area",
+        "resource_type": "shuttle_bus",
+        "quantity": 204.2,
+        "target_entity_id": "P2",
+        "from_entity_id": null,
+        "rationale": "Main lot is forecast at 14,480 vehicles against 12,000 bays, so about 2,480 will not fit",
+        "requires_approval": true
+      },
       "confidence": 0.5,
       "details": {
         "backend": "chronos2",
         "band_calibrated": true,
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
-        "occupied_spaces": 11912.2,
-        "overflow_vehicles": 0.0,
+        "occupied_spaces": 12000.0,
+        "overflow_vehicles": 2479.7,
         "arrivals_covariate": "M01"
       }
     },
@@ -2388,17 +2414,17 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T08:45:00+05:30",
       "horizon_min": 165,
-      "state": "forecast",
-      "value": 14.560957031249997,
+      "state": "scenario",
+      "value": 27.39842773437501,
       "unit": "min",
       "lower": 3.0,
-      "upper": 30.749907041387512,
+      "upper": 46.54849556276691,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 14.560957031249997,
+      "delta": 12.837470703125012,
       "risk_level": null,
       "reason_codes": [
-        "CONGESTION"
+        "PARKING_OVERFLOW"
       ],
       "resource_type": null,
       "recommendation": null,
@@ -2408,10 +2434,10 @@
         "band_calibrated": true,
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
-        "occupied_spaces": 11912.2,
-        "overflow_vehicles": 0.0,
+        "occupied_spaces": 12000.0,
+        "overflow_vehicles": 2479.7,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 99.3
+        "occupancy_pct": 120.7
       }
     },
     {
@@ -2421,17 +2447,17 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T09:00:00+05:30",
       "horizon_min": 180,
-      "state": "forecast",
-      "value": 11455.98046875,
+      "state": "scenario",
+      "value": 13959.20703125,
       "unit": "vehicles",
-      "lower": 6573.406658747992,
-      "upper": 15402.660784382619,
+      "lower": 8354.205176942924,
+      "upper": 18469.602042353596,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 11455.98046875,
+      "delta": 2503.2265625,
       "risk_level": null,
       "reason_codes": [
-        "CONGESTION"
+        "PARKING_OVERFLOW"
       ],
       "resource_type": null,
       "recommendation": null,
@@ -2441,8 +2467,8 @@
         "band_calibrated": true,
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
-        "occupied_spaces": 11456.0,
-        "overflow_vehicles": 0.0,
+        "occupied_spaces": 12000.0,
+        "overflow_vehicles": 1959.2,
         "arrivals_covariate": "M01"
       }
     },
@@ -2453,28 +2479,36 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T09:00:00+05:30",
       "horizon_min": 180,
-      "state": "forecast",
-      "value": 95.46650390625,
+      "state": "scenario",
+      "value": 116.32672526041668,
       "unit": "%",
-      "lower": 54.778388822899934,
-      "upper": 128.3555065365218,
+      "lower": 69.61837647452437,
+      "upper": 153.91335035294662,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
-      "risk_level": "red",
+      "baseline_value": 95.46650390625,
+      "delta": 20.860221354166683,
+      "risk_level": "critical",
       "reason_codes": [
-        "CONGESTION"
+        "PARKING_OVERFLOW"
       ],
       "resource_type": null,
-      "recommendation": null,
+      "recommendation": {
+        "action": "divert arrivals from Main lot and run a shuttle from the overflow area",
+        "resource_type": "shuttle_bus",
+        "quantity": 161.3,
+        "target_entity_id": "P2",
+        "from_entity_id": null,
+        "rationale": "Main lot is forecast at 13,959 vehicles against 12,000 bays, so about 1,959 will not fit",
+        "requires_approval": true
+      },
       "confidence": 0.5,
       "details": {
         "backend": "chronos2",
         "band_calibrated": true,
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
-        "occupied_spaces": 11456.0,
-        "overflow_vehicles": 0.0,
+        "occupied_spaces": 12000.0,
+        "overflow_vehicles": 1959.2,
         "arrivals_covariate": "M01"
       }
     },
@@ -2485,17 +2519,17 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T09:00:00+05:30",
       "horizon_min": 180,
-      "state": "forecast",
-      "value": 12.279902343749999,
+      "state": "scenario",
+      "value": 24.796035156250007,
       "unit": "min",
       "lower": 3.0,
-      "upper": 32.01330392191308,
+      "upper": 47.348010211767985,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 12.279902343749999,
+      "delta": 12.516132812500008,
       "risk_level": null,
       "reason_codes": [
-        "CONGESTION"
+        "PARKING_OVERFLOW"
       ],
       "resource_type": null,
       "recommendation": null,
@@ -2505,10 +2539,10 @@
         "band_calibrated": true,
         "site_name": "Main lot",
         "capacity_spaces": 12000.0,
-        "occupied_spaces": 11456.0,
-        "overflow_vehicles": 0.0,
+        "occupied_spaces": 12000.0,
+        "overflow_vehicles": 1959.2,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 95.5
+        "occupancy_pct": 116.3
       }
     },
     {
@@ -2518,14 +2552,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T06:15:00+05:30",
       "horizon_min": 15,
-      "state": "forecast",
-      "value": 4832.10107421875,
+      "state": "scenario",
+      "value": 6028.931640625,
       "unit": "vehicles",
-      "lower": 4802.88086533719,
-      "upper": 5082.408335896156,
+      "lower": 5979.732508943285,
+      "upper": 6285.271159268812,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 4832.10107421875,
+      "delta": 1196.83056640625,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -2539,7 +2573,7 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 932.1,
+        "overflow_vehicles": 2128.9,
         "arrivals_covariate": "M01"
       }
     },
@@ -2550,14 +2584,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T06:15:00+05:30",
       "horizon_min": 15,
-      "state": "forecast",
-      "value": 123.90002754407053,
+      "state": "scenario",
+      "value": 154.5879907852564,
       "unit": "%",
-      "lower": 123.1507914189023,
-      "upper": 130.3181624588758,
+      "lower": 153.32647458828936,
+      "upper": 161.16079895561057,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 123.90002754407053,
+      "delta": 30.687963241185884,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -2566,10 +2600,10 @@
       "recommendation": {
         "action": "divert arrivals from Market lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 76.8,
+        "quantity": 175.3,
         "target_entity_id": "P3",
         "from_entity_id": null,
-        "rationale": "Market lot is forecast at 4,832 vehicles against 3,900 bays, so about 932 will not fit",
+        "rationale": "Market lot is forecast at 6,029 vehicles against 3,900 bays, so about 2,129 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -2579,7 +2613,7 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 932.1,
+        "overflow_vehicles": 2128.9,
         "arrivals_covariate": "M01"
       }
     },
@@ -2590,14 +2624,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T06:15:00+05:30",
       "horizon_min": 15,
-      "state": "forecast",
-      "value": 29.340016526442316,
+      "state": "scenario",
+      "value": 47.75279447115384,
       "unit": "min",
-      "lower": 28.890474851341388,
-      "upper": 33.190897475325485,
+      "lower": 46.99588475297363,
+      "upper": 51.69647937336635,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 29.340016526442316,
+      "delta": 18.412777944711525,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -2611,9 +2645,9 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 932.1,
+        "overflow_vehicles": 2128.9,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 123.9
+        "occupancy_pct": 154.6
       }
     },
     {
@@ -2623,14 +2657,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T06:30:00+05:30",
       "horizon_min": 30,
-      "state": "forecast",
-      "value": 4723.34228515625,
+      "state": "scenario",
+      "value": 5880.8955078125,
       "unit": "vehicles",
-      "lower": 4380.704905571456,
-      "upper": 5110.427559155879,
+      "lower": 5436.398619419332,
+      "upper": 6319.172721571161,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 4723.34228515625,
+      "delta": 1157.55322265625,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -2644,7 +2678,7 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 823.3,
+        "overflow_vehicles": 1980.9,
         "arrivals_covariate": "M01"
       }
     },
@@ -2655,14 +2689,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T06:30:00+05:30",
       "horizon_min": 30,
-      "state": "forecast",
-      "value": 121.11134064503206,
+      "state": "scenario",
+      "value": 150.79219250801282,
       "unit": "%",
-      "lower": 112.32576680952451,
-      "upper": 131.03660408091997,
+      "lower": 139.3948363953675,
+      "upper": 162.03006978387592,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 121.11134064503206,
+      "delta": 29.68085186298076,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -2671,10 +2705,10 @@
       "recommendation": {
         "action": "divert arrivals from Market lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 67.8,
+        "quantity": 163.1,
         "target_entity_id": "P3",
         "from_entity_id": null,
-        "rationale": "Market lot is forecast at 4,723 vehicles against 3,900 bays, so about 823 will not fit",
+        "rationale": "Market lot is forecast at 5,881 vehicles against 3,900 bays, so about 1,981 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -2684,7 +2718,7 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 823.3,
+        "overflow_vehicles": 1980.9,
         "arrivals_covariate": "M01"
       }
     },
@@ -2695,14 +2729,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T06:30:00+05:30",
       "horizon_min": 30,
-      "state": "forecast",
-      "value": 27.66680438701924,
+      "state": "scenario",
+      "value": 45.475315504807696,
       "unit": "min",
-      "lower": 22.395460085714706,
-      "upper": 33.62196244855198,
+      "lower": 38.6369018372205,
+      "upper": 52.21804187032556,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 27.66680438701924,
+      "delta": 17.808511117788456,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -2716,9 +2750,9 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 823.3,
+        "overflow_vehicles": 1980.9,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 121.1
+        "occupancy_pct": 150.8
       }
     },
     {
@@ -2728,14 +2762,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T06:45:00+05:30",
       "horizon_min": 45,
-      "state": "forecast",
-      "value": 4629.08056640625,
+      "state": "scenario",
+      "value": 5748.484375,
       "unit": "vehicles",
-      "lower": 4295.841983496266,
-      "upper": 5144.871933267353,
+      "lower": 5317.563304714337,
+      "upper": 6365.287883553059,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 4629.08056640625,
+      "delta": 1119.40380859375,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -2749,7 +2783,7 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 729.1,
+        "overflow_vehicles": 1848.5,
         "arrivals_covariate": "M01"
       }
     },
@@ -2760,14 +2794,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T06:45:00+05:30",
       "horizon_min": 45,
-      "state": "forecast",
-      "value": 118.69437349759615,
+      "state": "scenario",
+      "value": 147.39703525641025,
       "unit": "%",
-      "lower": 110.1497944486222,
-      "upper": 131.91979316070135,
+      "lower": 136.34777704395736,
+      "upper": 163.21250983469383,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 118.69437349759615,
+      "delta": 28.702661758814102,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -2776,10 +2810,10 @@
       "recommendation": {
         "action": "divert arrivals from Market lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 60.0,
+        "quantity": 152.2,
         "target_entity_id": "P3",
         "from_entity_id": null,
-        "rationale": "Market lot is forecast at 4,629 vehicles against 3,900 bays, so about 729 will not fit",
+        "rationale": "Market lot is forecast at 5,748 vehicles against 3,900 bays, so about 1,848 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -2789,7 +2823,7 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 729.1,
+        "overflow_vehicles": 1848.5,
         "arrivals_covariate": "M01"
       }
     },
@@ -2800,14 +2834,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T06:45:00+05:30",
       "horizon_min": 45,
-      "state": "forecast",
-      "value": 26.21662409855769,
+      "state": "scenario",
+      "value": 43.438221153846165,
       "unit": "min",
-      "lower": 21.089876669173325,
-      "upper": 34.15187589642081,
+      "lower": 36.80866622637443,
+      "upper": 52.92750590081632,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 26.21662409855769,
+      "delta": 17.221597055288473,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -2821,9 +2855,9 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 729.1,
+        "overflow_vehicles": 1848.5,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 118.7
+        "occupancy_pct": 147.4
       }
     },
     {
@@ -2833,14 +2867,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T07:00:00+05:30",
       "horizon_min": 60,
-      "state": "forecast",
-      "value": 4606.13720703125,
+      "state": "scenario",
+      "value": 5712.05078125,
       "unit": "vehicles",
-      "lower": 4112.135137891967,
-      "upper": 5145.307931085568,
+      "lower": 5084.719982403561,
+      "upper": 6342.896658275839,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 4606.13720703125,
+      "delta": 1105.91357421875,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -2854,7 +2888,7 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 706.1,
+        "overflow_vehicles": 1812.1,
         "arrivals_covariate": "M01"
       }
     },
@@ -2865,14 +2899,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T07:00:00+05:30",
       "horizon_min": 60,
-      "state": "forecast",
-      "value": 118.10608223157051,
+      "state": "scenario",
+      "value": 146.4628405448718,
       "unit": "%",
-      "lower": 105.43936251005044,
-      "upper": 131.93097259193763,
+      "lower": 130.37743544624513,
+      "upper": 162.63837585322665,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 118.10608223157051,
+      "delta": 28.356758313301285,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -2881,10 +2915,10 @@
       "recommendation": {
         "action": "divert arrivals from Market lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 58.2,
+        "quantity": 149.2,
         "target_entity_id": "P3",
         "from_entity_id": null,
-        "rationale": "Market lot is forecast at 4,606 vehicles against 3,900 bays, so about 706 will not fit",
+        "rationale": "Market lot is forecast at 5,712 vehicles against 3,900 bays, so about 1,812 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -2894,7 +2928,7 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 706.1,
+        "overflow_vehicles": 1812.1,
         "arrivals_covariate": "M01"
       }
     },
@@ -2905,14 +2939,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T07:00:00+05:30",
       "horizon_min": 60,
-      "state": "forecast",
-      "value": 25.863649338942306,
+      "state": "scenario",
+      "value": 42.87770432692309,
       "unit": "min",
-      "lower": 18.263617506030265,
-      "upper": 34.15858355516258,
+      "lower": 33.226461267747084,
+      "upper": 52.583025511936,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 25.863649338942306,
+      "delta": 17.01405498798078,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -2926,9 +2960,9 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 706.1,
+        "overflow_vehicles": 1812.1,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 118.1
+        "occupancy_pct": 146.5
       }
     },
     {
@@ -2938,14 +2972,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T07:15:00+05:30",
       "horizon_min": 75,
-      "state": "forecast",
-      "value": 4515.48828125,
+      "state": "scenario",
+      "value": 5584.72705078125,
       "unit": "vehicles",
-      "lower": 4007.6671497956754,
-      "upper": 5105.6405986379805,
+      "lower": 4959.215598978884,
+      "upper": 6270.70163549875,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 4515.48828125,
+      "delta": 1069.23876953125,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -2959,7 +2993,7 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 615.5,
+        "overflow_vehicles": 1684.7,
         "arrivals_covariate": "M01"
       }
     },
@@ -2970,14 +3004,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T07:15:00+05:30",
       "horizon_min": 75,
-      "state": "forecast",
-      "value": 115.78175080128206,
+      "state": "scenario",
+      "value": 143.19812950721155,
       "unit": "%",
-      "lower": 102.76069614860705,
-      "upper": 130.91386150353796,
+      "lower": 127.1593743327919,
+      "upper": 160.78722142304485,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 115.78175080128206,
+      "delta": 27.41637870592949,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -2986,10 +3020,10 @@
       "recommendation": {
         "action": "divert arrivals from Market lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 50.7,
+        "quantity": 138.7,
         "target_entity_id": "P3",
         "from_entity_id": null,
-        "rationale": "Market lot is forecast at 4,515 vehicles against 3,900 bays, so about 615 will not fit",
+        "rationale": "Market lot is forecast at 5,585 vehicles against 3,900 bays, so about 1,685 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -2999,7 +3033,7 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 615.5,
+        "overflow_vehicles": 1684.7,
         "arrivals_covariate": "M01"
       }
     },
@@ -3010,14 +3044,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T07:15:00+05:30",
       "horizon_min": 75,
-      "state": "forecast",
-      "value": 24.469050480769237,
+      "state": "scenario",
+      "value": 40.91887770432694,
       "unit": "min",
-      "lower": 16.656417689164236,
-      "upper": 33.54831690212278,
+      "lower": 31.295624599675143,
+      "upper": 51.47233285382692,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 24.469050480769237,
+      "delta": 16.4498272235577,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -3031,9 +3065,9 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 615.5,
+        "overflow_vehicles": 1684.7,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 115.8
+        "occupancy_pct": 143.2
       }
     },
     {
@@ -3043,14 +3077,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T07:30:00+05:30",
       "horizon_min": 90,
-      "state": "forecast",
-      "value": 4385.509765625,
+      "state": "scenario",
+      "value": 5409.7890625,
       "unit": "vehicles",
-      "lower": 3797.3362996794776,
-      "upper": 4972.886706481089,
+      "lower": 4698.82811377556,
+      "upper": 6103.956191879526,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 4385.509765625,
+      "delta": 1024.279296875,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -3064,7 +3098,7 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 485.5,
+        "overflow_vehicles": 1509.8,
         "arrivals_covariate": "M01"
       }
     },
@@ -3075,14 +3109,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T07:30:00+05:30",
       "horizon_min": 90,
-      "state": "forecast",
-      "value": 112.44896834935898,
+      "state": "scenario",
+      "value": 138.71254006410257,
       "unit": "%",
-      "lower": 97.3675974276789,
-      "upper": 127.50991555079716,
+      "lower": 120.48277214809129,
+      "upper": 156.51169722768017,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 112.44896834935898,
+      "delta": 26.26357171474359,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -3091,10 +3125,10 @@
       "recommendation": {
         "action": "divert arrivals from Market lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 40.0,
+        "quantity": 124.3,
         "target_entity_id": "P3",
         "from_entity_id": null,
-        "rationale": "Market lot is forecast at 4,386 vehicles against 3,900 bays, so about 486 will not fit",
+        "rationale": "Market lot is forecast at 5,410 vehicles against 3,900 bays, so about 1,510 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -3104,7 +3138,7 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 485.5,
+        "overflow_vehicles": 1509.8,
         "arrivals_covariate": "M01"
       }
     },
@@ -3115,14 +3149,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T07:30:00+05:30",
       "horizon_min": 90,
-      "state": "forecast",
-      "value": 22.46938100961539,
+      "state": "scenario",
+      "value": 38.227524038461546,
       "unit": "min",
-      "lower": 13.420558456607338,
-      "upper": 31.5059493304783,
+      "lower": 27.289663288854776,
+      "upper": 48.90701833660811,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 22.46938100961539,
+      "delta": 15.758143028846156,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -3136,9 +3170,9 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 485.5,
+        "overflow_vehicles": 1509.8,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 112.4
+        "occupancy_pct": 138.7
       }
     },
     {
@@ -3148,14 +3182,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T07:45:00+05:30",
       "horizon_min": 105,
-      "state": "forecast",
-      "value": 4300.896484375,
+      "state": "scenario",
+      "value": 5298.89208984375,
       "unit": "vehicles",
-      "lower": 3719.214847443729,
-      "upper": 4973.96217875074,
+      "lower": 4457.43959589842,
+      "upper": 6047.560875248787,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 4300.896484375,
+      "delta": 997.99560546875,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -3169,7 +3203,7 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 400.9,
+        "overflow_vehicles": 1398.9,
         "arrivals_covariate": "M01"
       }
     },
@@ -3180,14 +3214,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T07:45:00+05:30",
       "horizon_min": 105,
-      "state": "forecast",
-      "value": 110.27939703525642,
+      "state": "scenario",
+      "value": 135.86902794471155,
       "unit": "%",
-      "lower": 95.36448326778793,
-      "upper": 127.53749176283951,
+      "lower": 114.29332297175434,
+      "upper": 155.0656634679176,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 110.27939703525642,
+      "delta": 25.589630909455124,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -3196,10 +3230,10 @@
       "recommendation": {
         "action": "divert arrivals from Market lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 33.0,
+        "quantity": 115.2,
         "target_entity_id": "P3",
         "from_entity_id": null,
-        "rationale": "Market lot is forecast at 4,301 vehicles against 3,900 bays, so about 401 will not fit",
+        "rationale": "Market lot is forecast at 5,299 vehicles against 3,900 bays, so about 1,399 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -3209,7 +3243,7 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 400.9,
+        "overflow_vehicles": 1398.9,
         "arrivals_covariate": "M01"
       }
     },
@@ -3220,14 +3254,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T07:45:00+05:30",
       "horizon_min": 105,
-      "state": "forecast",
-      "value": 21.167638221153855,
+      "state": "scenario",
+      "value": 36.52141676682693,
       "unit": "min",
-      "lower": 12.21868996067276,
-      "upper": 31.522495057703708,
+      "lower": 23.575993783052606,
+      "upper": 48.03939808075056,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 21.167638221153855,
+      "delta": 15.353778545673077,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -3241,9 +3275,9 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 400.9,
+        "overflow_vehicles": 1398.9,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 110.3
+        "occupancy_pct": 135.9
       }
     },
     {
@@ -3253,14 +3287,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T08:00:00+05:30",
       "horizon_min": 120,
-      "state": "forecast",
-      "value": 4191.2275390625,
+      "state": "scenario",
+      "value": 5148.0361328125,
       "unit": "vehicles",
-      "lower": 3337.2090892319366,
-      "upper": 4893.29910828447,
+      "lower": 4160.79362803622,
+      "upper": 5942.952221626648,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 4191.2275390625,
+      "delta": 956.80859375,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -3274,7 +3308,7 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 291.2,
+        "overflow_vehicles": 1248.0,
         "arrivals_covariate": "M01"
       }
     },
@@ -3285,14 +3319,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T08:00:00+05:30",
       "horizon_min": 120,
-      "state": "forecast",
-      "value": 107.46737279647436,
+      "state": "scenario",
+      "value": 132.0009264823718,
       "unit": "%",
-      "lower": 85.56946382645991,
-      "upper": 125.46920790473,
+      "lower": 106.68701610349282,
+      "upper": 152.3833902981192,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 107.46737279647436,
+      "delta": 24.53355368589743,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -3301,10 +3335,10 @@
       "recommendation": {
         "action": "divert arrivals from Market lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 24.0,
+        "quantity": 102.8,
         "target_entity_id": "P3",
         "from_entity_id": null,
-        "rationale": "Market lot is forecast at 4,191 vehicles against 3,900 bays, so about 291 will not fit",
+        "rationale": "Market lot is forecast at 5,148 vehicles against 3,900 bays, so about 1,248 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -3314,7 +3348,7 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 291.2,
+        "overflow_vehicles": 1248.0,
         "arrivals_covariate": "M01"
       }
     },
@@ -3325,14 +3359,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T08:00:00+05:30",
       "horizon_min": 120,
-      "state": "forecast",
-      "value": 19.480423677884616,
+      "state": "scenario",
+      "value": 34.200555889423086,
       "unit": "min",
-      "lower": 6.341678295875946,
-      "upper": 30.281524742838002,
+      "lower": 19.012209662095696,
+      "upper": 46.43003417887153,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 19.480423677884616,
+      "delta": 14.72013221153847,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -3346,9 +3380,9 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 291.2,
+        "overflow_vehicles": 1248.0,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 107.5
+        "occupancy_pct": 132.0
       }
     },
     {
@@ -3358,14 +3392,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T08:15:00+05:30",
       "horizon_min": 135,
-      "state": "forecast",
-      "value": 4056.376953125,
+      "state": "scenario",
+      "value": 4981.3828125,
       "unit": "vehicles",
-      "lower": 3073.478200197186,
-      "upper": 5069.676079173089,
+      "lower": 3831.7502072458774,
+      "upper": 6174.966230599464,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 4056.376953125,
+      "delta": 925.005859375,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -3379,7 +3413,7 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 156.4,
+        "overflow_vehicles": 1081.4,
         "arrivals_covariate": "M01"
       }
     },
@@ -3390,14 +3424,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T08:15:00+05:30",
       "horizon_min": 135,
-      "state": "forecast",
-      "value": 104.00966546474359,
+      "state": "scenario",
+      "value": 127.72776442307692,
       "unit": "%",
-      "lower": 78.80713333838939,
-      "upper": 129.99169433777152,
+      "lower": 98.25000531399685,
+      "upper": 158.33246745126831,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 104.00966546474359,
+      "delta": 23.71809895833333,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -3406,10 +3440,10 @@
       "recommendation": {
         "action": "divert arrivals from Market lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 12.9,
+        "quantity": 89.1,
         "target_entity_id": "P3",
         "from_entity_id": null,
-        "rationale": "Market lot is forecast at 4,056 vehicles against 3,900 bays, so about 156 will not fit",
+        "rationale": "Market lot is forecast at 4,981 vehicles against 3,900 bays, so about 1,081 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -3419,7 +3453,7 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 156.4,
+        "overflow_vehicles": 1081.4,
         "arrivals_covariate": "M01"
       }
     },
@@ -3430,14 +3464,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T08:15:00+05:30",
       "horizon_min": 135,
-      "state": "forecast",
-      "value": 17.405799278846157,
+      "state": "scenario",
+      "value": 31.636658653846155,
       "unit": "min",
-      "lower": 3.0,
-      "upper": 32.995016602662915,
+      "lower": 13.950003188398108,
+      "upper": 49.99948047076099,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 17.405799278846157,
+      "delta": 14.230859374999998,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -3451,9 +3485,9 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 156.4,
+        "overflow_vehicles": 1081.4,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 104.0
+        "occupancy_pct": 127.7
       }
     },
     {
@@ -3463,14 +3497,14 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T08:30:00+05:30",
       "horizon_min": 150,
-      "state": "forecast",
-      "value": 3958.69580078125,
+      "state": "scenario",
+      "value": 4848.5556640625,
       "unit": "vehicles",
-      "lower": 2740.057423985418,
-      "upper": 4935.738364974142,
+      "lower": 3445.490664278186,
+      "upper": 5957.544863055466,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 3958.69580078125,
+      "delta": 889.85986328125,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -3484,7 +3518,7 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 58.7,
+        "overflow_vehicles": 948.6,
         "arrivals_covariate": "M01"
       }
     },
@@ -3495,14 +3529,14 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T08:30:00+05:30",
       "horizon_min": 150,
-      "state": "forecast",
-      "value": 101.50502053285257,
+      "state": "scenario",
+      "value": 124.32194010416666,
       "unit": "%",
-      "lower": 70.25788266629277,
-      "upper": 126.55739397369597,
+      "lower": 88.34591446867144,
+      "upper": 152.7575605911658,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 101.50502053285257,
+      "delta": 22.816919571314088,
       "risk_level": "critical",
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -3511,10 +3545,10 @@
       "recommendation": {
         "action": "divert arrivals from Market lot and run a shuttle from the overflow area",
         "resource_type": "shuttle_bus",
-        "quantity": 4.8,
+        "quantity": 78.1,
         "target_entity_id": "P3",
         "from_entity_id": null,
-        "rationale": "Market lot is forecast at 3,959 vehicles against 3,900 bays, so about 59 will not fit",
+        "rationale": "Market lot is forecast at 4,849 vehicles against 3,900 bays, so about 949 will not fit",
         "requires_approval": true
       },
       "confidence": 0.5,
@@ -3524,7 +3558,7 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 58.7,
+        "overflow_vehicles": 948.6,
         "arrivals_covariate": "M01"
       }
     },
@@ -3535,14 +3569,14 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T08:30:00+05:30",
       "horizon_min": 150,
-      "state": "forecast",
-      "value": 15.903012319711545,
+      "state": "scenario",
+      "value": 29.5931640625,
       "unit": "min",
-      "lower": 3.0,
-      "upper": 30.93443638421758,
+      "lower": 8.007548681202861,
+      "upper": 46.654536354699495,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 15.903012319711545,
+      "delta": 13.690151742788457,
       "risk_level": null,
       "reason_codes": [
         "PARKING_OVERFLOW"
@@ -3556,9 +3590,9 @@
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
         "occupied_spaces": 3900.0,
-        "overflow_vehicles": 58.7,
+        "overflow_vehicles": 948.6,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 101.5
+        "occupancy_pct": 124.3
       }
     },
     {
@@ -3568,17 +3602,17 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T08:45:00+05:30",
       "horizon_min": 165,
-      "state": "forecast",
-      "value": 3871.8212890625,
+      "state": "scenario",
+      "value": 4706.25390625,
       "unit": "vehicles",
-      "lower": 2249.9759151733365,
-      "upper": 4923.799422182045,
+      "lower": 2899.348202333106,
+      "upper": 5951.5972680690065,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 3871.8212890625,
+      "delta": 834.4326171875,
       "risk_level": null,
       "reason_codes": [
-        "CONGESTION"
+        "PARKING_OVERFLOW"
       ],
       "resource_type": null,
       "recommendation": null,
@@ -3588,8 +3622,8 @@
         "band_calibrated": true,
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
-        "occupied_spaces": 3871.8,
-        "overflow_vehicles": 0.0,
+        "occupied_spaces": 3900.0,
+        "overflow_vehicles": 806.3,
         "arrivals_covariate": "M01"
       }
     },
@@ -3600,28 +3634,36 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T08:45:00+05:30",
       "horizon_min": 165,
-      "state": "forecast",
-      "value": 99.27746895032051,
+      "state": "scenario",
+      "value": 120.67317708333334,
       "unit": "%",
-      "lower": 57.691690132649654,
-      "upper": 126.25126723543707,
+      "lower": 74.34226159828478,
+      "upper": 152.60505815561555,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
-      "risk_level": "red",
+      "baseline_value": 99.27746895032051,
+      "delta": 21.395708133012832,
+      "risk_level": "critical",
       "reason_codes": [
-        "CONGESTION"
+        "PARKING_OVERFLOW"
       ],
       "resource_type": null,
-      "recommendation": null,
+      "recommendation": {
+        "action": "divert arrivals from Market lot and run a shuttle from the overflow area",
+        "resource_type": "shuttle_bus",
+        "quantity": 66.4,
+        "target_entity_id": "P3",
+        "from_entity_id": null,
+        "rationale": "Market lot is forecast at 4,706 vehicles against 3,900 bays, so about 806 will not fit",
+        "requires_approval": true
+      },
       "confidence": 0.5,
       "details": {
         "backend": "chronos2",
         "band_calibrated": true,
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
-        "occupied_spaces": 3871.8,
-        "overflow_vehicles": 0.0,
+        "occupied_spaces": 3900.0,
+        "overflow_vehicles": 806.3,
         "arrivals_covariate": "M01"
       }
     },
@@ -3632,17 +3674,17 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T08:45:00+05:30",
       "horizon_min": 165,
-      "state": "forecast",
-      "value": 14.566481370192308,
+      "state": "scenario",
+      "value": 27.403906250000006,
       "unit": "min",
       "lower": 3.0,
-      "upper": 30.750760341262247,
+      "upper": 46.56303489336934,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 14.566481370192308,
+      "delta": 12.837424879807697,
       "risk_level": null,
       "reason_codes": [
-        "CONGESTION"
+        "PARKING_OVERFLOW"
       ],
       "resource_type": null,
       "recommendation": null,
@@ -3652,10 +3694,10 @@
         "band_calibrated": true,
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
-        "occupied_spaces": 3871.8,
-        "overflow_vehicles": 0.0,
+        "occupied_spaces": 3900.0,
+        "overflow_vehicles": 806.3,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 99.3
+        "occupancy_pct": 120.7
       }
     },
     {
@@ -3665,17 +3707,17 @@
       "kpi": "parking_demand",
       "timestamp": "2027-08-02T09:00:00+05:30",
       "horizon_min": 180,
-      "state": "forecast",
-      "value": 3723.49462890625,
+      "state": "scenario",
+      "value": 4536.96923828125,
       "unit": "vehicles",
-      "lower": 2136.8249228059767,
-      "upper": 5005.910286734,
+      "lower": 2714.2579253317354,
+      "upper": 6003.569816127509,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 3723.49462890625,
+      "delta": 813.474609375,
       "risk_level": null,
       "reason_codes": [
-        "CONGESTION"
+        "PARKING_OVERFLOW"
       ],
       "resource_type": null,
       "recommendation": null,
@@ -3685,8 +3727,8 @@
         "band_calibrated": true,
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
-        "occupied_spaces": 3723.5,
-        "overflow_vehicles": 0.0,
+        "occupied_spaces": 3900.0,
+        "overflow_vehicles": 637.0,
         "arrivals_covariate": "M01"
       }
     },
@@ -3697,28 +3739,36 @@
       "kpi": "parking_occupancy",
       "timestamp": "2027-08-02T09:00:00+05:30",
       "horizon_min": 180,
-      "state": "forecast",
-      "value": 95.47422125400641,
+      "state": "scenario",
+      "value": 116.3325445713141,
       "unit": "%",
-      "lower": 54.79038263605068,
-      "upper": 128.3566740188205,
+      "lower": 69.59635705978809,
+      "upper": 153.93768759301304,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
-      "risk_level": "red",
+      "baseline_value": 95.47422125400641,
+      "delta": 20.858323317307693,
+      "risk_level": "critical",
       "reason_codes": [
-        "CONGESTION"
+        "PARKING_OVERFLOW"
       ],
       "resource_type": null,
-      "recommendation": null,
+      "recommendation": {
+        "action": "divert arrivals from Market lot and run a shuttle from the overflow area",
+        "resource_type": "shuttle_bus",
+        "quantity": 52.5,
+        "target_entity_id": "P3",
+        "from_entity_id": null,
+        "rationale": "Market lot is forecast at 4,537 vehicles against 3,900 bays, so about 637 will not fit",
+        "requires_approval": true
+      },
       "confidence": 0.5,
       "details": {
         "backend": "chronos2",
         "band_calibrated": true,
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
-        "occupied_spaces": 3723.5,
-        "overflow_vehicles": 0.0,
+        "occupied_spaces": 3900.0,
+        "overflow_vehicles": 637.0,
         "arrivals_covariate": "M01"
       }
     },
@@ -3729,17 +3779,17 @@
       "kpi": "parking_search_time",
       "timestamp": "2027-08-02T09:00:00+05:30",
       "horizon_min": 180,
-      "state": "forecast",
-      "value": 12.284532752403845,
+      "state": "scenario",
+      "value": 24.799526742788462,
       "unit": "min",
       "lower": 3.0,
-      "upper": 32.01400441129231,
+      "upper": 47.36261255580782,
       "quantile_level": 0.8,
-      "baseline_value": null,
-      "delta": null,
+      "baseline_value": 12.284532752403845,
+      "delta": 12.514993990384617,
       "risk_level": null,
       "reason_codes": [
-        "CONGESTION"
+        "PARKING_OVERFLOW"
       ],
       "resource_type": null,
       "recommendation": null,
@@ -3749,10 +3799,10 @@
         "band_calibrated": true,
         "site_name": "Market lot",
         "capacity_spaces": 3900.0,
-        "occupied_spaces": 3723.5,
-        "overflow_vehicles": 0.0,
+        "occupied_spaces": 3900.0,
+        "overflow_vehicles": 637.0,
         "arrivals_covariate": "M01",
-        "occupancy_pct": 95.5
+        "occupancy_pct": 116.3
       }
     }
   ]

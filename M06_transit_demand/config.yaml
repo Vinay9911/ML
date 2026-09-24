@@ -1,0 +1,83 @@
+# M06 - Transit / Shuttle Demand
+#
+# The standard keys are fixed by docs/02 section 8 and are read by twin_common; `params` is
+# yours. EVERY number this model uses belongs under `params` or in 00_common/config -
+# CLAUDE.md forbids thresholds, rates and weights in src/.
+model_id: M06
+model_name: Transit / Shuttle Demand
+model_version: 0.1.0
+port: 8006
+engine: forecast
+
+data_source: synthetic
+seed: 42
+demo_now: "2027-08-02T06:00:00+05:30"
+
+horizons_min: [15, 60, 180]
+default_horizon_min: 180
+
+# M01 gives forecast arrivals, M05 the parking overflow that pushes riders onto the shuttles.
+upstream: [M01, M05]
+
+inputs: [transit_15min, footfall_15min, event_calendar]
+
+kpis: [shuttle_demand, shuttle_requirement, passenger_wait_time]
+
+# docs/05 section 1.2 lists M06 under S02 only.
+#
+# The docs/03 M06 card adds "S06/S12 up round trip time via M04 details if present". M04 is a
+# Phase 7 model and does not exist yet, and neither scenario closes a shuttle route, so M06
+# reports itself insensitive to both rather than returning an unchanged baseline. The
+# round-trip override is already wired: pass `round_trip_min` in the scenario overrides, or
+# add M04 upstream once it exists, and the wait and fleet numbers move.
+scenarios_supported: [S01, S02]
+
+upstream_timeout_s: 5
+
+# ---------------------------------------------------------------- model parameters
+params:
+  # --- the forecast engine ---------------------------------------------------
+  forecast:
+    backend: chronos2
+    hub_model_name: autogluon/chronos-2-small
+    quantiles: [0.1, 0.5, 0.9]
+    input_chunk_length: 96
+    lightgbm_lags: 96
+    seasonality: 96
+    max_context_steps: 2688
+    allow_fallback: true
+    # Raw quantiles are too narrow at long horizons; see twin_common.engines.forecast.
+    calibration:
+      enabled: true
+      folds: 24
+      stride_steps: 24
+      min_factor: 1.0
+      max_factor: 12.0
+
+  # --- fleet arithmetic (docs/03 M06) ----------------------------------------
+  # buses = ceil(demand * round_trip_min/60 / (bus_capacity * bus_load_factor)).
+  # round_trip_min, bus_capacity and bus_load_factor come from assumptions.transport, and the
+  # fleet size from resources.yaml (shuttle_bus.available), so M24 and M06 cannot disagree.
+
+  # 15-min boardings to persons/hr.
+  steps_per_hour: 4
+
+  # A route cannot run a fraction of a bus, and cannot run fewer than this when it has any
+  # demand at all - a route with one waiting passenger still needs a vehicle.
+  min_buses_when_demand: 1
+
+  # Wait time is headway/2 (docs/03 M06) multiplied by an overload factor when the deployed
+  # fleet cannot carry the demand: if twice as many people want to board as the buses can
+  # take, on average a passenger watches one full bus go by before boarding. Set to false to
+  # report the plain headway/2 of the card.
+  apply_overload_to_wait: true
+  # Ceiling on that factor, so a wildly oversubscribed route reports a large-but-finite wait
+  # rather than something that reads as a bug. The route is flagged CONGESTION either way.
+  max_overload_factor: 20.0
+
+  # A demand or wait below this is reported as zero; quantile bands can dip below zero.
+  floor_value: 0.0
+
+  # Reported on each record. Heuristic, not calibrated. Lower than M01's because M06 sits two
+  # hops downstream (M01 -> M05 -> M06) and inherits both models' error.
+  confidence: 0.45

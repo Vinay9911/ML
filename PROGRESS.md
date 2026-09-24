@@ -9,7 +9,7 @@ Update at the end of every phase and every model. Status: ⬜ not started · �
 | 1 | twin_common core | ✅ | feat(common): contracts, config, io, api factory | 423 tests; 93 KPIs asserted; graph acyclic; schemas exported |
 | 2 | Synthetic world + fetchers | ✅ | feat(common): synthetic world generator | 6 scenarios, 123-126 checks each, ~3s; 569 tests; offline OK |
 | 3 | Template, tooling, M21 | ✅ | feat(M21): weather impact + model template tooling | 11/11 DoD; validate_all 21 checks |
-| 4 | Forecast engine + 9 models | 🟨 | | engine + M01 + M05 done; M06 M15 M17 M18 M19 M20 M22 to go |
+| 4 | Forecast engine + 9 models | 🟨 | | engine + M01 M05 M06 done; M15 M17 M18 M19 M20 M22 to go |
 | 5 | Formula/rules/ML + 5 models | ⬜ | | |
 | 6 | Vision + 2 models | ⬜ | | |
 | 7 | Network/optimization + 6 models | ⬜ | | |
@@ -24,7 +24,7 @@ Update at the end of every phase and every model. Status: ⬜ not started · �
 | M03 | M03_hotspot_risk | rules | 5 | ⬜ | | | |
 | M04 | M04_traffic_forecast | network | 7 | ⬜ | | | |
 | M05 | M05_parking_demand | forecast | 4 | ✅ | 57 pass | model-reviewer: no blocking gaps | forecasts uncapped demand, so occupancy can exceed 100%; parking capacity raised 4,800 -> 23,200 |
-| M06 | M06_transit_demand | forecast | 4 | ⬜ | | | |
+| M06 | M06_transit_demand | forecast | 4 | ✅ | 58 pass | self | first two-upstream model; fleet in resources.yaml is 4.6-18x too small - reported, not changed (M24 owns it) |
 | M07 | M07_medical_demand | formula | 5 | ⬜ | | | |
 | M08 | M08_ambulance_staging | location | 7 | ⬜ | | | |
 | M09 | M09_security_incident | rules | 5 | ⬜ | | | |
