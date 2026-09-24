@@ -37,7 +37,12 @@ ENTITY_ID_PATTERNS: Final[dict[EntityType, re.Pattern[str]]] = {
     EntityType.ROUTE: re.compile(r"[A-Z]+\d+"),
     EntityType.PARKING_SITE: re.compile(r"P\d"),
     # hospital | medical post | police post | fire station | shelter | ambulance staging (D2)
-    EntityType.FACILITY: re.compile(r"(?:H|MP|PP|FS|SH|AS)\d{2}"),
+    # FO (food outlet) EXTENDS the docs/02 section 3 table. The synthetic generator emits
+    # FO01/FO02 for D17 and the M17 card reports "meals per outlet", but no entity type in
+    # docs/02 covered them - an inconsistency between docs/02 and docs/04 rather than a
+    # choice. `facility` is the closest fit: a staffed, stocked, fixed location, like the
+    # medical posts already in this pattern. Recorded in the PROGRESS decisions log.
+    EntityType.FACILITY: re.compile(r"(?:H|MP|PP|FS|SH|AS|FO)\d{2}"),
     # toilet cluster | water point | waste bin group
     EntityType.SERVICE_POINT: re.compile(r"(?:TC|WP|WB)\d{2}"),
     # substation | generator | network tower | pump

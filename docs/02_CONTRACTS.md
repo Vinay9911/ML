@@ -121,7 +121,7 @@ Entity ID formats (regex in `twin_common.contracts.ids`):
 | intersection | `J\d{2}` | J04 |
 | route | `[A-Z]+\d+` | VIP1, EVAC2 |
 | parking_site | `P\d` | P2 |
-| facility | `H\d{2}` hospital, `MP\d{2}` medical post, `PP\d{2}` police post, `FS\d{2}` fire station, `SH\d{2}` shelter | H01, MP03 |
+| facility | `H\d{2}` hospital, `MP\d{2}` medical post, `PP\d{2}` police post, `FS\d{2}` fire station, `SH\d{2}` shelter, `AS\d{2}` ambulance staging, **`FO\d{2}` food outlet** | H01, MP03, FO01 |
 | service_point | `TC\d{2}` toilet cluster, `WP\d{2}` water point, `WB\d{2}` waste bin group | TC04 |
 | asset | `SS\d{2}` substation, `GEN\d{2}` generator, `NT\d{2}` network tower, `PMP\d{2}` pump | GEN02 |
 | camera | `CAM\d{2}` | CAM07 |

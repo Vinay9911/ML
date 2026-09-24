@@ -1,0 +1,77 @@
+# M17 - Food & Supply
+#
+# The standard keys are fixed by docs/02 section 8 and are read by twin_common; `params` is
+# yours. EVERY number this model uses belongs under `params` or in 00_common/config -
+# CLAUDE.md forbids thresholds, rates and weights in src/.
+model_id: M17
+model_name: Food & Supply
+model_version: 0.1.0
+port: 8017
+engine: forecast
+
+data_source: synthetic
+seed: 42
+demo_now: "2027-08-02T06:00:00+05:30"
+
+# D17 is HOURLY, not on the 15-minute grid every other forecasting model uses, so the
+# horizons are whole hours.
+#
+# The default must be LONGER THAN THE LEAD TIME, or replenishment is invisible. With a 6 h
+# lead time and a 6 h horizon nothing an outlet orders can arrive inside the window, so the
+# stock path - and therefore coverage - is identical whatever the lead time is, and S13 has
+# nothing to show. 12 h lets a delivery land at h+6 under S01 and h+9 under S13, which is
+# exactly the difference the scenario is about.
+horizons_min: [60, 360, 720]
+default_horizon_min: 720
+
+upstream: [M01]
+
+inputs: [food_inventory_hourly, footfall_15min, event_calendar]
+
+kpis: [food_demand, food_stock_coverage, delivery_requirement]
+
+# docs/05 section 1.2: S02 raises demand, S13 cuts coverage by stretching the lead time.
+# S06 ("up lead time optional" on the docs/03 M17 card) needs M04 to say how much longer a
+# closure makes a delivery take; M04 is Phase 7, so M17 reports itself insensitive to S06
+# rather than inventing a number. The lead-time override is wired and tested.
+scenarios_supported: [S01, S02, S13]
+
+upstream_timeout_s: 5
+
+# ---------------------------------------------------------------- model parameters
+params:
+  forecast:
+    backend: chronos2
+    hub_model_name: autogluon/chronos-2-small
+    quantiles: [0.1, 0.5, 0.9]
+    # One week of hourly context, and a week of seasonality: the daily meal pattern repeats.
+    input_chunk_length: 168
+    lightgbm_lags: 168
+    seasonality: 24
+    max_context_steps: 744
+    allow_fallback: true
+    calibration:
+      enabled: true
+      folds: 24
+      # Six hours between origins on the HOURLY grid, matching the other models in wall time.
+      stride_steps: 6
+      min_factor: 1.0
+      max_factor: 12.0
+
+  # D17 is hourly, so one step is one hour and demand needs no rescaling.
+  steps_per_hour: 1
+
+  # Coverage is capped for reporting. An outlet with stock and near-zero demand has
+  # mathematically infinite cover, which is true but useless on a dashboard and would break
+  # the "hours" unit. 72 h is three days - far beyond any decision this model supports.
+  max_coverage_hours: 72.0
+
+  # Delivery trips are quoted per day (the KPI unit), so the forecast hourly replenishment
+  # need is scaled to a day before being divided by the payload.
+  hours_per_day: 24
+
+  # A demand or coverage below this is reported as zero; quantile bands can dip below zero.
+  floor_value: 0.0
+
+  # Reported on each record. Heuristic, not calibrated.
+  confidence: 0.45
