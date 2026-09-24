@@ -2,9 +2,15 @@
 
 This file is for you (the human). Claude Code reads `CLAUDE.md` automatically and the `docs/` on demand.
 
+> **This file describes how to RUN the build.** For what the project is and what state it is in,
+> read `README.md`, then `docs/EXPLAINER.html` for a plain-language tour, then `PROGRESS.md`
+> for the live status. Sections 1–4 below describe the kit as it shipped; the build has since
+> added `00_common/`, `scripts/`, `templates/`, `plans/` and one folder per completed model.
+
 ## 1. What is in the kit
 ```
 event-twin-claude-kit/
+├── README.md                         ← what the project is, current status (added during the build)
 ├── START_HERE.md                     ← you are here (human guide)
 ├── CLAUDE.md                         ← Claude Code's persistent project memory (loaded every session)
 ├── PROGRESS.md                       ← tracker Claude updates after each phase/model
@@ -48,7 +54,10 @@ waste context. If you ever want Claude to cross-check against the original, give
 - VS Code with the Claude Code extension (or Claude Code CLI in the VS Code terminal), signed in.
 - Git, Python 3.11, and `uv` installed.
 - 16 GB RAM recommended. NVIDIA GPU optional (only speeds up vision precompute and Chronos-2).
-- Windows: fine for most work; if a simulation package fails to install, use WSL2 (Ubuntu).
+- Windows: fine throughout. Every dependency in docs/06 — including JuPedSim, OR-Tools, spopt,
+  RF-DETR and the vision stack — installed natively on Windows 11 / Python 3.11 with no WSL2
+  needed, contrary to the caution below. WSL2 remains the fallback only if `eclipse-sumo` is
+  wanted, and SUMO is optional.
 - Internet on first runs (downloads of weather, OSM roads, model weights); afterwards everything works offline.
 
 ## 4. Setup (15 minutes)
@@ -112,6 +121,8 @@ For single models after the engines exist, just run: `/build-model M05` (one mod
 | Claude ignores a rule | Check CLAUDE.md is loaded (`/context`); put "IMPORTANT" on that one rule; keep the file short |
 | Library install fails | Ask Claude to stop and report; try WSL2; check docs/06 fallback (SUMO optional, LWCC vendoring) |
 | Chronos-2 slow on CPU | Use `autogluon/chronos-2-small` in config; reduce horizon/entities for the demo |
+| Model takes ~25 s to start | Expected: it fits once and calibrates its uncertainty bands at startup so requests stay fast. Set `params.forecast.calibration.enabled: false` to skip it |
+| A band looks too wide | It is conformally calibrated to its stated coverage; the raw backend band was far too narrow. See any forecasting model's card |
 | Vision too slow | Lower `sample_fps`, shorter clips, precompute once, serve cached results |
 | JuPedSim geometry errors | Ask Claude to validate polygons with shapely and simplify geometry |
 | Context gets messy | `/clear`, then restart with the phase prompt; the plan file keeps continuity |
