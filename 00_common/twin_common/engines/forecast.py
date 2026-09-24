@@ -65,6 +65,9 @@ STEPS_PER_DAY = 96
 #: Darts names quantile components ``<component>_q0.100``.
 _QUANTILE_COMPONENT = re.compile(r"_q(\d+\.\d+)$")
 
+#: Below this the band is treated as degenerate and left alone (a flat series).
+_MIN_HALF_WIDTH = 1e-9
+
 
 @dataclass
 class ForecastResult:
@@ -81,6 +84,9 @@ class ForecastResult:
     backend_requested: str = BACKEND_CHRONOS
     warnings: list[str] = field(default_factory=list)
     elapsed_s: float = 0.0
+    #: True when the band has been conformally widened (see :class:`Calibration`). A model
+    #: should say so, because an uncalibrated band understates its own uncertainty.
+    calibrated: bool = False
 
     @property
     def degraded(self) -> bool:
@@ -113,6 +119,51 @@ class ForecastResult:
             out["lower"] = self.lower[entity]
             out["upper"] = self.upper[entity]
         return out
+
+
+@dataclass
+class Calibration:
+    """Per-horizon-step widening factors that make the band mean what it says.
+
+    A raw quantile forecast from any of these backends is **too narrow at long horizons**.
+    Measured on M01 (Z01, 7 folds): the median error grows 26-fold from step 1 to step 12
+    while the band widens only 1.7-fold, so coverage falls from ~100 percent in the first
+    hour to 43 percent after it. A record labelled ``quantile_level: 0.8`` that actually
+    contains the truth 43 percent of the time is worse than no band at all, because a reader
+    in a command centre has no way to know.
+
+    The fix is conformal: forecast a set of held-out origins, measure how far outside the
+    band the truth actually fell **at each step of the horizon**, and widen that step until
+    the empirical coverage matches the nominal level. Errors grow with horizon, so the
+    factors do too - which is exactly what the raw quantiles fail to do.
+
+    The factors are multiplicative around the median rather than additive, so one set of
+    numbers serves entities of wildly different magnitude (Z01 carries thousands of people,
+    G03 hundreds).
+    """
+
+    #: One factor per horizon step. ``lower' = median - factor * (median - lower)``.
+    factors: np.ndarray
+    #: Nominal coverage the factors target, e.g. 0.8 for the 0.1/0.9 band.
+    target: float
+    #: Calibration points behind each step's factor (folds x entities).
+    samples_per_step: int
+    folds: int
+    #: Pooled coverage on the calibration set, before and after widening.
+    coverage_before: float
+    coverage_after: float
+    backend: str
+
+    def as_dict(self) -> dict[str, Any]:
+        return {
+            "backend": self.backend,
+            "target_pct": round(self.target * 100, 1),
+            "coverage_before_pct": round(self.coverage_before, 1),
+            "coverage_after_pct": round(self.coverage_after, 1),
+            "factors": [round(float(f), 3) for f in self.factors],
+            "folds": self.folds,
+            "samples_per_step": self.samples_per_step,
+        }
 
 
 @dataclass
@@ -183,6 +234,11 @@ class ForecastEngine:
         seasonality: int = STEPS_PER_DAY,
         allow_fallback: bool = True,
         max_context_steps: int = 2688,
+        calibrate_bands: bool = False,
+        calibration_folds: int = 24,
+        calibration_stride_steps: int = 24,
+        calibration_min_factor: float = 1.0,
+        calibration_max_factor: float = 12.0,
     ) -> None:
         """
         Args:
@@ -198,6 +254,23 @@ class ForecastEngine:
                 backend-comparison table needs.
             max_context_steps: history fed to a foundation model. docs/06 section 3 asks for
                 at least two weeks of 15-minute history; 2688 steps is four weeks.
+            calibrate_bands: conformally widen the band so its stated coverage is true. Off
+                by default so a bare engine is cheap; models turn it on in config and pay
+                for it once in ``warmup``. See :class:`Calibration`.
+            calibration_folds: held-out origins to measure coverage on. 24 origins x the
+                number of entities is enough to estimate an 80th percentile per step.
+            calibration_stride_steps: spacing between origins. 24 steps is six hours, so 24
+                origins span six days. Measured on M01, held out from the evaluation window:
+                six-hourly origins give 74.6 percent coverage, two-hourly 74.2, and DAILY
+                origins over 20 days only 64.6. Recency beats diversity here because the
+                series is not stationary - the event builds to a peak - so origins close to
+                now describe the regime the forecast is actually in.
+            calibration_min_factor: floor on the widening factor. The default of 1.0 means
+                the band is never made NARROWER than the backend's own. That asymmetry is
+                deliberate: with a few dozen folds the estimate is noisy, and in a command
+                centre an over-wide band is a smaller error than an over-narrow one.
+            calibration_max_factor: ceiling, so one pathological fold cannot produce a band
+                so wide it is meaningless.
         """
         if 0.5 not in tuple(quantiles):
             raise EngineError("quantiles must include the median, 0.5")
@@ -210,6 +283,15 @@ class ForecastEngine:
         self.seasonality = int(seasonality)
         self.allow_fallback = allow_fallback
         self.max_context_steps = int(max_context_steps)
+        self.calibrate_bands = bool(calibrate_bands)
+        self.calibration_folds = int(calibration_folds)
+        self.calibration_stride_steps = int(calibration_stride_steps)
+        self.calibration_min_factor = float(calibration_min_factor)
+        self.calibration_max_factor = float(calibration_max_factor)
+        #: horizon_steps -> the Calibration measured for it.
+        self._calibration: dict[int, Calibration] = {}
+        #: Set while calibrate() runs, so its own folds are scored on the RAW band.
+        self._suppress_calibration = False
         # Fitted Darts models, keyed by what makes a fit reusable. A Darts global model can
         # predict on any series afterwards, so one fit serves every later call of the same
         # shape. Without this, a live /predict refits on every request: measured 8.9 s for
@@ -221,8 +303,14 @@ class ForecastEngine:
     def from_config(cls, config: Mapping[str, Any] | None, *, seed: int = 42) -> ForecastEngine:
         """Build from a model's ``params.forecast`` block."""
         block = dict(config or {})
+        calibration = dict(block.get("calibration") or {})
         return cls(
             backend=block.get("backend", BACKEND_CHRONOS),
+            calibrate_bands=bool(calibration.get("enabled", False)),
+            calibration_folds=int(calibration.get("folds", 24)),
+            calibration_stride_steps=int(calibration.get("stride_steps", 24)),
+            calibration_min_factor=float(calibration.get("min_factor", 1.0)),
+            calibration_max_factor=float(calibration.get("max_factor", 12.0)),
             seed=seed,
             quantiles=tuple(block.get("quantiles", DEFAULT_QUANTILES)),
             hub_model_name=block.get("hub_model_name", "autogluon/chronos-2-small"),
@@ -364,6 +452,8 @@ class ForecastEngine:
                 )
                 result.backend_requested = self.backend
                 result.warnings = [*collected, *result.warnings]
+                if not self._suppress_calibration:
+                    result = self._apply_calibration(result, horizon_steps)
                 result.elapsed_s = time.perf_counter() - started
                 if result.degraded:
                     log.warning(
@@ -425,6 +515,10 @@ class ForecastEngine:
 
         A model calls this from ``load()``. Fetching weights and fitting takes seconds, and
         doing it while a request waits would blow the docs/02 section 6 budget.
+
+        When ``calibrate_bands`` is on this also measures the band calibration, which costs
+        one forecast per fold. That is startup time, not request time, and it is the only
+        thing that makes ``quantile_level`` an honest number.
         """
         result = self.predict(
             history,
@@ -437,7 +531,194 @@ class ForecastEngine:
             result.backend_used,
             result.elapsed_s,
         )
+        if self.calibrate_bands and result.has_bands:
+            try:
+                self.calibrate(
+                    history,
+                    horizon_steps,
+                    past_covariates=past_covariates,
+                    future_covariates=future_covariates,
+                )
+            except Exception as exc:
+                # An uncalibrated band is worse than a calibrated one but better than no
+                # service. The model reports `calibrated: false` and says so.
+                log.warning("band calibration failed (%s); serving the raw band", exc)
         return result
+
+    # ------------------------------------------------------------------ calibration
+    def calibrate(
+        self,
+        history: Mapping[str, pd.Series],
+        horizon_steps: int,
+        *,
+        folds: int | None = None,
+        stride_steps: int | None = None,
+        past_covariates: Mapping[str, pd.DataFrame] | None = None,
+        future_covariates: Mapping[str, pd.DataFrame] | None = None,
+    ) -> Calibration:
+        """Measure how wide the band really needs to be, one factor per horizon step.
+
+        Walks back through ``folds`` origins, forecasts from each, and compares the band
+        against what actually happened. For every held-out point the *required* multiplier
+        is how far the truth sat beyond the median relative to the band's own half-width::
+
+            r = (y - median) / (upper - median)      when y is above the median
+                (median - y) / (median - lower)      when y is below it
+                0                                    when y is already inside
+
+        A point inside the band needs ``r <= 1``. The factor for a step is then the
+        ``target`` quantile of those ratios, which by construction makes that fraction of
+        the calibration points fall inside the widened band. This is conformalised quantile
+        regression, adapted to a multiplicative form so one factor serves every entity.
+
+        Entities are pooled, because a factor per entity per step would be estimated from
+        ``folds`` points alone. Pooling assumes the backend is miscalibrated in the same way
+        across series, which is what the diagnosis showed: the failure is horizon-driven,
+        not entity-driven.
+        """
+        folds = int(folds if folds is not None else self.calibration_folds)
+        stride = int(stride_steps if stride_steps is not None else self.calibration_stride_steps)
+        if horizon_steps <= 0:
+            raise EngineError("calibrate() needs a positive horizon")
+        if folds < 2:
+            raise EngineError(f"calibration needs at least 2 folds, got {folds}")
+
+        entities = list(history)
+        series = {e: history[e].astype("float64").sort_index() for e in entities}
+        shortest = min(len(s) for s in series.values())
+        needed = horizon_steps + stride * folds
+        if shortest < needed + horizon_steps:
+            raise EngineError(
+                f"calibration needs at least {needed + horizon_steps} steps of history, "
+                f"the shortest series has {shortest}"
+            )
+
+        # ratios[step] collects one value per (fold, entity) held-out point.
+        ratios: list[list[float]] = [[] for _ in range(horizon_steps)]
+        inside_before = 0
+        total = 0
+        backend_used = self.backend
+
+        for fold in range(folds):
+            end = shortest - (folds - fold) * stride
+            if end <= horizon_steps:
+                continue
+            context = {e: s.iloc[:end] for e, s in series.items()}
+            self._suppress_calibration = True
+            try:
+                result = self.predict(
+                    context,
+                    horizon_steps,
+                    past_covariates=past_covariates,
+                    future_covariates=future_covariates,
+                )
+            except Exception as exc:  # a bad fold must not lose the whole calibration
+                log.warning("calibration fold %d failed (%s); skipping", fold, exc)
+                continue
+            finally:
+                self._suppress_calibration = False
+            backend_used = result.backend_used
+            if not result.lower:
+                raise EngineError(
+                    f"backend {backend_used!r} produces no band, so there is nothing to calibrate"
+                )
+            for entity in entities:
+                truth = series[entity].iloc[end : end + horizon_steps].to_numpy()
+                if len(truth) < horizon_steps:
+                    continue
+                median = result.values[entity].to_numpy()[:horizon_steps]
+                low = result.lower[entity].to_numpy()[:horizon_steps]
+                high = result.upper[entity].to_numpy()[:horizon_steps]
+                for step in range(horizon_steps):
+                    ratios[step].append(
+                        self._required_factor(truth[step], median[step], low[step], high[step])
+                    )
+                    inside_before += int(low[step] <= truth[step] <= high[step])
+                    total += 1
+
+        counts = [len(r) for r in ratios]
+        if not total or min(counts) == 0:
+            raise EngineError("calibration produced no usable folds")
+
+        target = self.quantile_level
+        factors = np.empty(horizon_steps, dtype="float64")
+        for step in range(horizon_steps):
+            sample = np.asarray(ratios[step], dtype="float64")
+            # The finite-sample conformal quantile: with n points, the level that guarantees
+            # `target` coverage is ceil((n+1)*target)/n, which is slightly above `target`.
+            n = sample.size
+            level = min(1.0, np.ceil((n + 1) * target) / n)
+            factors[step] = float(np.quantile(sample, level, method="higher"))
+        factors = np.clip(factors, self.calibration_min_factor, self.calibration_max_factor)
+        # Widening must never shrink as the horizon grows: a later step is strictly harder to
+        # forecast, and a dip would be sampling noise rather than signal.
+        factors = np.maximum.accumulate(factors)
+
+        inside_after = sum(
+            int(ratio <= factors[step]) for step in range(horizon_steps) for ratio in ratios[step]
+        )
+        calibration = Calibration(
+            factors=factors,
+            target=target,
+            samples_per_step=min(counts),
+            folds=folds,
+            coverage_before=100.0 * inside_before / total,
+            coverage_after=100.0 * inside_after / total,
+            backend=backend_used,
+        )
+        self._calibration[horizon_steps] = calibration
+        log.info(
+            "band calibration (%s, %d steps): coverage %.1f%% -> %.1f%% against a %.0f%% "
+            "target; factors %.2f to %.2f",
+            backend_used,
+            horizon_steps,
+            calibration.coverage_before,
+            calibration.coverage_after,
+            target * 100,
+            factors[0],
+            factors[-1],
+        )
+        return calibration
+
+    @staticmethod
+    def _required_factor(truth: float, median: float, low: float, high: float) -> float:
+        """How much this band would have to be widened to contain ``truth``."""
+        if truth > median:
+            half = high - median
+            return 0.0 if half <= _MIN_HALF_WIDTH else float((truth - median) / half)
+        if truth < median:
+            half = median - low
+            return 0.0 if half <= _MIN_HALF_WIDTH else float((median - truth) / half)
+        return 0.0
+
+    def _apply_calibration(self, result: ForecastResult, horizon_steps: int) -> ForecastResult:
+        """Widen a result's band with the factors measured for this horizon."""
+        calibration = self._calibration.get(horizon_steps)
+        if calibration is None or not result.lower:
+            return result
+        factors = calibration.factors
+        for entity, median in result.values.items():
+            low = result.lower.get(entity)
+            high = result.upper.get(entity)
+            if low is None or high is None:
+                continue
+            span = min(len(median), len(factors))
+            scale = np.ones(len(median), dtype="float64")
+            scale[:span] = factors[:span]
+            scale[span:] = factors[-1]  # a longer request keeps the last measured factor
+            centre = median.to_numpy()
+            result.lower[entity] = pd.Series(
+                centre - scale * (centre - low.to_numpy()), index=median.index
+            )
+            result.upper[entity] = pd.Series(
+                centre + scale * (high.to_numpy() - centre), index=median.index
+            )
+        result.calibrated = True
+        return result
+
+    def calibration_for(self, horizon_steps: int) -> Calibration | None:
+        """The calibration in force for a horizon, if one has been measured."""
+        return self._calibration.get(horizon_steps)
 
     def clear_cache(self) -> None:
         """Drop fitted models. Call when the underlying history changes materially."""

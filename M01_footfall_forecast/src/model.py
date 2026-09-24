@@ -318,6 +318,7 @@ class Model(TwinModel):
                         reason_codes=reasons,
                         details={
                             "backend": result.backend_used,
+                            "band_calibrated": result.calibrated,
                             "entries_per_step": round(value, 2),
                             **({"weather": weather} if weather else {}),
                         },
@@ -344,6 +345,7 @@ class Model(TwinModel):
                     reason_codes=[REASON_SURGE] if peak_position == 0 else [],
                     details={
                         "backend": result.backend_used,
+                        "band_calibrated": result.calibrated,
                         "peak_at": peak_time.isoformat(),
                         "horizon_min": offset,
                     },

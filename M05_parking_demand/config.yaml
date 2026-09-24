@@ -52,6 +52,20 @@ params:
     seasonality: 96
     max_context_steps: 2688
     allow_fallback: true
+    # --- band calibration -----------------------------------------------
+    # The raw quantiles from every backend are too narrow at long horizons: the error grows
+    # far faster across the horizon than the band does, so a "80 percent" band held the truth
+    # only about half the time. `warmup` measures the real miss rate per horizon step on
+    # held-out origins and widens each step to match (conformal). Costs seconds at startup,
+    # not per request. Six-hourly origins beat daily ones because the series is not stationary.
+    calibration:
+      enabled: true
+      folds: 24
+      stride_steps: 24
+      # Never report a band NARROWER than the backend's own: with a few dozen folds the
+      # estimate is noisy, and an over-wide band is the safer error in a command centre.
+      min_factor: 1.0
+      max_factor: 12.0
 
   # --- search time (docs/03 M05) ---------------------------------------------
   # search = base_min + k_min * max(0, occ - knee) / (1 - knee), with occ as a FRACTION.

@@ -402,6 +402,7 @@ class Model(TwinModel):
                 reasons = self._reason_codes(occupancy, overflowing=overflowing)
                 shared = {
                     "backend": result.backend_used,
+                    "band_calibrated": result.calibrated,
                     "site_name": spec["name"],
                     "capacity_spaces": capacity,
                     "occupied_spaces": round(min(vehicles, capacity), 1),

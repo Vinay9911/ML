@@ -3,8 +3,8 @@
   "model_id": "M01",
   "model_name": "Footfall Forecast",
   "model_version": "0.1.0",
-  "run_id": "7117a94d-bf98-4c8a-a111-671ecf878bcd",
-  "generated_at": "2026-09-20T20:57:57.871544+05:30",
+  "run_id": "73c508ed-dd6d-4c1b-b2c3-67f3d40596da",
+  "generated_at": "2026-09-24T18:17:03.868377+05:30",
   "as_of": "2027-08-02T06:00:00+05:30",
   "scenario_id": "S01",
   "scenario_overrides": {},
@@ -17,9 +17,9 @@
   "upstream": [
     {
       "model_id": "M21",
-      "run_id": "26856e5d-ee2a-4105-b300-49bafdbf15d0",
+      "run_id": "29a08759-3ee6-43c9-8fa0-c78ebd4fd38c",
       "source": "sample",
-      "generated_at": "2026-09-20T20:53:11.916341+05:30"
+      "generated_at": "2026-09-24T18:15:51.820201+05:30"
     }
   ],
   "results": [
@@ -33,8 +33,8 @@
       "state": "forecast",
       "value": 23120.84375,
       "unit": "persons/hr",
-      "lower": 21951.59375,
-      "upper": 23931.857421875,
+      "lower": 21009.255487648927,
+      "upper": 24585.480867928156,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -45,6 +45,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 5780.21,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -63,8 +64,8 @@
       "state": "forecast",
       "value": 22191.849609375,
       "unit": "persons/hr",
-      "lower": 20404.611328125,
-      "upper": 23701.0390625,
+      "lower": 18964.215333803473,
+      "upper": 24917.346068543517,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -75,6 +76,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 5547.96,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -93,8 +95,8 @@
       "state": "forecast",
       "value": 21492.212890625,
       "unit": "persons/hr",
-      "lower": 19508.57421875,
-      "upper": 23415.056640625,
+      "lower": 17373.057641308293,
+      "upper": 25485.123514282892,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -105,6 +107,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 5373.05,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -123,8 +126,8 @@
       "state": "forecast",
       "value": 21101.765625,
       "unit": "persons/hr",
-      "lower": 18543.48046875,
-      "upper": 22946.21484375,
+      "lower": 15789.319421954684,
+      "upper": 24931.88488473932,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -135,6 +138,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 5275.44,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -153,8 +157,8 @@
       "state": "forecast",
       "value": 20099.353515625,
       "unit": "persons/hr",
-      "lower": 17131.892578125,
-      "upper": 22382.19921875,
+      "lower": 13937.22708042528,
+      "upper": 24839.831705898956,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -165,6 +169,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 5024.84,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -183,8 +188,8 @@
       "state": "forecast",
       "value": 19135.5078125,
       "unit": "persons/hr",
-      "lower": 15478.859375,
-      "upper": 21556.794921875,
+      "lower": 11331.034533816468,
+      "upper": 24303.319503485967,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -195,6 +200,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 4783.88,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -213,8 +219,8 @@
       "state": "forecast",
       "value": 18139.822265625,
       "unit": "persons/hr",
-      "lower": 14345.421875,
-      "upper": 20985.525390625,
+      "lower": 10041.341658748455,
+      "upper": 24213.475332834507,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -225,6 +231,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 4534.96,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -243,8 +250,8 @@
       "state": "forecast",
       "value": 17121.615234375,
       "unit": "persons/hr",
-      "lower": 13051.919921875,
-      "upper": 20319.962890625,
+      "lower": 8435.566011522995,
+      "upper": 23947.926061294147,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -255,6 +262,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 4280.4,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -273,8 +281,8 @@
       "state": "forecast",
       "value": 15896.82421875,
       "unit": "persons/hr",
-      "lower": 11446.779296875,
-      "upper": 20135.1171875,
+      "lower": 5926.3282254282385,
+      "upper": 25392.881855318883,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -285,6 +293,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 3974.21,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -303,8 +312,8 @@
       "state": "forecast",
       "value": 14991.1630859375,
       "unit": "persons/hr",
-      "lower": 10399.228515625,
-      "upper": 19343.6484375,
+      "lower": 4702.757903815045,
+      "upper": 24743.0731274345,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -315,6 +324,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 3747.79,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -333,8 +343,8 @@
       "state": "forecast",
       "value": 14352.93359375,
       "unit": "persons/hr",
-      "lower": 9255.6357421875,
-      "upper": 18911.36328125,
+      "lower": 2932.242634891605,
+      "upper": 24566.269803378127,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -345,6 +355,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 3588.23,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -363,8 +374,8 @@
       "state": "forecast",
       "value": 12944.10546875,
       "unit": "persons/hr",
-      "lower": 7645.94921875,
-      "upper": 18401.13671875,
+      "lower": 1073.3835794167935,
+      "upper": 25170.792877251843,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -375,6 +386,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 3236.03,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -393,8 +405,8 @@
       "state": "forecast",
       "value": 23120.84375,
       "unit": "persons/hr",
-      "lower": 21951.59375,
-      "upper": 23931.857421875,
+      "lower": 21009.255487648927,
+      "upper": 24585.480867928156,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -407,6 +419,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "peak_at": "2027-08-02T06:15:00+05:30",
         "horizon_min": 15
       }
@@ -421,8 +434,8 @@
       "state": "forecast",
       "value": 15413.2421875,
       "unit": "persons/hr",
-      "lower": 14634.21875,
-      "upper": 15953.525390625,
+      "lower": 14006.377319660456,
+      "upper": 16388.95796262439,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -433,6 +446,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 3853.31,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -451,8 +465,8 @@
       "state": "forecast",
       "value": 14794.27734375,
       "unit": "persons/hr",
-      "lower": 13603.142578125,
-      "upper": 15800.1015625,
+      "lower": 12643.166640331528,
+      "upper": 16610.729440650524,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -463,6 +477,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 3698.57,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -481,8 +496,8 @@
       "state": "forecast",
       "value": 14328.08984375,
       "unit": "persons/hr",
-      "lower": 13005.873046875,
-      "upper": 15609.744140625,
+      "lower": 11582.420313908537,
+      "upper": 16989.528693291973,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -493,6 +508,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 3582.02,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -511,8 +527,8 @@
       "state": "forecast",
       "value": 14067.876953125,
       "unit": "persons/hr",
-      "lower": 12362.52734375,
-      "upper": 15297.23828125,
+      "lower": 10526.607116548692,
+      "upper": 16620.726037916465,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -523,6 +539,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 3516.97,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -541,8 +558,8 @@
       "state": "forecast",
       "value": 13399.392578125,
       "unit": "persons/hr",
-      "lower": 11420.5859375,
-      "upper": 14921.1015625,
+      "lower": 9290.27135726847,
+      "upper": 16559.32066371521,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -553,6 +570,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 3349.85,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -571,8 +589,8 @@
       "state": "forecast",
       "value": 12757.212890625,
       "unit": "persons/hr",
-      "lower": 10319.3984375,
-      "upper": 14371.298828125,
+      "lower": 7554.126489786781,
+      "upper": 16202.19558010938,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -583,6 +601,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 3189.3,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -601,8 +620,8 @@
       "state": "forecast",
       "value": 12093.53515625,
       "unit": "persons/hr",
-      "lower": 9563.90625,
-      "upper": 13990.64453125,
+      "lower": 6694.486945503441,
+      "upper": 16142.581619696766,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -613,6 +632,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 3023.38,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -631,8 +651,8 @@
       "state": "forecast",
       "value": 11414.900390625,
       "unit": "persons/hr",
-      "lower": 8701.6318359375,
-      "upper": 13547.0703125,
+      "lower": 5623.905632750938,
+      "upper": 15965.642269508782,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -643,6 +663,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2853.73,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -661,8 +682,8 @@
       "state": "forecast",
       "value": 10598.4345703125,
       "unit": "persons/hr",
-      "lower": 7631.560546875,
-      "upper": 13423.9765625,
+      "lower": 3951.039750102429,
+      "upper": 16929.169564375825,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -673,6 +694,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2649.61,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -691,8 +713,8 @@
       "state": "forecast",
       "value": 9994.736328125,
       "unit": "persons/hr",
-      "lower": 6933.1259765625,
-      "upper": 12896.427734375,
+      "lower": 3135.0811382837974,
+      "upper": 16496.08699936312,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -703,6 +725,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2498.68,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -721,8 +744,8 @@
       "state": "forecast",
       "value": 9569.439453125,
       "unit": "persons/hr",
-      "lower": 6171.03271484375,
-      "upper": 12608.1484375,
+      "lower": 1955.1790664154341,
+      "upper": 16377.78325312784,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -733,6 +756,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2392.36,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -751,8 +775,8 @@
       "state": "forecast",
       "value": 8630.232421875,
       "unit": "persons/hr",
-      "lower": 5098.06884765625,
-      "upper": 12267.9970703125,
+      "lower": 716.2847240916562,
+      "upper": 16780.783368810466,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -763,6 +787,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2157.56,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -781,8 +806,8 @@
       "state": "forecast",
       "value": 15413.2421875,
       "unit": "persons/hr",
-      "lower": 14634.21875,
-      "upper": 15953.525390625,
+      "lower": 14006.377319660456,
+      "upper": 16388.95796262439,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -795,6 +820,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "peak_at": "2027-08-02T06:15:00+05:30",
         "horizon_min": 15
       }
@@ -810,7 +836,7 @@
       "value": 67459.90625,
       "unit": "persons/hr",
       "lower": 67459.90625,
-      "upper": 69526.359375,
+      "upper": 71191.78408916929,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -821,6 +847,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 16864.98,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -839,8 +866,8 @@
       "state": "forecast",
       "value": 66973.9375,
       "unit": "persons/hr",
-      "lower": 64726.4921875,
-      "upper": 70006.875,
+      "lower": 62915.19972608429,
+      "upper": 72451.22227694625,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -851,6 +878,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 16743.48,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -869,8 +897,8 @@
       "state": "forecast",
       "value": 65860.125,
       "unit": "persons/hr",
-      "lower": 63283.69140625,
-      "upper": 70415.8671875,
+      "lower": 60509.99238125058,
+      "upper": 75320.42117805149,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -881,6 +909,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 16465.03,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -899,8 +928,8 @@
       "state": "forecast",
       "value": 65762.6640625,
       "unit": "persons/hr",
-      "lower": 61570.859375,
-      "upper": 71017.3671875,
+      "lower": 57058.1078711726,
+      "upper": 76674.39827490329,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -911,6 +940,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 16440.67,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -929,8 +959,8 @@
       "state": "forecast",
       "value": 65026.62109375,
       "unit": "persons/hr",
-      "lower": 60239.08984375,
-      "upper": 70376.984375,
+      "lower": 55084.99978977293,
+      "upper": 76136.99986796513,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -941,6 +971,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 16256.66,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -959,8 +990,8 @@
       "state": "forecast",
       "value": 63458.5390625,
       "unit": "persons/hr",
-      "lower": 57887.0546875,
-      "upper": 68938.796875,
+      "lower": 51567.18508890917,
+      "upper": 75155.18597537483,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -971,6 +1002,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 15864.63,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -989,8 +1021,8 @@
       "state": "forecast",
       "value": 62041.234375,
       "unit": "persons/hr",
-      "lower": 56200.4375,
-      "upper": 68289.40625,
+      "lower": 49575.080213261346,
+      "upper": 75376.85886079239,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1001,6 +1033,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 15510.31,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1019,8 +1052,8 @@
       "state": "forecast",
       "value": 60444.91015625,
       "unit": "persons/hr",
-      "lower": 51580.8515625,
-      "upper": 67163.5,
+      "lower": 41526.135322401344,
+      "upper": 74784.55910041554,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1031,6 +1064,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 15111.23,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1049,8 +1083,8 @@
       "state": "forecast",
       "value": 58864.11328125,
       "unit": "persons/hr",
-      "lower": 47703.13671875,
-      "upper": 67272.78125,
+      "lower": 33857.51805544789,
+      "upper": 77704.05574553192,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1061,6 +1095,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 14716.03,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1079,8 +1114,8 @@
       "state": "forecast",
       "value": 56757.1875,
       "unit": "persons/hr",
-      "lower": 43516.03125,
-      "upper": 66535.59375,
+      "lower": 27089.87005594459,
+      "upper": 78666.0810164318,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1091,6 +1126,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 14189.3,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1109,8 +1145,8 @@
       "state": "forecast",
       "value": 55372.2734375,
       "unit": "persons/hr",
-      "lower": 39362.37109375,
-      "upper": 65591.328125,
+      "lower": 19501.474383953748,
+      "upper": 78268.45664598868,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1121,6 +1157,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 13843.07,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1139,8 +1176,8 @@
       "state": "forecast",
       "value": 52450.90234375,
       "unit": "persons/hr",
-      "lower": 36201.65625,
-      "upper": 64798.109375,
+      "lower": 16043.844456349972,
+      "upper": 80115.29234319335,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1151,6 +1188,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 13112.73,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1170,7 +1208,7 @@
       "value": 67459.90625,
       "unit": "persons/hr",
       "lower": 67459.90625,
-      "upper": 69526.359375,
+      "upper": 71191.78408916929,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1183,6 +1221,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "peak_at": "2027-08-02T06:15:00+05:30",
         "horizon_min": 15
       }
@@ -1198,7 +1237,7 @@
       "value": 66630.5390625,
       "unit": "persons/hr",
       "lower": 66630.5390625,
-      "upper": 69055.390625,
+      "upper": 71009.66080491494,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1209,6 +1248,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 16657.63,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1227,8 +1267,8 @@
       "state": "forecast",
       "value": 66761.9609375,
       "unit": "persons/hr",
-      "lower": 64077.09375,
-      "upper": 69930.6328125,
+      "lower": 61913.26815229877,
+      "upper": 72484.3730294324,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1239,6 +1279,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 16690.49,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1257,8 +1298,8 @@
       "state": "forecast",
       "value": 65964.6484375,
       "unit": "persons/hr",
-      "lower": 63150.9375,
-      "upper": 70886.8046875,
+      "lower": 60121.793918381554,
+      "upper": 76185.82734604579,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1269,6 +1310,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 16491.16,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1287,8 +1329,8 @@
       "state": "forecast",
       "value": 66140.65625,
       "unit": "persons/hr",
-      "lower": 61796.03125,
-      "upper": 71862.3671875,
+      "lower": 57118.75869940096,
+      "upper": 78022.16268433369,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1299,6 +1341,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 16535.16,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1317,8 +1360,8 @@
       "state": "forecast",
       "value": 65772.515625,
       "unit": "persons/hr",
-      "lower": 60724.78125,
-      "upper": 71332.859375,
+      "lower": 55290.565538654904,
+      "upper": 77318.93255594655,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1329,6 +1372,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 16443.13,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1347,8 +1391,8 @@
       "state": "forecast",
       "value": 64509.453125,
       "unit": "persons/hr",
-      "lower": 58806.71875,
-      "upper": 70318.4609375,
+      "lower": 52337.969099167254,
+      "upper": 76907.75912110935,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1359,6 +1403,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 16127.36,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1377,8 +1422,8 @@
       "state": "forecast",
       "value": 63635.5,
       "unit": "persons/hr",
-      "lower": 57631.125,
-      "upper": 70071.2578125,
+      "lower": 50820.21708624698,
+      "upper": 77371.49369319601,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1389,6 +1434,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 15908.88,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1407,8 +1453,8 @@
       "state": "forecast",
       "value": 62697.6640625,
       "unit": "persons/hr",
-      "lower": 54237.515625,
-      "upper": 69615.421875,
+      "lower": 44640.96445281405,
+      "upper": 77462.40202373872,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1419,6 +1465,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 15674.42,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1437,8 +1484,8 @@
       "state": "forecast",
       "value": 61230.59375,
       "unit": "persons/hr",
-      "lower": 50680.64453125,
-      "upper": 69340.5390625,
+      "lower": 37593.028677741255,
+      "upper": 79401.23666797529,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1449,6 +1496,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 15307.65,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1467,8 +1515,8 @@
       "state": "forecast",
       "value": 59586.2109375,
       "unit": "persons/hr",
-      "lower": 46882.96875,
-      "upper": 69318.5859375,
+      "lower": 31124.110541601465,
+      "upper": 81391.96967624978,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1479,6 +1527,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 14896.55,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1497,8 +1546,8 @@
       "state": "forecast",
       "value": 58804.3515625,
       "unit": "persons/hr",
-      "lower": 43586.92578125,
-      "upper": 68779.078125,
+      "lower": 24709.126582906792,
+      "upper": 81153.1082541476,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1509,6 +1558,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 14701.09,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1527,8 +1577,8 @@
       "state": "forecast",
       "value": 56574.1328125,
       "unit": "persons/hr",
-      "lower": 40985.4609375,
-      "upper": 68566.3125,
+      "lower": 21647.11674871452,
+      "upper": 83443.07045797305,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1539,6 +1589,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 14143.53,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1557,8 +1608,8 @@
       "state": "forecast",
       "value": 66761.9609375,
       "unit": "persons/hr",
-      "lower": 64077.09375,
-      "upper": 69930.6328125,
+      "lower": 61913.26815229877,
+      "upper": 72484.3730294324,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1569,6 +1620,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "peak_at": "2027-08-02T06:30:00+05:30",
         "horizon_min": 30
       }
@@ -1583,8 +1635,8 @@
       "state": "forecast",
       "value": 54813.71875,
       "unit": "persons/hr",
-      "lower": 52169.42578125,
-      "upper": 58158.296875,
+      "lower": 50038.30032363269,
+      "upper": 60853.80590951778,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1595,6 +1647,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 13703.43,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1613,8 +1666,8 @@
       "state": "forecast",
       "value": 55635.9296875,
       "unit": "persons/hr",
-      "lower": 51126.3984375,
-      "upper": 59137.359375,
+      "lower": 47492.01413804063,
+      "upper": 61959.28040768182,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1625,6 +1678,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 13908.98,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1643,8 +1697,8 @@
       "state": "forecast",
       "value": 54615.9375,
       "unit": "persons/hr",
-      "lower": 50062.0,
-      "upper": 59865.9140625,
+      "lower": 45159.38887340251,
+      "upper": 65517.85669669042,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1655,6 +1709,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 13653.98,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1673,8 +1728,8 @@
       "state": "forecast",
       "value": 54452.484375,
       "unit": "persons/hr",
-      "lower": 49414.7421875,
-      "upper": 59671.03125,
+      "lower": 43991.28371856689,
+      "upper": 65289.13777299149,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1685,6 +1740,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 13613.12,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1703,8 +1759,8 @@
       "state": "forecast",
       "value": 53289.953125,
       "unit": "persons/hr",
-      "lower": 47516.74609375,
-      "upper": 58851.8203125,
+      "lower": 41301.511688895494,
+      "upper": 64839.53357340772,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1715,6 +1771,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 13322.49,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1733,8 +1790,8 @@
       "state": "forecast",
       "value": 52397.9765625,
       "unit": "persons/hr",
-      "lower": 45879.5078125,
-      "upper": 58615.984375,
+      "lower": 38485.450913167966,
+      "upper": 65669.22115950036,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1745,6 +1802,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 13099.49,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1763,8 +1821,8 @@
       "state": "forecast",
       "value": 51742.20703125,
       "unit": "persons/hr",
-      "lower": 43605.2890625,
-      "upper": 58664.7578125,
+      "lower": 34375.38603563733,
+      "upper": 66517.17474171791,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1775,6 +1833,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 12935.55,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1793,8 +1852,8 @@
       "state": "forecast",
       "value": 50324.7734375,
       "unit": "persons/hr",
-      "lower": 41323.6171875,
-      "upper": 57538.6796875,
+      "lower": 31113.387757117576,
+      "upper": 65721.5881779253,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1805,6 +1864,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 12581.19,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1823,8 +1883,8 @@
       "state": "forecast",
       "value": 49085.1171875,
       "unit": "persons/hr",
-      "lower": 39046.8828125,
-      "upper": 57761.125,
+      "lower": 26594.0688108936,
+      "upper": 68524.04480536134,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1835,6 +1895,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 12271.28,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1853,8 +1914,8 @@
       "state": "forecast",
       "value": 48147.3125,
       "unit": "persons/hr",
-      "lower": 36764.46875,
-      "upper": 57295.0234375,
+      "lower": 22643.61534762087,
+      "upper": 68643.10902602243,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1865,6 +1926,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 12036.83,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1883,8 +1945,8 @@
       "state": "forecast",
       "value": 47420.25,
       "unit": "persons/hr",
-      "lower": 34366.72265625,
-      "upper": 56816.546875,
+      "lower": 18173.322302753873,
+      "upper": 68473.01283475704,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1895,6 +1957,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 11855.06,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1913,8 +1976,8 @@
       "state": "forecast",
       "value": 45175.359375,
       "unit": "persons/hr",
-      "lower": 31936.5390625,
-      "upper": 56111.3203125,
+      "lower": 15513.27568833205,
+      "upper": 69677.79847948549,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1925,6 +1988,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 11293.84,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1943,8 +2007,8 @@
       "state": "forecast",
       "value": 55635.9296875,
       "unit": "persons/hr",
-      "lower": 51126.3984375,
-      "upper": 59137.359375,
+      "lower": 47492.01413804063,
+      "upper": 61959.28040768182,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1955,6 +2019,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "peak_at": "2027-08-02T06:30:00+05:30",
         "horizon_min": 30
       }
@@ -1969,8 +2034,8 @@
       "state": "forecast",
       "value": 7570.3603515625,
       "unit": "persons/hr",
-      "lower": 7400.7431640625,
-      "upper": 7876.6337890625,
+      "lower": 7264.042915412831,
+      "upper": 8123.46994805163,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -1981,6 +2046,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1892.59,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -1999,8 +2065,8 @@
       "state": "forecast",
       "value": 7816.4599609375,
       "unit": "persons/hr",
-      "lower": 7267.662109375,
-      "upper": 8286.2900390625,
+      "lower": 6825.367293190771,
+      "upper": 8664.942046264196,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2011,6 +2077,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1954.11,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2029,8 +2096,8 @@
       "state": "forecast",
       "value": 8057.9033203125,
       "unit": "persons/hr",
-      "lower": 7523.0927734375,
-      "upper": 8863.5400390625,
+      "lower": 6947.334292401899,
+      "upper": 9730.860581195378,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2041,6 +2108,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2014.48,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2059,8 +2127,8 @@
       "state": "forecast",
       "value": 8322.630859375,
       "unit": "persons/hr",
-      "lower": 7542.0859375,
-      "upper": 9291.72265625,
+      "lower": 6701.778353394258,
+      "upper": 10335.013264883459,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2071,6 +2139,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2080.66,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2089,8 +2158,8 @@
       "state": "forecast",
       "value": 8609.5791015625,
       "unit": "persons/hr",
-      "lower": 7622.5439453125,
-      "upper": 9791.5810546875,
+      "lower": 6559.9361384697095,
+      "upper": 11064.083351227711,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2101,6 +2170,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2152.39,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2119,8 +2189,8 @@
       "state": "forecast",
       "value": 8835.515625,
       "unit": "persons/hr",
-      "lower": 7681.224609375,
-      "upper": 9996.3740234375,
+      "lower": 6371.884367785438,
+      "upper": 11313.163806331577,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2131,6 +2201,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2208.88,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2149,8 +2220,8 @@
       "state": "forecast",
       "value": 8975.3115234375,
       "unit": "persons/hr",
-      "lower": 7680.728515625,
-      "upper": 10357.0712890625,
+      "lower": 6212.25167117069,
+      "upper": 11924.434840239905,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2161,6 +2232,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2243.83,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2179,8 +2251,8 @@
       "state": "forecast",
       "value": 8989.68359375,
       "unit": "persons/hr",
-      "lower": 7630.1083984375,
-      "upper": 10559.2314453125,
+      "lower": 6087.909342399825,
+      "upper": 12339.607568259698,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2191,6 +2263,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2247.42,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2209,8 +2282,8 @@
       "state": "forecast",
       "value": 9005.65234375,
       "unit": "persons/hr",
-      "lower": 7507.86328125,
-      "upper": 10443.27734375,
+      "lower": 5649.798614479065,
+      "upper": 12226.706187934504,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2221,6 +2294,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2251.41,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2239,8 +2313,8 @@
       "state": "forecast",
       "value": 9215.02734375,
       "unit": "persons/hr",
-      "lower": 7299.8203125,
-      "upper": 10763.3466796875,
+      "lower": 4923.932676909202,
+      "upper": 12684.096084935414,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2251,6 +2325,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2303.76,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2269,8 +2344,8 @@
       "state": "forecast",
       "value": 9314.4130859375,
       "unit": "persons/hr",
-      "lower": 7171.44921875,
-      "upper": 11096.810546875,
+      "lower": 4513.020509742188,
+      "upper": 13307.942826598264,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2281,6 +2356,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2328.6,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2299,8 +2375,8 @@
       "state": "forecast",
       "value": 9156.1728515625,
       "unit": "persons/hr",
-      "lower": 6540.8447265625,
-      "upper": 11325.6552734375,
+      "lower": 3296.430073831799,
+      "upper": 14016.981264654354,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2311,6 +2387,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2289.04,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2329,8 +2406,8 @@
       "state": "forecast",
       "value": 9314.4130859375,
       "unit": "persons/hr",
-      "lower": 7171.44921875,
-      "upper": 11096.810546875,
+      "lower": 4513.020509742188,
+      "upper": 13307.942826598264,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2341,6 +2418,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "peak_at": "2027-08-02T08:45:00+05:30",
         "horizon_min": 165
       }
@@ -2355,8 +2433,8 @@
       "state": "forecast",
       "value": 12983.990234375,
       "unit": "persons/hr",
-      "lower": 12060.5888671875,
-      "upper": 13661.69140625,
+      "lower": 11316.38836275468,
+      "upper": 14207.873783584168,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2367,6 +2445,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 3246.0,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2385,8 +2464,8 @@
       "state": "forecast",
       "value": 12185.072265625,
       "unit": "persons/hr",
-      "lower": 10896.439453125,
-      "upper": 13277.193359375,
+      "lower": 9857.886530020593,
+      "upper": 14157.370818225827,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2397,6 +2476,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 3046.27,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2415,8 +2495,8 @@
       "state": "forecast",
       "value": 11629.033203125,
       "unit": "persons/hr",
-      "lower": 10258.451171875,
-      "upper": 12961.4892578125,
+      "lower": 8782.930105474585,
+      "upper": 14395.965220517988,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2427,6 +2507,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2907.26,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2445,8 +2526,8 @@
       "state": "forecast",
       "value": 10902.853515625,
       "unit": "persons/hr",
-      "lower": 9240.4208984375,
-      "upper": 12289.255859375,
+      "lower": 7450.703616142338,
+      "upper": 13781.808525372191,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2457,6 +2538,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2725.71,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2475,8 +2557,8 @@
       "state": "forecast",
       "value": 10249.865234375,
       "unit": "persons/hr",
-      "lower": 8331.05859375,
-      "upper": 11818.029296875,
+      "lower": 6265.337931989211,
+      "upper": 13506.260323572846,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2487,6 +2569,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2562.47,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2505,8 +2588,8 @@
       "state": "forecast",
       "value": 9458.15234375,
       "unit": "persons/hr",
-      "lower": 7462.52734375,
-      "upper": 11229.279296875,
+      "lower": 5198.841597043079,
+      "upper": 13238.311474462233,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2517,6 +2600,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2364.54,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2535,8 +2619,8 @@
       "state": "forecast",
       "value": 8791.33203125,
       "unit": "persons/hr",
-      "lower": 6629.5224609375,
-      "upper": 10787.783203125,
+      "lower": 4177.329533202569,
+      "upper": 13052.406096589337,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2547,6 +2631,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2197.83,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2565,8 +2650,8 @@
       "state": "forecast",
       "value": 7931.2109375,
       "unit": "persons/hr",
-      "lower": 5787.93798828125,
-      "upper": 10118.5478515625,
+      "lower": 3356.771598579281,
+      "upper": 12599.697063267697,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2577,6 +2662,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1982.8,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2595,8 +2681,8 @@
       "state": "forecast",
       "value": 7286.10009765625,
       "unit": "persons/hr",
-      "lower": 5038.921875,
-      "upper": 9919.416015625,
+      "lower": 2251.2112687512063,
+      "upper": 13186.145214098637,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2607,6 +2693,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1821.53,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2625,8 +2712,8 @@
       "state": "forecast",
       "value": 6778.0458984375,
       "unit": "persons/hr",
-      "lower": 4518.7314453125,
-      "upper": 9320.07421875,
+      "lower": 1715.9653805973885,
+      "upper": 12473.557657879952,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2637,6 +2724,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1694.51,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2655,8 +2743,8 @@
       "state": "forecast",
       "value": 6526.326171875,
       "unit": "persons/hr",
-      "lower": 4153.4814453125,
-      "upper": 8965.810546875,
+      "lower": 1209.876730506725,
+      "upper": 11992.0842965054,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2667,6 +2755,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1631.58,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2685,8 +2774,8 @@
       "state": "forecast",
       "value": 5811.3525390625,
       "unit": "persons/hr",
-      "lower": 3304.53173828125,
-      "upper": 8419.314453125,
+      "lower": 194.72457485895575,
+      "upper": 11654.591039212253,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2697,6 +2786,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1452.84,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2715,8 +2805,8 @@
       "state": "forecast",
       "value": 12983.990234375,
       "unit": "persons/hr",
-      "lower": 12060.5888671875,
-      "upper": 13661.69140625,
+      "lower": 11316.38836275468,
+      "upper": 14207.873783584168,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2729,6 +2819,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "peak_at": "2027-08-02T06:15:00+05:30",
         "horizon_min": 15
       }
@@ -2743,8 +2834,8 @@
       "state": "forecast",
       "value": 12531.8203125,
       "unit": "persons/hr",
-      "lower": 10418.60546875,
-      "upper": 14248.115234375,
+      "lower": 8715.493898227123,
+      "upper": 15631.335567376207,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2755,6 +2846,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 3132.96,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2773,8 +2865,8 @@
       "state": "forecast",
       "value": 13077.859375,
       "unit": "persons/hr",
-      "lower": 10579.2890625,
-      "upper": 15214.703125,
+      "lower": 8565.606439756164,
+      "upper": 16936.858033095577,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2785,6 +2877,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 3269.46,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2803,8 +2896,8 @@
       "state": "forecast",
       "value": 12290.8056640625,
       "unit": "persons/hr",
-      "lower": 9697.2255859375,
-      "upper": 14838.626953125,
+      "lower": 6905.0672507084355,
+      "upper": 17581.52296352035,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2815,6 +2908,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 3072.7,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2833,8 +2927,8 @@
       "state": "forecast",
       "value": 10381.77734375,
       "unit": "persons/hr",
-      "lower": 7644.57373046875,
-      "upper": 12907.103515625,
+      "lower": 4697.795279900312,
+      "upper": 15625.782063260363,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2845,6 +2939,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2595.44,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2863,8 +2958,8 @@
       "state": "forecast",
       "value": 10560.7734375,
       "unit": "persons/hr",
-      "lower": 7572.66259765625,
-      "upper": 13231.5859375,
+      "lower": 4355.766131482848,
+      "upper": 16106.89001876059,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2875,6 +2970,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2640.19,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2893,8 +2989,8 @@
       "state": "forecast",
       "value": 10428.1435546875,
       "unit": "persons/hr",
-      "lower": 7325.833984375,
-      "upper": 13433.2021484375,
+      "lower": 3806.8091394322473,
+      "upper": 16841.912856456802,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2905,6 +3001,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2607.04,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2923,8 +3020,8 @@
       "state": "forecast",
       "value": 10162.9228515625,
       "unit": "persons/hr",
-      "lower": 6821.1357421875,
-      "upper": 13287.294921875,
+      "lower": 3030.465727519859,
+      "upper": 16831.34579464699,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2935,6 +3032,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2540.73,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2953,8 +3051,8 @@
       "state": "forecast",
       "value": 8190.3232421875,
       "unit": "persons/hr",
-      "lower": 5062.41162109375,
-      "upper": 11547.9453125,
+      "lower": 1514.3457501867088,
+      "upper": 15356.577306684776,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2965,6 +3063,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2047.58,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -2983,8 +3082,8 @@
       "state": "forecast",
       "value": 8111.904296875,
       "unit": "persons/hr",
-      "lower": 4816.796875,
-      "upper": 11798.55078125,
+      "lower": 729.0899828283209,
+      "upper": 16371.976868404696,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -2995,6 +3094,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2027.98,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3013,8 +3113,8 @@
       "state": "forecast",
       "value": 8019.7001953125,
       "unit": "persons/hr",
-      "lower": 4578.36181640625,
-      "upper": 11716.6787109375,
+      "lower": 309.2498243773516,
+      "upper": 16302.922078363661,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3025,6 +3125,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2004.93,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3043,8 +3144,8 @@
       "state": "forecast",
       "value": 7911.71435546875,
       "unit": "persons/hr",
-      "lower": 4240.6494140625,
-      "upper": 11696.0966796875,
+      "lower": 0.0,
+      "upper": 16390.76781745549,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3055,6 +3156,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1977.93,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3073,8 +3175,8 @@
       "state": "forecast",
       "value": 6360.50390625,
       "unit": "persons/hr",
-      "lower": 2540.116943359375,
-      "upper": 10314.583984375,
+      "lower": 0.0,
+      "upper": 15219.771681822831,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3085,6 +3187,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1590.13,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3103,8 +3206,8 @@
       "state": "forecast",
       "value": 13077.859375,
       "unit": "persons/hr",
-      "lower": 10579.2890625,
-      "upper": 15214.703125,
+      "lower": 8565.606439756164,
+      "upper": 16936.858033095577,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3115,6 +3218,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "peak_at": "2027-08-02T06:30:00+05:30",
         "horizon_min": 30
       }
@@ -3129,8 +3233,8 @@
       "state": "forecast",
       "value": 12533.560546875,
       "unit": "persons/hr",
-      "lower": 10420.61328125,
-      "upper": 14249.76953125,
+      "lower": 8717.71736102035,
+      "upper": 15632.920604303017,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3141,6 +3245,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 3133.39,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3159,8 +3264,8 @@
       "state": "forecast",
       "value": 13080.4189453125,
       "unit": "persons/hr",
-      "lower": 10582.021484375,
-      "upper": 15217.17578125,
+      "lower": 8568.478168572408,
+      "upper": 16939.26064235252,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3171,6 +3276,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 3270.1,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3189,8 +3295,8 @@
       "state": "forecast",
       "value": 12292.2548828125,
       "unit": "persons/hr",
-      "lower": 9698.9365234375,
-      "upper": 14840.009765625,
+      "lower": 6907.059945535098,
+      "upper": 17582.834285355377,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3201,6 +3307,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 3073.06,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3219,8 +3326,8 @@
       "state": "forecast",
       "value": 10383.9130859375,
       "unit": "persons/hr",
-      "lower": 7646.84716796875,
-      "upper": 12909.1484375,
+      "lower": 4700.216955396802,
+      "upper": 15627.729211137677,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3231,6 +3338,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2595.98,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3249,8 +3357,8 @@
       "state": "forecast",
       "value": 10562.546875,
       "unit": "persons/hr",
-      "lower": 7574.6201171875,
-      "upper": 13233.279296875,
+      "lower": 4357.92182734274,
+      "upper": 16108.497168804299,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3261,6 +3369,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2640.64,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3279,8 +3388,8 @@
       "state": "forecast",
       "value": 10430.716796875,
       "unit": "persons/hr",
-      "lower": 7328.41455078125,
-      "upper": 13435.91015625,
+      "lower": 3809.3980138771267,
+      "upper": 16844.77373218009,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3291,6 +3400,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2607.68,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3309,8 +3419,8 @@
       "state": "forecast",
       "value": 10164.837890625,
       "unit": "persons/hr",
-      "lower": 6823.17431640625,
-      "upper": 13289.177734375,
+      "lower": 3032.6444306568274,
+      "upper": 16833.19205177702,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3321,6 +3431,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2541.21,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3339,8 +3450,8 @@
       "state": "forecast",
       "value": 8192.39453125,
       "unit": "persons/hr",
-      "lower": 5064.5390625,
-      "upper": 11549.9736328125,
+      "lower": 1516.5368865557857,
+      "upper": 15358.556886503982,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3351,6 +3462,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2048.1,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3369,8 +3481,8 @@
       "state": "forecast",
       "value": 8113.4306640625,
       "unit": "persons/hr",
-      "lower": 4818.54345703125,
-      "upper": 11800.1953125,
+      "lower": 731.1097498029758,
+      "upper": 16373.767986697498,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3381,6 +3493,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2028.36,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3399,8 +3512,8 @@
       "state": "forecast",
       "value": 8022.2607421875,
       "unit": "persons/hr",
-      "lower": 4580.8564453125,
-      "upper": 11719.23046875,
+      "lower": 311.66267952005455,
+      "upper": 16305.462933007688,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3411,6 +3524,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2005.57,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3429,8 +3543,8 @@
       "state": "forecast",
       "value": 7913.49267578125,
       "unit": "persons/hr",
-      "lower": 4242.546875,
-      "upper": 11697.796875,
+      "lower": 0.0,
+      "upper": 16392.3710957149,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3441,6 +3555,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1978.37,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3459,8 +3574,8 @@
       "state": "forecast",
       "value": 6362.39306640625,
       "unit": "persons/hr",
-      "lower": 2542.00537109375,
-      "upper": 10316.388671875,
+      "lower": 0.0,
+      "upper": 15221.471577759175,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3471,6 +3586,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1590.6,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3489,8 +3605,8 @@
       "state": "forecast",
       "value": 13080.4189453125,
       "unit": "persons/hr",
-      "lower": 10582.021484375,
-      "upper": 15217.17578125,
+      "lower": 8568.478168572408,
+      "upper": 16939.26064235252,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3501,6 +3617,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "peak_at": "2027-08-02T06:30:00+05:30",
         "horizon_min": 30
       }
@@ -3515,8 +3632,8 @@
       "state": "forecast",
       "value": 9400.171875,
       "unit": "persons/hr",
-      "lower": 7815.4599609375,
-      "upper": 10687.3271484375,
+      "lower": 6538.286840197965,
+      "upper": 11724.689272659964,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3527,6 +3644,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2350.04,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3545,8 +3663,8 @@
       "state": "forecast",
       "value": 9810.314453125,
       "unit": "persons/hr",
-      "lower": 7936.51611328125,
-      "upper": 11412.880859375,
+      "lower": 6426.358429668089,
+      "upper": 12704.44352139581,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3557,6 +3675,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2452.58,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3575,8 +3694,8 @@
       "state": "forecast",
       "value": 9219.19140625,
       "unit": "persons/hr",
-      "lower": 7274.20166015625,
-      "upper": 11130.0068359375,
+      "lower": 5180.29317539614,
+      "upper": 13187.1244372353,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3587,6 +3706,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 2304.8,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3605,8 +3725,8 @@
       "state": "forecast",
       "value": 7787.93359375,
       "unit": "persons/hr",
-      "lower": 5735.134765625,
-      "upper": 9681.861328125,
+      "lower": 3525.162763279357,
+      "upper": 11720.798222519894,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3617,6 +3737,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1946.98,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3635,8 +3756,8 @@
       "state": "forecast",
       "value": 7921.91015625,
       "unit": "persons/hr",
-      "lower": 5680.96435546875,
-      "upper": 9924.958984375,
+      "lower": 3268.4398495851983,
+      "upper": 12081.37186265532,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3647,6 +3768,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1980.48,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3665,8 +3787,8 @@
       "state": "forecast",
       "value": 7823.0361328125,
       "unit": "persons/hr",
-      "lower": 5496.310546875,
-      "upper": 10076.931640625,
+      "lower": 2857.0493904027016,
+      "upper": 12633.579876441807,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3677,6 +3799,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1955.76,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3695,8 +3818,8 @@
       "state": "forecast",
       "value": 7623.62744140625,
       "unit": "persons/hr",
-      "lower": 5117.3798828125,
-      "upper": 9966.8828125,
+      "lower": 2274.482606967744,
+      "upper": 12624.894104420757,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3707,6 +3830,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1905.91,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3725,8 +3849,8 @@
       "state": "forecast",
       "value": 6144.294921875,
       "unit": "persons/hr",
-      "lower": 3798.4033203125,
-      "upper": 8662.478515625,
+      "lower": 1137.401688354339,
+      "upper": 11518.915125089748,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3737,6 +3861,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1536.07,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3755,8 +3880,8 @@
       "state": "forecast",
       "value": 6085.072265625,
       "unit": "persons/hr",
-      "lower": 3613.90673828125,
-      "upper": 8850.14453125,
+      "lower": 548.3313064271488,
+      "upper": 12280.322522569168,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3767,6 +3892,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1521.27,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3785,8 +3911,8 @@
       "state": "forecast",
       "value": 6016.6943359375,
       "unit": "persons/hr",
-      "lower": 3435.641357421875,
-      "upper": 8789.421875,
+      "lower": 233.74633594333227,
+      "upper": 12229.096526059056,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3797,6 +3923,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1504.17,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3815,8 +3942,8 @@
       "state": "forecast",
       "value": 5935.1181640625,
       "unit": "persons/hr",
-      "lower": 3181.9091796875,
-      "upper": 8773.345703125,
+      "lower": 0.0,
+      "upper": 12294.275611496698,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3827,6 +3954,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1483.78,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3845,8 +3973,8 @@
       "state": "forecast",
       "value": 4771.79345703125,
       "unit": "persons/hr",
-      "lower": 1906.502197265625,
-      "upper": 7737.2900390625,
+      "lower": 0.0,
+      "upper": 11416.102067042735,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3857,6 +3985,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1192.95,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3875,8 +4004,8 @@
       "state": "forecast",
       "value": 9810.314453125,
       "unit": "persons/hr",
-      "lower": 7936.51611328125,
-      "upper": 11412.880859375,
+      "lower": 6426.358429668089,
+      "upper": 12704.44352139581,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3887,6 +4016,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "peak_at": "2027-08-02T06:30:00+05:30",
         "horizon_min": 30
       }
@@ -3901,8 +4031,8 @@
       "state": "forecast",
       "value": 6266.7802734375,
       "unit": "persons/hr",
-      "lower": 5210.306640625,
-      "upper": 7124.884765625,
+      "lower": 4358.858680510175,
+      "upper": 7816.460302151509,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3913,6 +4043,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1566.7,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3931,8 +4062,8 @@
       "state": "forecast",
       "value": 6540.20947265625,
       "unit": "persons/hr",
-      "lower": 5291.0107421875,
-      "upper": 7608.587890625,
+      "lower": 4284.239084286204,
+      "upper": 8469.63032117626,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3943,6 +4074,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1635.05,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3961,8 +4093,8 @@
       "state": "forecast",
       "value": 6146.12744140625,
       "unit": "persons/hr",
-      "lower": 4849.46826171875,
-      "upper": 7420.0048828125,
+      "lower": 3453.529972767549,
+      "upper": 8791.417142677688,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -3973,6 +4105,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1536.53,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -3991,8 +4124,8 @@
       "state": "forecast",
       "value": 5191.95654296875,
       "unit": "persons/hr",
-      "lower": 3823.423583984375,
-      "upper": 6454.57421875,
+      "lower": 2350.108477698401,
+      "upper": 7813.864605568839,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -4003,6 +4136,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1297.99,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -4021,8 +4155,8 @@
       "state": "forecast",
       "value": 5281.2734375,
       "unit": "persons/hr",
-      "lower": 3787.31005859375,
-      "upper": 6616.6396484375,
+      "lower": 2178.96091367137,
+      "upper": 8054.248584402149,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -4033,6 +4167,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1320.32,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -4051,8 +4186,8 @@
       "state": "forecast",
       "value": 5215.3583984375,
       "unit": "persons/hr",
-      "lower": 3664.207275390625,
-      "upper": 6717.955078125,
+      "lower": 1904.6990069385633,
+      "upper": 8422.386866090044,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -4063,6 +4198,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1303.84,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -4081,8 +4217,8 @@
       "state": "forecast",
       "value": 5082.4189453125,
       "unit": "persons/hr",
-      "lower": 3411.587158203125,
-      "upper": 6644.5888671875,
+      "lower": 1516.3222153284137,
+      "upper": 8416.59602588851,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -4093,6 +4229,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1270.6,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -4111,8 +4248,8 @@
       "state": "forecast",
       "value": 4096.197265625,
       "unit": "persons/hr",
-      "lower": 2532.26953125,
-      "upper": 5774.98681640625,
+      "lower": 758.2684432778929,
+      "upper": 7679.278443251991,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -4123,6 +4260,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1024.05,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -4141,8 +4279,8 @@
       "state": "forecast",
       "value": 4056.71533203125,
       "unit": "persons/hr",
-      "lower": 2409.271728515625,
-      "upper": 5900.09765625,
+      "lower": 365.5548749014879,
+      "upper": 8186.883993348749,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -4153,6 +4291,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1014.18,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -4171,8 +4310,8 @@
       "state": "forecast",
       "value": 4011.13037109375,
       "unit": "persons/hr",
-      "lower": 2290.42822265625,
-      "upper": 5859.615234375,
+      "lower": 155.83133976002728,
+      "upper": 8152.731466503844,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -4183,6 +4322,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 1002.78,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -4201,8 +4341,8 @@
       "state": "forecast",
       "value": 3956.746337890625,
       "unit": "persons/hr",
-      "lower": 2121.2734375,
-      "upper": 5848.8984375,
+      "lower": 0.0,
+      "upper": 8196.18554785745,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -4213,6 +4353,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 989.19,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -4231,8 +4372,8 @@
       "state": "forecast",
       "value": 3181.196533203125,
       "unit": "persons/hr",
-      "lower": 1271.002685546875,
-      "upper": 5158.1943359375,
+      "lower": 0.0,
+      "upper": 7610.735788879588,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -4243,6 +4384,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 795.3,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -4261,8 +4403,8 @@
       "state": "forecast",
       "value": 6540.20947265625,
       "unit": "persons/hr",
-      "lower": 5291.0107421875,
-      "upper": 7608.587890625,
+      "lower": 4284.239084286204,
+      "upper": 8469.63032117626,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -4273,6 +4415,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "peak_at": "2027-08-02T06:30:00+05:30",
         "horizon_min": 30
       }
@@ -4287,8 +4430,8 @@
       "state": "forecast",
       "value": 3133.39013671875,
       "unit": "persons/hr",
-      "lower": 2605.1533203125,
-      "upper": 3562.4423828125,
+      "lower": 2179.4293402550875,
+      "upper": 3908.2301510757543,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -4299,6 +4442,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 783.35,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -4317,8 +4461,8 @@
       "state": "forecast",
       "value": 3270.104736328125,
       "unit": "persons/hr",
-      "lower": 2645.50537109375,
-      "upper": 3804.2939453125,
+      "lower": 2142.119542143102,
+      "upper": 4234.81516058813,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -4329,6 +4473,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 817.53,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -4347,8 +4492,8 @@
       "state": "forecast",
       "value": 3073.063720703125,
       "unit": "persons/hr",
-      "lower": 2424.734130859375,
-      "upper": 3710.00244140625,
+      "lower": 1726.7649863837746,
+      "upper": 4395.708571338844,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -4359,6 +4504,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 768.27,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -4377,8 +4523,8 @@
       "state": "forecast",
       "value": 2595.978271484375,
       "unit": "persons/hr",
-      "lower": 1911.7117919921875,
-      "upper": 3227.287109375,
+      "lower": 1175.0542388492006,
+      "upper": 3906.9323027844193,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -4389,6 +4535,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 648.99,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -4407,8 +4554,8 @@
       "state": "forecast",
       "value": 2640.63671875,
       "unit": "persons/hr",
-      "lower": 1893.655029296875,
-      "upper": 3308.31982421875,
+      "lower": 1089.480456835685,
+      "upper": 4027.1242922010747,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -4419,6 +4566,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 660.16,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -4437,8 +4585,8 @@
       "state": "forecast",
       "value": 2607.67919921875,
       "unit": "persons/hr",
-      "lower": 1832.1036376953125,
-      "upper": 3358.9775390625,
+      "lower": 952.3495034692817,
+      "upper": 4211.193433045022,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -4449,6 +4597,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 651.92,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -4467,8 +4616,8 @@
       "state": "forecast",
       "value": 2541.20947265625,
       "unit": "persons/hr",
-      "lower": 1705.7935791015625,
-      "upper": 3322.29443359375,
+      "lower": 758.1611076642068,
+      "upper": 4208.298012944255,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -4479,6 +4628,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 635.3,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -4497,8 +4647,8 @@
       "state": "forecast",
       "value": 2048.0986328125,
       "unit": "persons/hr",
-      "lower": 1266.134765625,
-      "upper": 2887.493408203125,
+      "lower": 379.1342216389464,
+      "upper": 3839.6392216259956,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -4509,6 +4659,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 512.02,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -4527,8 +4678,8 @@
       "state": "forecast",
       "value": 2028.357666015625,
       "unit": "persons/hr",
-      "lower": 1204.6358642578125,
-      "upper": 2950.048828125,
+      "lower": 182.77743745074395,
+      "upper": 4093.4419966743744,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -4539,6 +4690,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 507.09,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -4557,8 +4709,8 @@
       "state": "forecast",
       "value": 2005.565185546875,
       "unit": "persons/hr",
-      "lower": 1145.214111328125,
-      "upper": 2929.8076171875,
+      "lower": 77.91566988001364,
+      "upper": 4076.365733251922,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -4569,6 +4721,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 501.39,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -4587,8 +4740,8 @@
       "state": "forecast",
       "value": 1978.3731689453125,
       "unit": "persons/hr",
-      "lower": 1060.63671875,
-      "upper": 2924.44921875,
+      "lower": 0.0,
+      "upper": 4098.092773928725,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -4599,6 +4752,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 494.59,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -4617,8 +4771,8 @@
       "state": "forecast",
       "value": 1590.5982666015625,
       "unit": "persons/hr",
-      "lower": 635.5013427734375,
-      "upper": 2579.09716796875,
+      "lower": 0.0,
+      "upper": 3805.367894439794,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -4629,6 +4783,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "entries_per_step": 397.65,
         "weather": {
           "rainfall_intensity": 0.0,
@@ -4647,8 +4802,8 @@
       "state": "forecast",
       "value": 3270.104736328125,
       "unit": "persons/hr",
-      "lower": 2645.50537109375,
-      "upper": 3804.2939453125,
+      "lower": 2142.119542143102,
+      "upper": 4234.81516058813,
       "quantile_level": 0.8,
       "baseline_value": null,
       "delta": null,
@@ -4659,6 +4814,7 @@
       "confidence": 0.6,
       "details": {
         "backend": "chronos2",
+        "band_calibrated": true,
         "peak_at": "2027-08-02T06:30:00+05:30",
         "horizon_min": 30
       }

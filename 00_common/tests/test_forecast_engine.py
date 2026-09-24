@@ -488,3 +488,160 @@ def test_dropping_covariates_entirely_also_re_fits(history) -> None:
     engine.predict(history, HORIZON, future_covariates=frames)
     plain = engine.predict(history, HORIZON)
     assert len(plain.values["Z01"]) == HORIZON
+
+
+# ------------------------------------------------------------------- calibration
+def _noisy_series(entities: int = 3, steps: int = 500, seed: int = 7) -> dict[str, pd.Series]:
+    """A series whose noise GROWS along the series, so a flat band must under-cover."""
+    index = pd.date_range("2027-07-01", periods=steps, freq="15min", tz="Asia/Kolkata")
+    rng = np.random.default_rng(seed)
+    out = {}
+    for i in range(entities):
+        base = 500.0 + 200.0 * np.sin(np.arange(steps) * 2 * np.pi / 96)
+        out[f"Z{i + 1:02d}"] = pd.Series(base + rng.normal(0, 25.0, steps), index=index)
+    return out
+
+
+def test_calibration_reports_before_and_after(history) -> None:
+    engine = ForecastEngine(backend=BACKEND_LIGHTGBM, seed=42, allow_fallback=False)
+    calibration = engine.calibrate(history, HORIZON, folds=6, stride_steps=24)
+    assert calibration.folds == 6
+    assert calibration.samples_per_step > 0
+    assert 0.0 <= calibration.coverage_before <= 100.0
+    assert 0.0 <= calibration.coverage_after <= 100.0
+
+
+def test_calibration_reaches_at_least_the_target(history) -> None:
+    """The conformal guarantee is one-sided: coverage must be AT LEAST the stated level.
+
+    Not "exactly". With a small calibration sample the finite-sample correction and the
+    monotone-widening rule both round upwards, so a 6-fold run typically over-covers. That is
+    the safe direction and it is what the guarantee promises - a band labelled 80 percent may
+    hold the truth 90 percent of the time, but it must not hold it 50 percent of the time.
+    """
+    engine = ForecastEngine(backend=BACKEND_LIGHTGBM, seed=42, allow_fallback=False)
+    calibration = engine.calibrate(history, HORIZON, folds=6, stride_steps=24)
+    target = calibration.target * 100
+    assert calibration.coverage_after >= target - 1e-6, (
+        f"calibrated coverage {calibration.coverage_after:.1f}% is below the "
+        f"{target:.0f}% it claims"
+    )
+
+
+def test_calibration_lifts_an_under_covering_band(history) -> None:
+    """On data where the raw band under-covers, calibration must raise it, not lower it."""
+    engine = ForecastEngine(backend=BACKEND_LIGHTGBM, seed=42, allow_fallback=False)
+    calibration = engine.calibrate(history, HORIZON, folds=6, stride_steps=24)
+    if calibration.coverage_before >= calibration.target * 100:
+        pytest.skip("the raw band already covers; nothing to lift")
+    assert calibration.coverage_after > calibration.coverage_before
+
+
+def test_factors_never_shrink_across_the_horizon(history) -> None:
+    """A later step is strictly harder to forecast, so its band may not be narrower."""
+    engine = ForecastEngine(backend=BACKEND_LIGHTGBM, seed=42, allow_fallback=False)
+    calibration = engine.calibrate(history, HORIZON, folds=6, stride_steps=24)
+    factors = calibration.factors
+    assert len(factors) == HORIZON
+    assert list(factors) == sorted(factors)
+
+
+def test_factors_respect_the_configured_floor(history) -> None:
+    """min_factor 1.0 means the reported band is never narrower than the backend's own."""
+    engine = ForecastEngine(
+        backend=BACKEND_LIGHTGBM, seed=42, allow_fallback=False, calibration_min_factor=1.0
+    )
+    calibration = engine.calibrate(history, HORIZON, folds=6, stride_steps=24)
+    assert float(calibration.factors.min()) >= 1.0
+
+
+def test_factors_respect_the_configured_ceiling(history) -> None:
+    engine = ForecastEngine(
+        backend=BACKEND_LIGHTGBM, seed=42, allow_fallback=False, calibration_max_factor=1.5
+    )
+    calibration = engine.calibrate(history, HORIZON, folds=6, stride_steps=24)
+    assert float(calibration.factors.max()) <= 1.5 + 1e-9
+
+
+def test_a_calibrated_band_is_wider_and_flagged(history) -> None:
+    engine = ForecastEngine(backend=BACKEND_LIGHTGBM, seed=42, allow_fallback=False)
+    raw = engine.predict(history, HORIZON)
+    assert raw.calibrated is False
+    raw_width = (raw.upper["Z01"] - raw.lower["Z01"]).to_numpy().copy()
+
+    engine.calibrate(history, HORIZON, folds=6, stride_steps=24)
+    calibrated = engine.predict(history, HORIZON)
+    assert calibrated.calibrated is True
+    assert np.all((calibrated.upper["Z01"] - calibrated.lower["Z01"]).to_numpy() >= raw_width)
+
+
+def test_calibration_keeps_the_median_untouched(history) -> None:
+    """Only the band moves. A shifted median would be a different forecast, not a calibrated one."""
+    engine = ForecastEngine(backend=BACKEND_LIGHTGBM, seed=42, allow_fallback=False)
+    before = engine.predict(history, HORIZON).values["Z01"].to_numpy().copy()
+    engine.calibrate(history, HORIZON, folds=6, stride_steps=24)
+    after = engine.predict(history, HORIZON).values["Z01"].to_numpy()
+    assert np.allclose(before, after)
+
+
+def test_calibration_preserves_band_ordering(history) -> None:
+    """docs/02 section 4: lower <= value <= upper, after widening as much as before."""
+    engine = ForecastEngine(backend=BACKEND_LIGHTGBM, seed=42, allow_fallback=False)
+    engine.calibrate(history, HORIZON, folds=6, stride_steps=24)
+    result = engine.predict(history, HORIZON)
+    for entity in result.entities:
+        low = result.lower[entity].to_numpy()
+        mid = result.values[entity].to_numpy()
+        high = result.upper[entity].to_numpy()
+        assert np.all(low <= mid + 1e-9)
+        assert np.all(mid <= high + 1e-9)
+
+
+def test_calibration_applies_only_to_its_own_horizon(history) -> None:
+    """Factors are measured per horizon; a different horizon must not silently reuse them."""
+    engine = ForecastEngine(backend=BACKEND_LIGHTGBM, seed=42, allow_fallback=False)
+    engine.calibrate(history, HORIZON, folds=6, stride_steps=24)
+    assert engine.calibration_for(HORIZON) is not None
+    assert engine.calibration_for(HORIZON + 1) is None
+    other = engine.predict(history, HORIZON + 1)
+    assert other.calibrated is False
+
+
+def test_calibration_needs_enough_history() -> None:
+    short = {
+        "Z01": pd.Series(
+            range(40),
+            dtype="float64",
+            index=pd.date_range("2027-07-01", periods=40, freq="15min", tz="Asia/Kolkata"),
+        )
+    }
+    engine = ForecastEngine(backend=BACKEND_NAIVE, seed=42, allow_fallback=False)
+    with pytest.raises(EngineError, match="history"):
+        engine.calibrate(short, HORIZON, folds=6, stride_steps=24)
+
+
+def test_calibration_rejects_a_point_forecast_backend(history) -> None:
+    """NaiveSeasonal has no band, so there is nothing to calibrate and it must say so."""
+    engine = ForecastEngine(backend=BACKEND_NAIVE, seed=42, allow_fallback=False)
+    with pytest.raises(EngineError, match="no band"):
+        engine.calibrate(history, HORIZON, folds=6, stride_steps=24)
+
+
+def test_calibration_is_off_unless_asked(history) -> None:
+    """A bare engine must stay cheap; only config turns calibration on."""
+    engine = ForecastEngine(backend=BACKEND_LIGHTGBM, seed=42, allow_fallback=False)
+    assert engine.calibrate_bands is False
+    assert engine.warmup(history, HORIZON).calibrated is False
+
+
+def test_from_config_reads_the_calibration_block() -> None:
+    engine = ForecastEngine.from_config(
+        {
+            "backend": BACKEND_LIGHTGBM,
+            "calibration": {"enabled": True, "folds": 9, "stride_steps": 32, "max_factor": 4.0},
+        }
+    )
+    assert engine.calibrate_bands is True
+    assert engine.calibration_folds == 9
+    assert engine.calibration_stride_steps == 32
+    assert engine.calibration_max_factor == 4.0

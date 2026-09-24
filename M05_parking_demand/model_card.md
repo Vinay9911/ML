@@ -102,9 +102,19 @@ Both learned backends clear the naive floor by roughly a third. Unlike M01, the 
 LightGBM edges out zero-shot Chronos-2 here, which is the expected ordering — the demand
 series is a cumulative quantity with a sharper event-driven shape than raw footfall.
 
-**Interval coverage is the weak result, worse than M01's.** 27.4 % against a nominal 80 %
-means the Chronos-2 bands are far too narrow on this series. Treat `lower`/`upper` on M05 as
-indicative only; the median is the usable number. This is recorded rather than smoothed over.
+**Interval coverage was the weak result, and is now calibrated.** The raw Chronos-2 band held
+the truth 27.4 % of the time against a nominal 80 % — far too narrow, because the error grows
+much faster across the horizon than the quantiles do. M05 enables the engine's **conformal band
+calibration** (`params.forecast.calibration`): at startup it forecasts 24 held-out origins,
+measures the real miss rate at each horizon step and widens that step to match.
+
+| | Raw | Calibrated |
+|---|---:|---:|
+| Coverage on the calibration set | 51.4 % | **89.9 %** |
+
+Conformal calibration guarantees *at least* the stated coverage, not exactly it, so
+over-covering is expected and is the safe direction. Every record carries
+`details.band_calibrated`. The median remains untouched — only the band moves.
 
 Horizon-window accuracy against the generated truth, summed over the three sites for the
 default 3-hour request:
@@ -117,8 +127,10 @@ default 3-hour request:
 ## Limitations and failure modes
 - **Occupancy exceeds 100 %** by design. A reader who expects a percentage of a physical
   capacity will misread it; `details.occupied_spaces` is the capped figure.
-- **The uncertainty bands are under-dispersed** (27 % coverage at a nominal 80 %). The median
-  is trustworthy on synthetic data; the interval is not yet.
+- **The uncertainty bands are conformally calibrated** (51 % → 90 % coverage against a nominal
+  80 %). They now over-cover slightly, which is the safe direction. The factors are measured
+  once at startup from recent history, so a sudden regime change would leave them stale until
+  the service restarts.
 - **Capacity is a changed placeholder.** Every occupancy number moves proportionally when the
   real bay counts arrive. The ranking between sites will not move, because it is set by the
   capacity ratio.
