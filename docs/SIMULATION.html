@@ -10,11 +10,23 @@
     --line:#2a3240; --accent:#5b8cff; --accent2:#7ce2c0; --accent-soft:#1a2440;
     --green:#3fb96f; --amber:#e0a33a; --red:#e8674f; --crit:#c9407a;
     --code:#12171f; --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    color-scheme:dark;
   }
+  /* Dark-first: the bare :root above is the dark palette, so the light palette has to be
+     applied in BOTH of the other two states - an explicit light choice, and a light system
+     setting with no choice made. Without the media query a light-system viewer who never
+     touched the toggle got the dark page. */
   :root[data-theme="light"]{
-    --bg:#f5f7fa; --panel:#ffffff; --panel2:#f0f3f8; --ink:#141922; 
+    --bg:#f5f7fa; --panel:#ffffff; --panel2:#f0f3f8; --ink:#141922;
     --muted:#5c6779; --line:#dde3ec; --accent:#2f5fd0; --accent2:#12876a;
-    --accent-soft:#e8eefc; --code:#f2f5f9;
+    --accent-soft:#e8eefc; --code:#f2f5f9; color-scheme:light;
+  }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){
+      --bg:#f5f7fa; --panel:#ffffff; --panel2:#f0f3f8; --ink:#141922;
+      --muted:#5c6779; --line:#dde3ec; --accent:#2f5fd0; --accent2:#12876a;
+      --accent-soft:#e8eefc; --code:#f2f5f9; color-scheme:light;
+    }
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);
@@ -22,7 +34,7 @@
   .wrap{max-width:1180px;margin:0 auto;padding:0 16px 80px}
 
   /* ---------- header ---------- */
-  header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);
+  header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);
     backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px 0;margin-bottom:20px}
   .hrow{max-width:1180px;margin:0 auto;padding:0 16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
   .brand{font-weight:700;font-size:16px;letter-spacing:-.01em;white-space:nowrap}
@@ -338,9 +350,14 @@ const num = v => typeof v === "number" ? (Math.abs(v) >= 1000 ? v.toLocaleString
 
 /* ---------- theme ---------- */
 $("#theme").onclick = () => {
-  const dark = document.documentElement.getAttribute("data-theme") !== "light";
-  document.documentElement.setAttribute("data-theme", dark ? "light" : "dark");
-  try { localStorage.setItem("twin-theme", dark ? "light" : "dark"); } catch {}
+  // Resolve what is actually on screen before flipping: with no explicit choice the page
+  // follows the system, so reading the attribute alone would flip the wrong way.
+  const attr = document.documentElement.getAttribute("data-theme");
+  const showingDark = attr ? attr === "dark"
+    : !window.matchMedia("(prefers-color-scheme: light)").matches;
+  const next = showingDark ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  try { localStorage.setItem("twin-theme", next); } catch {}
 };
 try { const t = localStorage.getItem("twin-theme"); if (t) document.documentElement.setAttribute("data-theme", t); } catch {}
 

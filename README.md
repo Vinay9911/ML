@@ -175,7 +175,9 @@ Two things worth knowing before demoing it:
   as it becomes ready, so you can start after the first one.
 - **It needs the services running on the same machine.** Opening the file with nothing running
   shows a banner telling you the command, not a broken page — but it cannot show live numbers to
-  someone who does not have the repo.
+  someone who does not have the repo. It also cannot be published as a shareable web page: a
+  hosted page is not allowed to call `localhost`, so a published copy could never reach the
+  services. Share `docs/EXPLAINER.html` instead, or screen-share the simulation.
 
 ### About `docs/EXPLAINER.html`
 
