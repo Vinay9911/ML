@@ -3,8 +3,8 @@
   "model_id": "M17",
   "model_name": "Food & Supply",
   "model_version": "0.1.0",
-  "run_id": "f57e40ce-b30f-4f64-b0a5-0ff79cb994ba",
-  "generated_at": "2026-09-24T19:23:49.520965+05:30",
+  "run_id": "70785093-4b92-4367-940b-4649b7668129",
+  "generated_at": "2026-09-24T19:46:08.912988+05:30",
   "as_of": "2027-08-02T06:00:00+05:30",
   "scenario_id": "S02",
   "scenario_overrides": {
@@ -19,9 +19,9 @@
   "upstream": [
     {
       "model_id": "M01",
-      "run_id": "eb54da2f-f71d-41bd-9b9b-df64fef1ee86",
+      "run_id": "18cdf2eb-58b7-4c22-be71-337f57a4403d",
       "source": "sample",
-      "generated_at": "2026-09-24T19:17:22.278189+05:30"
+      "generated_at": "2026-09-24T19:31:02.245348+05:30"
     }
   ],
   "results": [

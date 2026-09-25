@@ -507,7 +507,8 @@ def build_derived(
     # ------------------------------------------------------------------- D16 waste
     waste_cfg = a["waste"]
     kg_per_person_hour = float(waste_cfg["kg_per_person_per_hour_present"])
-    bin_capacity = float(waste_cfg["bin_capacity_kg"])
+    # A bin GROUP holds many bins; see assumptions.waste.bins_per_group.
+    bin_capacity = float(waste_cfg["bin_capacity_kg"]) * float(waste_cfg["bins_per_group"])
     bin_groups = world_cfg["waste_bin_groups"]
     waste_rows: list[pd.DataFrame] = []
     for group_id, spec in bin_groups.items():
@@ -562,13 +563,21 @@ def build_derived(
         stock = np.zeros(len(hourly))
         deliveries = np.zeros(len(hourly))
         level = float(sold[: int(min_cover)].sum()) if len(sold) else 0.0
+        # A delivery lands `lead_time_hours` AFTER it is ordered. That delay is the whole
+        # point of S13: previously the order was added to stock in the same step it was
+        # placed, so a longer lead time only made the deliveries bigger and left the outlet
+        # BETTER off - the opposite of a supply disruption, and the opposite of the
+        # "coverage down" the docs/05 section 1.2 S13 assertion asks for.
+        lead_steps = max(1, round(lead_time_hours))
+        pending: dict[int, float] = {}
         for position, amount in enumerate(sold):
+            arrived = pending.pop(position, 0.0)
+            level += arrived
+            deliveries[position] = arrived
             level -= amount
-            # Reorder when cover drops below the minimum; the delivery lands after the lead time.
-            if level < amount * min_cover:
-                delivery = amount * (min_cover + lead_time_hours)
-                deliveries[position] = delivery
-                level += delivery
+            # Reorder when cover drops below the minimum, unless one is already on the road.
+            if level < amount * min_cover and not pending:
+                pending[position + lead_steps] = amount * (min_cover + lead_time_hours)
             stock[position] = max(0.0, level)
         food_rows.append(
             pd.DataFrame(
@@ -611,7 +620,15 @@ def build_derived(
         # Fuel drains only while a generator is running.
         load_fraction = np.clip(kw / max(base_kw * 4.0, 1e-9), 0.05, 1.0)
         burn = np.where(generator_on, generator_lph * load_fraction * hours_per_step, 0.0)
-        fuel = np.clip(generator_fuel - np.cumsum(burn), 0.0, None)
+        # Refuel whenever the grid is back. Without this the burn accumulates across the
+        # WHOLE month - the S08 outage window recurs daily, so 31 days x 3 h drains the tank
+        # long before the demo day and `generator_backup_duration` reads 0 for the one
+        # scenario it exists for. A real set is refuelled between outages.
+        fuel = np.empty(len(steps), dtype="float64")
+        level = generator_fuel
+        for position, amount in enumerate(burn):
+            level = generator_fuel if amount <= 0 else max(0.0, level - amount)
+            fuel[position] = level
         power_rows.append(
             pd.DataFrame(
                 {

@@ -68,6 +68,10 @@ testpaths = [
     "M06_transit_demand/tests",
     "M15_water_demand/tests",
     "M17_food_supply/tests",
+    "M18_waste_forecast/tests",
+    "M19_power_load/tests",
+    "M20_network_capacity/tests",
+    "M22_environmental_risk/tests",
     "M21_weather_impact/tests",
 ]
 markers = [

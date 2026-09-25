@@ -46,6 +46,12 @@ The original PDF (if present in `docs/reference/`) is background only — do not
 ## Workflow
 - Start each phase in plan mode. Write the plan to `plans/PHASE_<n>.md` and wait for approval.
 - Build one model at a time. "Done" = Definition of Done in docs/02 §9, shown with evidence (command + output).
+- After each model is done, add its section to `docs/EXPLAINER.html` (the plain-language guide):
+  question answered, KPIs, inputs/outputs, a runnable example, scenarios, and its honest limits.
+  Update the counts in its header and the "what is still to build" table.
+- Also add the model to `MODEL_NOTES` in `docs/SIMULATION.html` (its question, the one thing worth
+  knowing about it, and its top limitations). The tiles and readiness come from `/models`
+  automatically, so nothing else there needs touching.
 - Before marking a model done, run the `model-reviewer` subagent and fix blocking gaps only.
 - End of phase: run `scripts/validate_all.py`, update `PROGRESS.md`, commit (`feat(M05): …`), stop and report.
 - When compacting, preserve: current phase, model in progress, files modified, failing tests, open questions.

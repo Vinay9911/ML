@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Event Twin Live Map</title>
+<style>
+  :root{
+    --bg:#0e1117; --panel:#161b23; --panel2:#1c222c; --ink:#e9edf4; --muted:#93a0b4;
+    --line:#2a3240; --accent:#5b8cff; --accent2:#7ce2c0; --accent-soft:#1a2440;
+    --green:#3fb96f; --amber:#e0a33a; --red:#e8674f; --crit:#c9407a;
+    --code:#12171f; --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  :root[data-theme="light"]{
+    --bg:#f5f7fa; --panel:#ffffff; --panel2:#f0f3f8; --ink:#141922; 
+    --muted:#5c6779; --line:#dde3ec; --accent:#2f5fd0; --accent2:#12876a;
+    --accent-soft:#e8eefc; --code:#f2f5f9;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 16px 80px}
+
+  /* ---------- header ---------- */
+  header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px 0;margin-bottom:20px}
+  .hrow{max-width:1180px;margin:0 auto;padding:0 16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .brand{font-weight:700;font-size:16px;letter-spacing:-.01em;white-space:nowrap}
+  .brand small{display:block;font-weight:400;font-size:11.5px;color:var(--muted);letter-spacing:.02em}
+  .spacer{flex:1}
+  .status{display:flex;align-items:center;gap:7px;font-size:12.5px;padding:5px 11px;border-radius:99px;
+    border:1px solid var(--line);background:var(--panel);white-space:nowrap}
+  .dot{width:8px;height:8px;border-radius:99px;background:var(--muted);flex:none}
+  .dot.live{background:var(--green);box-shadow:0 0 0 3px color-mix(in srgb,var(--green) 25%,transparent);
+    animation:pulse 2s ease-in-out infinite}
+  .dot.off{background:var(--red)}
+  .dot.warm{background:var(--amber);animation:pulse 1.2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
+  select,button{font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);
+    border-radius:8px;padding:6px 11px;cursor:pointer}
+  select:hover,button:hover{border-color:var(--accent)}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+  button.primary:hover{filter:brightness(1.1)}
+  button:disabled{opacity:.45;cursor:not-allowed}
+  button.ghost{background:transparent}
+
+  /* ---------- banner ---------- */
+  .banner{border:1px solid var(--line);border-left:3px solid var(--amber);background:var(--panel);
+    border-radius:8px;padding:13px 16px;margin:0 0 18px;font-size:14px}
+  .banner code{background:var(--code);padding:2px 6px;border-radius:4px;font-family:var(--mono);font-size:13px}
+  .banner.hide{display:none}
+
+  /* ---------- progress ---------- */
+  .prog{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:20px}
+  .bar{height:7px;border-radius:99px;background:var(--panel2);overflow:hidden;margin:9px 0 6px}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));
+    width:0;transition:width .5s ease}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
+
+  /* ---------- tiles ---------- */
+  h2{font-size:18px;margin:26px 0 10px;letter-spacing:-.01em}
+  h2 span{font-weight:400;color:var(--muted);font-size:14px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:10px}
+  .tile{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 12px;
+    cursor:pointer;transition:.15s;position:relative;overflow:hidden}
+  .tile:hover{border-color:var(--accent);transform:translateY(-1px)}
+  .tile.sel{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+  .tile.todo{opacity:.5;cursor:default}
+  .tile.todo:hover{transform:none;border-color:var(--line)}
+  .tile .id{font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:700}
+  .tile .nm{font-size:13.5px;font-weight:600;margin:2px 0 5px;line-height:1.3}
+  .tile .en{font-size:11px;color:var(--muted);font-family:var(--mono)}
+  .tile .st{position:absolute;top:10px;right:10px;width:7px;height:7px;border-radius:99px;background:var(--muted)}
+  .tile .st.ready{background:var(--green)}
+  .tile .st.warm{background:var(--amber);animation:pulse 1.2s infinite}
+  .tile .st.err{background:var(--red)}
+
+  /* ---------- pipeline ---------- */
+  .stage{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;margin:18px 0}
+  .stitle{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+  .stitle .id{font-family:var(--mono);background:var(--accent-soft);color:var(--accent);
+    padding:3px 9px;border-radius:6px;font-weight:700;font-size:13px}
+  .stitle h3{margin:0;font-size:19px}
+  .q{color:var(--muted);font-size:14px;margin:2px 0 16px}
+  .pipe{display:grid;grid-template-columns:1fr 62px 1fr 62px 1fr;gap:0;align-items:stretch}
+  @media (max-width:860px){.pipe{grid-template-columns:1fr;gap:10px}.arrow{height:44px!important;transform:rotate(90deg)}}
+  .box{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:13px;
+    display:flex;flex-direction:column;min-height:132px}
+  .box h4{margin:0 0 8px;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+  .box .big{font-size:23px;font-weight:700;line-height:1.1}
+  .box .sm{font-size:12.5px;color:var(--muted);margin-top:3px}
+  .box.model{background:linear-gradient(160deg,var(--accent-soft),var(--panel2));border-color:var(--accent);
+    cursor:pointer;align-items:center;justify-content:center;text-align:center}
+  .box.model:hover{filter:brightness(1.08)}
+  .box.model.run{animation:work .9s ease-in-out infinite}
+  @keyframes work{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 45%,transparent)}
+    50%{box-shadow:0 0 0 9px color-mix(in srgb,var(--accent) 0%,transparent)}}
+  .arrow{position:relative;height:100%;min-height:132px;display:flex;align-items:center;justify-content:center}
+  .arrow svg{width:100%;height:24px;overflow:visible}
+  .arrow .track{stroke:var(--line);stroke-width:2}
+  .arrow .head{fill:var(--line)}
+  .arrow.on .track{stroke:var(--accent)}
+  .arrow.on .head{fill:var(--accent)}
+  .pkt{fill:var(--accent2);opacity:0}
+  .arrow.on .pkt{animation:travel 1.05s linear infinite}
+  .arrow.on .pkt:nth-of-type(2){animation-delay:.35s}
+  .arrow.on .pkt:nth-of-type(3){animation-delay:.7s}
+  @keyframes travel{0%{opacity:0;transform:translateX(0)}12%{opacity:1}
+    88%{opacity:1}100%{opacity:0;transform:translateX(var(--dx,90px))}}
+  .chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+  .chip{font-family:var(--mono);font-size:11px;background:var(--panel);border:1px solid var(--line);
+    padding:2px 7px;border-radius:5px;color:var(--muted)}
+  .chip.up{border-color:var(--accent);color:var(--accent);cursor:pointer}
+  .chip.real{border-color:var(--accent2);color:var(--accent2)}
+  .expand{margin-top:auto;padding-top:9px}
+  .expand button{font-size:12px;padding:4px 9px;width:100%}
+
+  /* ---------- detail panels ---------- */
+  details.pane{border:1px solid var(--line);border-radius:9px;margin:10px 0;background:var(--panel2)}
+  details.pane>summary{padding:10px 13px;cursor:pointer;font-size:13.5px;font-weight:600;list-style:none;
+    display:flex;gap:9px;align-items:center}
+  details.pane>summary::-webkit-details-marker{display:none}
+  details.pane>summary::before{content:"▸";color:var(--muted);font-size:11px}
+  details.pane[open]>summary::before{content:"▾"}
+  details.pane>summary:hover{background:var(--accent-soft)}
+  .pbody{padding:2px 13px 13px;border-top:1px solid var(--line)}
+  .kv{font-size:13px}
+  .kv div{display:flex;gap:10px;padding:3px 0;border-bottom:1px solid var(--line)}
+  .kv b{min-width:170px;font-weight:600;color:var(--muted);font-size:12px}
+  table{border-collapse:collapse;width:100%;font-size:12px;font-family:var(--mono)}
+  .scroll{overflow:auto;max-height:340px;border:1px solid var(--line);border-radius:7px;margin-top:8px}
+  th,td{padding:5px 8px;border-bottom:1px solid var(--line);white-space:nowrap;text-align:left}
+  th{position:sticky;top:0;background:var(--panel);color:var(--muted);font-weight:600;font-size:11px;
+    text-transform:uppercase;letter-spacing:.04em;z-index:1}
+  tr:hover td{background:var(--accent-soft)}
+  pre{background:var(--code);border:1px solid var(--line);border-radius:7px;padding:11px;overflow:auto;
+    max-height:320px;font-size:11.5px;font-family:var(--mono);line-height:1.5;margin:8px 0 0}
+  .risk{display:inline-block;padding:1px 7px;border-radius:5px;font-size:11px;font-weight:700}
+  .risk.green{background:color-mix(in srgb,var(--green) 22%,transparent);color:var(--green)}
+  .risk.amber{background:color-mix(in srgb,var(--amber) 22%,transparent);color:var(--amber)}
+  .risk.red{background:color-mix(in srgb,var(--red) 22%,transparent);color:var(--red)}
+  .risk.critical{background:color-mix(in srgb,var(--crit) 25%,transparent);color:var(--crit)}
+  .rec{border:1px solid var(--accent2);border-left:3px solid var(--accent2);border-radius:8px;
+    padding:11px 13px;margin:9px 0;background:color-mix(in srgb,var(--accent2) 7%,transparent);font-size:13.5px}
+  .rec .act{font-weight:600}
+  .rec .why{color:var(--muted);font-size:12.5px;margin-top:3px}
+  .rec .appr{font-family:var(--mono);font-size:11px;color:var(--accent2);margin-top:5px}
+  .warnlist{font-size:12.5px;color:var(--muted);margin:8px 0 0;padding-left:18px}
+  .note{font-size:12.5px;color:var(--muted);margin-top:9px}
+  .empty{color:var(--muted);text-align:center;padding:40px 20px;font-size:14px}
+  .tabs{display:flex;gap:5px;margin:14px 0 0;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+  .tabs button{border:none;border-bottom:2px solid transparent;border-radius:0;background:none;
+    padding:7px 11px;font-size:13px;color:var(--muted)}
+  .tabs button.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+  .tabpane{display:none;padding-top:12px}
+  .tabpane.on{display:block}
+  footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+  .lim{font-size:13px;margin:6px 0;padding-left:18px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hrow">
+    <div class="brand">Event Digital Twin<small>live model map</small></div>
+    <div class="spacer"></div>
+    <div class="status" id="status"><span class="dot" id="dot"></span><span id="statusText">connecting…</span></div>
+    <label style="font-size:12.5px;color:var(--muted)">scenario
+      <select id="scenario"><option value="S01">S01 — normal day</option></select>
+    </label>
+    <button class="ghost" id="theme" title="light / dark">◐</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="banner" id="banner">
+    <strong>The services are not running, so nothing here is live.</strong>
+    Start them with one command, then reload:
+    <div style="margin-top:8px"><code>uv run python scripts/serve_all.py</code></div>
+    <div class="note">Models load one at a time and each takes 10–25 s (they read a month of
+    history, fit a forecaster and calibrate their uncertainty bands). This page enables each
+    model as it becomes ready — you don't have to wait for all of them.</div>
+  </div>
+
+  <div class="prog">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px">
+      <strong id="progTitle">Loading…</strong>
+      <span style="font-size:12.5px;color:var(--muted)" id="progSub"></span>
+    </div>
+    <div class="bar"><i id="progBar"></i></div>
+    <div class="legend">
+      <span><span class="dot ready" style="background:var(--green);display:inline-block"></span> ready to run</span>
+      <span><span class="dot" style="background:var(--amber);display:inline-block"></span> warming up</span>
+      <span><span class="dot" style="background:var(--muted);display:inline-block"></span> not built yet</span>
+    </div>
+  </div>
+
+  <h2>Built models <span id="builtCount"></span></h2>
+  <div class="grid" id="gridBuilt"></div>
+
+  <h2>Still to build <span id="todoCount"></span></h2>
+  <div class="grid" id="gridTodo"></div>
+
+  <div id="detail"></div>
+
+  <footer>
+    <p><strong>Everything on this page is real.</strong> Input tables are read from the generated
+    world on disk, outputs are what the model actually returned, and the timing is measured.
+    Nothing is illustrative.</p>
+    <p>All data is <strong>synthetic</strong> except the weather and air-quality tables, which come
+    from cached Open-Meteo history. Every row and every response carries <code>is_synthetic</code>
+    so the two can never be confused.</p>
+  </footer>
+</div>
+
+<script>
+const API = "http://127.0.0.1:8000";
+const POLL_MS = 3000;
+
+/* Plain-English notes about the technology, keyed by engine family and then by model.
+   Written for someone who does not work on this. */
+const ENGINE_INFO = {
+  forecast: {
+    name: "Time-series forecasting",
+    what: "Predicts how a number changes over the next few hours.",
+    how: `Three interchangeable backends, tried in order:
+
+<b>1. Chronos-2</b> — a <i>transformer foundation model</i> for time series. Think of it as a
+language model, but trained on millions of numeric sequences instead of text. It is used
+<b>zero-shot</b>: it has never seen this event's data and is not trained on it. It is given
+things genuinely known in advance — hour of day, day of week, whether it is a bathing day,
+the weather — which is what makes a zero-shot forecast useful here.
+
+<b>2. LightGBM</b> — gradient-boosted decision trees. Hundreds of small yes/no flowcharts,
+each correcting the errors of the ones before it, summed together. Fitted on this data. Used
+if Chronos-2 cannot load.
+
+<b>3. NaiveSeasonal</b> — "whatever happened exactly one day ago will happen again". No
+learning at all. Its job is to be the floor the other two must beat: it converts "our error
+is 190" into "we are 43% better than copying yesterday".`,
+    why: `Chronos-2 is the default because it is the only foundation backend that accepts
+covariates, and the covariates are the whole reason the forecast is interesting. The fallback
+chain means the service still answers on a machine with no PyTorch — it just says so.`,
+    extra: `<b>Uncertainty bands are conformally calibrated.</b> A band labelled "80%"
+originally held the truth about half the time, because across a 3-hour horizon the error grows
+26× while the raw band widens only 1.7×. Each model now measures its own miss rate on
+held-out moments at startup and widens each step to match.`
+  },
+  formula: {
+    name: "Published formula",
+    what: "A deterministic equation from the literature. No learning, no training, no randomness.",
+    how: `The same inputs always give exactly the same answer. M21 uses the <b>NOAA/NWS
+Rothfusz regression</b> for heat index — the polynomial the US National Weather Service
+publishes — verified here against 15 cells of their printed chart. Waterlogging is a logistic
+curve in rainfall against each zone's own drainage capacity.`,
+    why: `For something an official has to act on, an equation you can point at in a paper beats
+a model you cannot inspect. It is also instant and cannot drift.`
+  },
+  rules: { name:"Threshold and rule logic", what:"Weighted scores and thresholds an operator can read and argue with.",
+    how:`"If density is above X for Y minutes and it is raining, risk is red." Every number lives
+in a YAML config file, never in the code.`, why:`A recommendation a human must approve has to be
+explainable in the room. A rule is.` },
+  network: { name:"Graph algorithms", what:"Shortest paths and travel times on a real road network.",
+    how:`The real OpenStreetMap road graph for the venue (3,098 nodes, 7,510 edges), with
+Dijkstra/A* shortest paths and the <b>BPR volume-delay function</b> — the standard
+traffic-engineering formula relating how busy a road is to how slow it becomes.`,
+    why:`Routing is a solved problem with exact algorithms. Learning it would be worse.` },
+  vision: { name:"Computer vision", what:"Counts and tracks people in CCTV footage.",
+    how:`<b>RF-DETR</b> (a transformer object detector) finds people, <b>ByteTrack</b> follows
+each one between frames, and <b>LWCC</b> estimates numbers in crowds too dense to count
+individually. All pretrained and used as-is. Anomaly detection uses <b>optical flow</b> —
+measuring how pixels move — with no learning at all.`,
+    why:`Nothing here is trained by us: these are published models used off the shelf, which is
+both faster and more defensible than training on a small private dataset.` },
+  optimize: { name:"Mixed-integer programming", what:"Finds the cheapest plan that satisfies every constraint.",
+    how:`Written as "minimise total cost subject to: every zone covered, no vehicle over
+capacity, staff within shift limits", and handed to a solver (PuLP / OR-Tools) that proves the
+answer is optimal.`, why:`This is operations research, not machine learning. It gives a provably
+best answer and can explain which constraint is binding.` },
+  location: { name:"Facility location", what:"Decides where to put ambulances and first-aid posts.",
+    how:`<b>MCLP</b> (maximal covering) and <b>LSCP</b> (set covering) from the spopt library,
+over a cost matrix of real travel times from the road graph.`,
+    why:`"Where do I place N units to cover the most people within 8 minutes" is a classic
+formulation with exact solvers.` },
+  pedsim: { name:"Agent-based simulation", what:"Simulates individual people walking, to time an evacuation.",
+    how:`<b>JuPedSim</b> moves every pedestrian as its own agent with a collision-free speed
+model, over the real venue geometry in metres.`, why:`Crowd flow through a bottleneck is a
+physical process. Simulating the physics beats fitting a curve to it.` },
+  mlclf: { name:"Supervised classification", what:"Predicts which equipment is about to fail.",
+    how:`A <b>LightGBM classifier</b> trained on the real AI4I 2020 machine-failure dataset
+(UCI), then applied to the event's asset telemetry.`,
+    why:`<b>This is the only conventionally trained model in the whole project.</b> It is
+appropriate here because real labelled failure data exists.` }
+};
+
+const MODEL_NOTES = {
+  M01: {q:"How many people will arrive, by zone, by gate, over time?",
+    note:"The keystone — 13 of the other 24 models read it. If M01 is wrong, most of the twin is wrong.",
+    limits:["Declares itself insensitive to extreme heat (S04) rather than returning an unchanged answer while implying it considered the heat — nothing M01 reads responds to temperature.","Covariates are known exactly because the world is generated; with a real feed the weather would itself be a forecast with its own error."]},
+  M05: {q:"How full will each car park get, and when does it overflow?",
+    note:"Occupancy can exceed 100% on purpose. The stored data caps 'occupied' at the number of bays, so a model trained on it could never predict the overflow this model exists to warn about — so it forecasts demand instead. 130% means 30% of drivers have nowhere to go.",
+    limits:["Site capacities were raised from 4,800 to 23,200 bays; the original placeholder put an ordinary day at 140–180% and the peak at 583%, so the KPI carried no information.","Drivers are split between car parks in proportion to capacity. Real drivers choose by distance and signage."]},
+  M06: {q:"How many passengers and shuttle vehicles does each route need?",
+    note:"The first model with two upstreams (M01 and M05) — the first real test of the dependency chain.",
+    limits:["The configured fleet of 80 vehicles is 18× short of the 1,447 needed at peak. That was deliberately not 'fixed': fleet size belongs to M24, and the gap is the finding.","Wait time past capacity is a first-order estimate; a sustained excess produces an unbounded queue with no steady-state wait."]},
+  M15:{q:"How much water does each zone need, is there a shortfall, and how many tankers?",
+    note:"A positive gap means a shortage. A surplus is reported as a negative number rather than hidden, because 'how much spare have we got' is a real question.",
+    limits:["Leakage is not modelled at all — a real network loses a substantial share between pump and tap, so the real gap would be worse.","The extreme-heat effect is real but small and short-lived: 0.1% at 06:00, 8.5% at midday, and it decays across the horizon."]},
+  M17:{q:"How much food is needed, how long does stock last, how many deliveries?",
+    note:"Data is hourly here, not 15-minute. The horizon is deliberately longer than the 6-hour supplier lead time — inside a shorter window nothing you order can arrive, so a supply disruption would show no effect at all.",
+    limits:["One simple reorder policy: order whole vehicle loads to cover the lead time plus a buffer, never while an order is in flight. A real operation batches and expedites.","Only two outlets exist in this world, so the per-outlet split carries little information."]},
+  M18:{q:"How much waste, when do bins overflow, how many collection trips?",
+    note:"Fill is projected forward and reset when the collection round arrives. A bin that is not going to overflow reports 999 minutes rather than 0, so 'fine' cannot be misread as 'overflowing now'.",
+    limits:["Collection is a fixed round at a fixed interval, not a real schedule with travel time between stops.","Fill is clipped at 100%: waste on the ground past that point is not quantified."]},
+  M19:{q:"What electrical load is expected, and how long can backup generators last?",
+    note:"Reported in MW. Also publishes load utilisation specifically for M12 (fire risk) to consume later.",
+    limits:["The critical load is one fraction of the whole substation — a placeholder for a real essential-circuit schedule.","Fuel does not deplete across the forecast horizon, so the countdown is a starting estimate rather than a live burn-down."]},
+  M20:{q:"Will communications — CCTV backhaul and command links — overload or fail?",
+    note:"This world never runs out of bandwidth: peak utilisation is 27.5%, so the capacity-risk number sits near zero. That is the correct answer for these tower capacities, and the threshold was left where an operator would want it rather than lowered to make the number look exciting. The real constraint here is power-driven availability.",
+    limits:["Each tower is treated as an independent link; shared backhaul and failover are not modelled, so a real correlated failure would be worse.","Availability is recent uptime carried forward, not a forecast — an outage that has not started is invisible."]},
+  M21:{q:"What is the weather now and next few hours, and how does it change risk elsewhere?",
+    note:"Built first because almost everything depends on it and it needs no upstream model. Pure formula — no learning.",
+    limits:["The 'forecast' is a replay of stored weather, not a prediction. A real deployment needs a live weather API."]},
+  M22:{q:"Where will air quality or noise get worse, and what are the emissions?",
+    note:"Uses the one genuinely REAL table in the project — cached Open-Meteo air-quality history, flagged is_synthetic: false.",
+    limits:["The AQI breakpoints are transcription placeholders and must be checked against the official CPCB table before any real use.","All three CO₂ emission factors are placeholders, and the traffic term is zero because M04 does not exist yet.","The air-quality data is venue-level, so per-zone questions cannot be answered at this resolution."]}
+};
+
+let CATALOGUE = [], SELECTED = null, LAST = {}, SCENARIOS = new Set(["S01"]);
+const SCENARIO_NAMES = {S01:"normal day",S02:"30% more crowd",S03:"heavy rain",S04:"extreme heat",
+  S05:"gate G02 closed",S06:"road closure",S08:"power failure",S09:"CCTV failure",S12:"bridge closed",
+  S13:"food supply disruption",S15:"fire / evacuation"};
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const num = v => typeof v === "number" ? (Math.abs(v) >= 1000 ? v.toLocaleString(undefined,{maximumFractionDigits:0}) : v.toFixed(2).replace(/\.00$/,"")) : esc(v);
+
+/* ---------- theme ---------- */
+$("#theme").onclick = () => {
+  const dark = document.documentElement.getAttribute("data-theme") !== "light";
+  document.documentElement.setAttribute("data-theme", dark ? "light" : "dark");
+  try { localStorage.setItem("twin-theme", dark ? "light" : "dark"); } catch {}
+};
+try { const t = localStorage.getItem("twin-theme"); if (t) document.documentElement.setAttribute("data-theme", t); } catch {}
+
+/* ---------- discovery ---------- */
+async function poll() {
+  try {
+    const r = await fetch(`${API}/models`, {cache:"no-store"});
+    if (!r.ok) throw new Error(r.status);
+    const d = await r.json();
+    CATALOGUE = d.models;
+    setStatus(d);
+    render();
+    $("#banner").classList.add("hide");
+  } catch {
+    setStatus(null);
+    if (!CATALOGUE.length) renderOffline();
+  }
+  setTimeout(poll, POLL_MS);
+}
+
+function setStatus(d) {
+  const dot = $("#dot"), txt = $("#statusText");
+  if (!d) { dot.className = "dot off"; txt.textContent = "services offline"; return; }
+  const warming = d.models.some(m => m.built && !m.ready);
+  dot.className = "dot " + (warming ? "warm" : "live");
+  txt.textContent = warming ? `warming up · ${d.ready}/${d.built} ready` : `live · ${d.ready} models ready`;
+  $("#progTitle").textContent = `${d.built} of ${d.total} models built · ${d.ready} ready to run`;
+  $("#progSub").textContent = warming ? "each model loads a month of history, fits and calibrates" : "all built models loaded";
+  $("#progBar").style.width = (100 * d.built / d.total) + "%";
+  $("#builtCount").textContent = `— ${d.built} finished, click one to run it`;
+  $("#todoCount").textContent = `— ${d.total - d.built} remaining`;
+}
+
+function renderOffline() {
+  $("#progTitle").textContent = "Cannot reach the services";
+  $("#progSub").textContent = "start them to run anything";
+  $("#detail").innerHTML = `<div class="stage"><div class="empty">
+    Nothing to show until the services are running.<br><br>
+    <code style="font-family:var(--mono)">uv run python scripts/serve_all.py</code>
+  </div></div>`;
+}
+
+function render() {
+  const built = CATALOGUE.filter(m => m.built), todo = CATALOGUE.filter(m => !m.built);
+  $("#gridBuilt").innerHTML = built.map(tile).join("");
+  $("#gridTodo").innerHTML = todo.map(tile).join("");
+  built.forEach(m => (m.scenarios || []).forEach(s => SCENARIOS.add(s)));
+  syncScenarioOptions();
+  document.querySelectorAll(".tile[data-id]").forEach(el => {
+    if (el.classList.contains("todo")) return;
+    el.onclick = () => select(el.dataset.id);
+  });
+  if (SELECTED) {
+    const el = document.querySelector(`.tile[data-id="${SELECTED}"]`);
+    if (el) el.classList.add("sel");
+  }
+}
+
+function tile(m) {
+  const st = m.error ? "err" : m.ready ? "ready" : m.loading ? "warm" : "";
+  return `<div class="tile ${m.built ? "" : "todo"}" data-id="${m.model_id}" title="${esc(m.error || "")}">
+    <span class="st ${st}"></span>
+    <div class="id">${m.model_id}</div>
+    <div class="nm">${esc(m.name)}</div>
+    <div class="en">${esc(m.engine)}${m.built ? "" : " · phase " + m.phase}</div>
+  </div>`;
+}
+
+function syncScenarioOptions() {
+  const sel = $("#scenario"), current = sel.value;
+  const ids = [...SCENARIOS].sort();
+  if (sel.options.length === ids.length) return;
+  sel.innerHTML = ids.map(s => `<option value="${s}">${s} — ${SCENARIO_NAMES[s] || "scenario"}</option>`).join("");
+  sel.value = ids.includes(current) ? current : "S01";
+}
+
+/* ---------- selection ---------- */
+async function select(id) {
+  SELECTED = id;
+  document.querySelectorAll(".tile").forEach(t => t.classList.toggle("sel", t.dataset.id === id));
+  const m = CATALOGUE.find(x => x.model_id === id);
+  drawPipeline(m, null, null);
+  $("#detail").scrollIntoView({behavior:"smooth", block:"start"});
+  try {
+    const [inp, meta] = await Promise.all([
+      fetch(`${API}/${id}/inputs?scenario_id=${$("#scenario").value}&rows=40`).then(r => r.json()),
+      fetch(`${API}/${id}/metadata`).then(r => r.json())
+    ]);
+    LAST[id] = {...(LAST[id] || {}), inputs: inp, meta};
+    if (inp.scenarios_supported) { inp.scenarios_supported.forEach(s => SCENARIOS.add(s)); syncScenarioOptions(); }
+    drawPipeline(m, inp, LAST[id].output, meta);
+  } catch (e) {
+    drawPipeline(m, null, null, null, String(e));
+  }
+}
+
+/* ---------- pipeline ---------- */
+/* The scenario dropdown is global but each model responds to a different subset. Saying so up
+   front beats letting someone wonder why the numbers did not move. */
+function scenarioHint(inp) {
+  const chosen = $("#scenario").value;
+  if (!inp || chosen === "S01") return "";
+  const supported = inp.scenarios_supported || [];
+  if (supported.includes(chosen)) {
+    return `<span class="chip real">responds to ${chosen}</span>`;
+  }
+  return `<span class="chip" style="border-color:var(--amber);color:var(--amber)"
+    title="It will return the baseline and say so, rather than pretending to have considered it.">
+    insensitive to ${chosen}</span>`;
+}
+
+function arrowSvg(cls) {
+  return `<div class="arrow ${cls}"><svg viewBox="0 0 90 24" preserveAspectRatio="none" style="--dx:78px">
+    <line class="track" x1="2" y1="12" x2="78" y2="12"/>
+    <polygon class="head" points="78,6 90,12 78,18"/>
+    <circle class="pkt" cx="4" cy="12" r="3.2"/><circle class="pkt" cx="4" cy="12" r="3.2"/>
+    <circle class="pkt" cx="4" cy="12" r="3.2"/></svg></div>`;
+}
+
+function drawPipeline(m, inp, out, meta, error) {
+  if (!m) return;
+  const notes = MODEL_NOTES[m.model_id] || {};
+  const rows = inp ? inp.total_input_rows : null;
+  const tables = inp ? inp.tables.length : (m.built ? "…" : 0);
+  const recs = out ? out.results.filter(r => r.recommendation) : [];
+
+  $("#detail").innerHTML = `
+  <div class="stage">
+    <div class="stitle">
+      <span class="id">${m.model_id}</span><h3>${esc(m.name)}</h3>
+      <span class="chip">${esc(m.engine)}</span>
+      ${m.ready ? `<span class="chip real">ready · loaded in ${m.load_seconds}s</span>` : `<span class="chip">loading…</span>`}
+      ${scenarioHint(inp)}
+      <div class="spacer" style="flex:1"></div>
+      <button class="primary" id="runBtn" ${m.ready ? "" : "disabled"}>▶ Run ${m.model_id}</button>
+    </div>
+    <p class="q">${esc(notes.q || (meta && meta.question) || "")}</p>
+    ${error ? `<div class="banner" style="border-left-color:var(--red)">Could not load: ${esc(error)}</div>` : ""}
+
+    <div class="pipe">
+      <div class="box">
+        <h4>Input</h4>
+        <div class="big">${tables}</div><div class="sm">table${tables === 1 ? "" : "s"}${rows !== null ? ` · ${rows.toLocaleString()} rows` : ""}</div>
+        <div class="chips">
+          ${inp ? inp.tables.map(t => `<span class="chip ${t.is_synthetic === false ? "real" : ""}">${t.dataset_id || ""} ${esc(t.table)}</span>`).join("") : ""}
+          ${inp ? inp.upstream.map(u => `<span class="chip up" data-jump="${u.model_id}">↑ ${u.model_id}</span>`).join("") : ""}
+        </div>
+        <div class="expand"><button id="expIn" ${inp ? "" : "disabled"}>Expand input data ⤢</button></div>
+      </div>
+      ${arrowSvg("a1")}
+      <div class="box model" id="modelBox">
+        <div style="font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">model</div>
+        <div class="big" style="font-family:var(--mono)">${m.model_id}</div>
+        <div class="sm" id="runState">${m.ready ? "idle" : "loading"}</div>
+        <div class="chips" style="justify-content:center"><span class="chip up">ⓘ technology</span></div>
+      </div>
+      ${arrowSvg("a2")}
+      <div class="box">
+        <h4>Output</h4>
+        <div class="big">${out ? out.results.length : "—"}</div>
+        <div class="sm">${out ? `records · ${out._elapsed_ms} ms` : "press Run"}</div>
+        <div class="chips">
+          ${(inp ? inp.kpis : []).map(k => `<span class="chip">${esc(k)}</span>`).join("")}
+          ${recs.length ? `<span class="chip real">${recs.length} recommendation${recs.length===1?"":"s"}</span>` : ""}
+        </div>
+        <div class="expand"><button id="expOut" ${out ? "" : "disabled"}>Expand output ⤢</button></div>
+      </div>
+    </div>
+    <div id="panes"></div>
+  </div>`;
+
+  $("#runBtn").onclick = () => run(m.model_id);
+  $("#modelBox").onclick = () => showPane("tech");
+  $("#expIn").onclick = () => showPane("input");
+  $("#expOut").onclick = () => showPane("output");
+  document.querySelectorAll("[data-jump]").forEach(el =>
+    el.onclick = e => { e.stopPropagation(); select(el.dataset.jump); });
+  if (LAST[m.model_id] && LAST[m.model_id].pane) showPane(LAST[m.model_id].pane);
+}
+
+/* ---------- run ---------- */
+async function run(id) {
+  const scenario = $("#scenario").value;
+  const box = $("#modelBox"), state = $("#runState");
+  document.querySelectorAll(".arrow").forEach(a => a.classList.add("on"));
+  box.classList.add("run"); state.textContent = "running…";
+  $("#runBtn").disabled = true;
+  const started = performance.now();
+  try {
+    const live = scenario !== "S01";
+    const r = await fetch(`${API}/${id}/${live ? "scenario" : "predict"}`, {
+      method: "POST", headers: {"content-type":"application/json"},
+      body: JSON.stringify(live ? {scenario_id: scenario, compare_to_baseline: true} : {})
+    });
+    if (!r.ok) throw new Error(`HTTP ${r.status}: ${(await r.text()).slice(0,200)}`);
+    const out = await r.json();
+    LAST[id] = {...(LAST[id] || {}), output: out, pane: "output"};
+    const m = CATALOGUE.find(x => x.model_id === id);
+    // Refresh the inputs too: a different scenario reads a different world.
+    try {
+      LAST[id].inputs = await fetch(`${API}/${id}/inputs?scenario_id=${scenario}&rows=40`).then(x => x.json());
+    } catch {}
+    drawPipeline(m, LAST[id].inputs, out, LAST[id].meta);
+    showPane("output");
+  } catch (e) {
+    state.textContent = "failed";
+    $("#panes").innerHTML = `<div class="banner" style="border-left-color:var(--red)">
+      <strong>The request failed.</strong> ${esc(String(e))}</div>`;
+  } finally {
+    const el = document.querySelector(".box.model");
+    if (el) el.classList.remove("run");
+    document.querySelectorAll(".arrow").forEach(a => a.classList.remove("on"));
+    const b = $("#runBtn"); if (b) b.disabled = false;
+    void started;
+  }
+}
+
+/* ---------- panes ---------- */
+function showPane(which) {
+  if (!SELECTED) return;
+  const st = LAST[SELECTED] || {};
+  st.pane = which; LAST[SELECTED] = st;
+  const tabs = [["input","What goes in"],["tech","Technology"],["output","What comes out"],["limits","Honest limits"]];
+  $("#panes").innerHTML = `
+    <div class="tabs">${tabs.map(([k,l]) => `<button data-tab="${k}" class="${k===which?"on":""}">${l}</button>`).join("")}</div>
+    <div class="tabpane on" id="tabBody"></div>`;
+  document.querySelectorAll("[data-tab]").forEach(b => b.onclick = () => showPane(b.dataset.tab));
+  const body = $("#tabBody");
+  if (which === "input") body.innerHTML = paneInput(st.inputs);
+  else if (which === "tech") body.innerHTML = paneTech(SELECTED, st.meta);
+  else if (which === "output") body.innerHTML = paneOutput(st.output);
+  else body.innerHTML = paneLimits(SELECTED, st.meta);
+  document.querySelectorAll("[data-jump]").forEach(el =>
+    el.onclick = e => { e.stopPropagation(); select(el.dataset.jump); });
+}
+
+function paneInput(inp) {
+  if (!inp) return `<div class="empty">Input data not loaded yet.</div>`;
+  const tbl = t => {
+    if (!t.available) return `<details class="pane"><summary>${t.dataset_id||""} ${esc(t.table)}
+      <span class="chip">unavailable</span></summary><div class="pbody">
+      <p class="note">${esc(t.note || "")}</p></div></details>`;
+    const cols = t.sample.length ? Object.keys(t.sample[0]) : [];
+    return `<details class="pane"><summary>${t.dataset_id||""} ${esc(t.table)}
+      <span class="chip">${t.total_rows.toLocaleString()} rows</span>
+      <span class="chip ${t.is_synthetic === false ? "real" : ""}">${t.is_synthetic === false ? "REAL data" : "synthetic"}</span>
+      </summary><div class="pbody">
+      <div class="kv">
+        <div><b>grain</b><span>${esc(t.grain || "—")}</span></div>
+        <div><b>total rows</b><span>${t.total_rows.toLocaleString()}</span></div>
+        <div><b>showing</b><span>${esc(t.sample_label)} — the rows that actually drive the answer</span></div>
+        <div><b>source</b><span>${esc((t.source||[]).join(", ") || "—")}</span></div>
+      </div>
+      <div class="scroll"><table><thead><tr>${cols.map(c=>`<th>${esc(c)}</th>`).join("")}</tr></thead>
+      <tbody>${t.sample.map(r=>`<tr>${cols.map(c=>`<td>${num(r[c])}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+      <p class="note">Full table on disk at <code>00_common/data/world/${esc(inp.scenario_id)}/${esc(t.table)}.parquet</code></p>
+      </div></details>`;
+  };
+  return `
+    <div class="kv" style="margin-bottom:10px">
+      <div><b>scenario</b><span>${esc(inp.scenario_id)} — ${esc(SCENARIO_NAMES[inp.scenario_id]||"")}</span></div>
+      <div><b>answering for</b><span>${esc(inp.as_of)}</span></div>
+      <div><b>data source</b><span>${esc(inp.data_source)}</span></div>
+      <div><b>total input rows</b><span>${inp.total_input_rows.toLocaleString()}</span></div>
+      <div><b>responds to</b><span>${(inp.scenarios_supported||[]).map(s=>`<span class="chip">${s}</span>`).join("")}
+        <span class="note" style="display:block;margin-top:4px">Any other scenario returns the
+        baseline with a warning saying it is insensitive — never unchanged numbers that imply
+        it considered the change.</span></span></div>
+    </div>
+    ${inp.tables.map(tbl).join("")}
+    ${inp.upstream.length ? `<details class="pane"><summary>Upstream models
+      <span class="chip">${inp.upstream.length}</span></summary><div class="pbody">
+      <p class="note">This model reads another model's JSON output — never its code. Click one to
+      see how that output was produced.</p>
+      ${inp.upstream.map(u=>`<div class="kv"><div><b>${u.model_id}</b><span>
+        <span class="chip up" data-jump="${u.model_id}">open ${u.model_id}</span>
+        ${u.available?`from <code>${esc(u.path)}</code> (${u.size_kb} KB)`:"not available"}
+        ${u.available && !u.exact_scenario?` <span class="chip">baseline used for this scenario</span>`:""}
+      </span></div></div>`).join("")}</div></details>` : ""}
+    <details class="pane"><summary>Every parameter this model uses
+      <span class="chip">${Object.keys(inp.params).length} keys</span></summary><div class="pbody">
+      <p class="note">No threshold, rate or weight is allowed in the code, so this block <em>is</em>
+      the model's assumptions — in full, with nothing hidden.</p>
+      <pre>${esc(JSON.stringify(inp.params, null, 2))}</pre></div></details>`;
+}
+
+function paneTech(id, meta) {
+  const m = CATALOGUE.find(x => x.model_id === id) || {};
+  const e = ENGINE_INFO[m.engine] || {};
+  const notes = MODEL_NOTES[id] || {};
+  return `
+    <div class="kv" style="margin-bottom:12px">
+      <div><b>engine family</b><span>${esc(e.name || m.engine)}</span></div>
+      <div><b>in one line</b><span>${esc(e.what || "")}</span></div>
+    </div>
+    ${notes.note ? `<div class="rec"><div class="act">How this particular model works</div>
+      <div class="why">${esc(notes.note)}</div></div>` : ""}
+    <details class="pane" open><summary>How the technology works</summary>
+      <div class="pbody" style="font-size:13.5px">${e.how || ""}</div></details>
+    <details class="pane"><summary>Why this choice and not something else</summary>
+      <div class="pbody" style="font-size:13.5px">${e.why || ""}</div></details>
+    ${e.extra ? `<details class="pane"><summary>Worth knowing</summary>
+      <div class="pbody" style="font-size:13.5px">${e.extra}</div></details>` : ""}
+    ${meta ? `<details class="pane"><summary>Method, as the model itself reports it</summary>
+      <div class="pbody"><p style="font-size:13.5px">${esc(meta.method_summary||"")}</p>
+      <div class="kv">${(meta.license_notes||[]).map(l=>`<div><b>licence</b><span>${esc(l)}</span></div>`).join("")}</div>
+      </div></details>` : ""}`;
+}
+
+function paneOutput(out) {
+  if (!out) return `<div class="empty">Press <strong>Run</strong> to call the model.</div>`;
+  const recs = out.results.filter(r => r.recommendation);
+  const cols = ["entity_id","kpi","timestamp","horizon_min","value","unit","lower","upper","risk_level","reason_codes"];
+  return `
+    <div class="kv" style="margin-bottom:10px">
+      <div><b>records returned</b><span>${out.results.length}</span></div>
+      <div><b>computed in</b><span>${out._elapsed_ms} ms &nbsp;<span class="chip real">measured, live</span></span></div>
+      <div><b>status</b><span>${esc(out.status)}${out.status==="degraded"?" — something was missing and it says so below":""}</span></div>
+      <div><b>scenario</b><span>${esc(out.scenario_id)} ${Object.keys(out.scenario_overrides||{}).length?`<code>${esc(JSON.stringify(out.scenario_overrides))}</code>`:""}</span></div>
+      <div><b>synthetic</b><span>${out.is_synthetic}</span></div>
+      <div><b>upstream used</b><span>${(out.upstream||[]).map(u=>`<span class="chip">${u.model_id} · ${u.source}</span>`).join("") || "none"}</span></div>
+    </div>
+    ${out.warnings && out.warnings.length ? `<details class="pane" open><summary>What the model warned about
+      <span class="chip">${out.warnings.length}</span></summary><div class="pbody">
+      <p class="note">A model that cannot answer perfectly still answers, and says why. This is
+      the honesty mechanism, not an error.</p>
+      <ul class="warnlist">${out.warnings.map(w=>`<li>${esc(w)}</li>`).join("")}</ul></div></details>` : ""}
+    ${recs.length ? `<details class="pane" open><summary>Recommended actions
+      <span class="chip">${recs.length}</span></summary><div class="pbody">
+      ${recs.slice(0,6).map(r=>`<div class="rec">
+        <div class="act">${esc(r.recommendation.action)}</div>
+        <div class="why">${esc(r.recommendation.rationale)}</div>
+        <div class="appr">requires_approval: true${r.recommendation.quantity!=null?` · quantity ${num(r.recommendation.quantity)}`:""}${r.recommendation.resource_type?` · ${esc(r.recommendation.resource_type)}`:""}</div>
+      </div>`).join("")}
+      ${recs.length>6?`<p class="note">…and ${recs.length-6} more.</p>`:""}
+      <p class="note">No model in this project can propose an action that executes itself. The
+      contract makes that impossible, not just discouraged.</p></div></details>` : ""}
+    <details class="pane" open><summary>All ${out.results.length} records</summary><div class="pbody">
+      <div class="scroll"><table><thead><tr>${cols.map(c=>`<th>${c}</th>`).join("")}</tr></thead><tbody>
+      ${out.results.map(r=>`<tr>${cols.map(c=>{
+        if (c==="risk_level") return `<td>${r[c]?`<span class="risk ${r[c]}">${r[c]}</span>`:""}</td>`;
+        if (c==="reason_codes") return `<td>${(r[c]||[]).join(" ")}</td>`;
+        if (c==="timestamp") return `<td>${esc(String(r[c]).slice(11,16))}</td>`;
+        return `<td>${r[c]==null?"":num(r[c])}</td>`;
+      }).join("")}</tr>`).join("")}
+      </tbody></table></div></div></details>
+    <details class="pane"><summary>The raw JSON, exactly as the dashboard receives it</summary>
+      <div class="pbody"><p class="note">All 25 models return this identical shape — one parser
+      serves every service.</p>
+      <pre>${esc(JSON.stringify({...out, results:out.results.slice(0,2)}, null, 2))}</pre>
+      <p class="note">Trimmed to 2 of ${out.results.length} records for readability.</p></div></details>`;
+}
+
+function paneLimits(id, meta) {
+  const notes = MODEL_NOTES[id] || {};
+  const own = notes.limits || [];
+  const fromMeta = (meta && meta.limitations) || [];
+  return `<p style="font-size:13.5px">Every model states what it cannot do. This is the part worth
+    reading before trusting a number.</p>
+    ${own.length ? `<details class="pane" open><summary>The ones that matter most</summary><div class="pbody">
+      <ul class="lim">${own.map(l=>`<li>${esc(l)}</li>`).join("")}</ul></div></details>` : ""}
+    ${fromMeta.length ? `<details class="pane"><summary>Full list, as the model reports it
+      <span class="chip">${fromMeta.length}</span></summary><div class="pbody">
+      <ul class="lim">${fromMeta.map(l=>`<li>${esc(l)}</li>`).join("")}</ul></div></details>` : ""}`;
+}
+
+$("#scenario").onchange = () => { if (SELECTED) select(SELECTED); };
+poll();
+</script>
+</body>
+</html>

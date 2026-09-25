@@ -1,0 +1,71 @@
+# M20 - Network Capacity
+#
+# The standard keys are fixed by docs/02 section 8 and are read by twin_common; `params` is
+# yours. EVERY number this model uses belongs under `params` or in 00_common/config -
+# CLAUDE.md forbids thresholds, rates and weights in src/.
+model_id: M20
+model_name: Network Capacity
+model_version: 0.1.0
+port: 8020
+engine: forecast
+
+data_source: synthetic
+seed: 42
+demo_now: "2027-08-02T06:00:00+05:30"
+
+# D19 is on a FIVE-minute grid, not the 15-minute grid the rest of the project uses, so a
+# step here is 5 minutes. The horizons stay in minutes, as the contract requires.
+horizons_min: [15, 60, 180]
+default_horizon_min: 180
+
+upstream: [M01]
+
+inputs: [network_5min, footfall_15min, event_calendar, cameras]
+
+kpis: [bandwidth_utilization, network_availability, network_capacity_risk]
+
+# docs/05 section 1.2 and the docs/03 M20 card: S02 raises load, S08 takes the towers on SS01
+# down, S09 removes camera load but flags the loss of coverage.
+scenarios_supported: [S01, S02, S08, S09]
+
+upstream_timeout_s: 5
+
+# ---------------------------------------------------------------- model parameters
+params:
+  forecast:
+    backend: chronos2
+    hub_model_name: autogluon/chronos-2-small
+    quantiles: [0.1, 0.5, 0.9]
+    # One day on the 5-minute grid is 288 steps; the seasonality is the same.
+    input_chunk_length: 288
+    lightgbm_lags: 288
+    seasonality: 288
+    max_context_steps: 2880
+    allow_fallback: true
+    calibration:
+      enabled: true
+      folds: 24
+      # 72 steps is six hours on the 5-minute grid, matching the other models in wall time.
+      stride_steps: 72
+      min_factor: 1.0
+      max_factor: 12.0
+
+  # D19 is 5-minute.
+  step_minutes: 5
+
+  # --- the capacity-risk curve (docs/03 M20) ---------------------------------
+  # risk = 100 * sigmoid(k * (utilisation - midpoint)), with utilisation as a percentage.
+  # The midpoint sits where an operator should start worrying rather than where the link
+  # actually saturates, so the curve leads the failure instead of reporting it.
+  risk_midpoint_pct: 70.0
+  # Steepness. 0.12 gives ~11 % risk at 50 % utilisation, 50 % at the midpoint and ~92 % at
+  # 90 %, which spreads the interesting range across the band rather than switching at a step.
+  risk_steepness: 0.12
+
+  # Utilisation is reported clipped to this. Demand above capacity is a real state - the
+  # excess is dropped packets, not extra throughput - and `network_capacity_risk` is what
+  # carries how bad it is.
+  max_utilization_pct: 100.0
+
+  floor_value: 0.0
+  confidence: 0.5

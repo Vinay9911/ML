@@ -1,0 +1,491 @@
+{
+  "$defs": {
+    "DataSource": {
+      "description": "Where the input rows came from. `live` is never faked (docs/02 section 8).",
+      "enum": [
+        "synthetic",
+        "replay",
+        "live"
+      ],
+      "title": "DataSource",
+      "type": "string"
+    },
+    "EntityType": {
+      "description": "Entity types from the docs/02 section 3 ID table.",
+      "enum": [
+        "event",
+        "sector",
+        "zone",
+        "gate",
+        "exit",
+        "bridge",
+        "road_segment",
+        "intersection",
+        "route",
+        "parking_site",
+        "facility",
+        "service_point",
+        "asset",
+        "camera",
+        "resource_pool"
+      ],
+      "title": "EntityType",
+      "type": "string"
+    },
+    "Recommendation": {
+      "additionalProperties": false,
+      "description": "An action proposed to an operator.\n\n``requires_approval`` is typed ``Literal[True]``: docs/02 section 4 states it is ALWAYS\ntrue in this project, so no model can emit an auto-executing recommendation.",
+      "properties": {
+        "action": {
+          "description": "Imperative action, e.g. 'stage ambulances'",
+          "minLength": 1,
+          "title": "Action",
+          "type": "string"
+        },
+        "from_entity_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "From Entity Id"
+        },
+        "quantity": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quantity"
+        },
+        "rationale": {
+          "description": "Why, in operator-readable words",
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        },
+        "requires_approval": {
+          "const": true,
+          "default": true,
+          "title": "Requires Approval",
+          "type": "boolean"
+        },
+        "resource_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Resource Type"
+        },
+        "target_entity_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Target Entity Id"
+        }
+      },
+      "required": [
+        "action",
+        "rationale"
+      ],
+      "title": "Recommendation",
+      "type": "object"
+    },
+    "ResultRecord": {
+      "additionalProperties": false,
+      "description": "One KPI value for one entity at one timestamp (docs/02 section 4).",
+      "properties": {
+        "baseline_value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Baseline Value"
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Confidence"
+        },
+        "delta": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Delta"
+        },
+        "details": {
+          "additionalProperties": true,
+          "title": "Details",
+          "type": "object"
+        },
+        "entity_id": {
+          "minLength": 1,
+          "title": "Entity Id",
+          "type": "string"
+        },
+        "entity_type": {
+          "$ref": "#/$defs/EntityType"
+        },
+        "horizon_min": {
+          "description": "0 for current state",
+          "minimum": 0,
+          "title": "Horizon Min",
+          "type": "integer"
+        },
+        "kpi": {
+          "title": "Kpi",
+          "type": "string"
+        },
+        "lower": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Lower"
+        },
+        "quantile_level": {
+          "anyOf": [
+            {
+              "exclusiveMaximum": 1.0,
+              "exclusiveMinimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quantile Level"
+        },
+        "reason_codes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Reason Codes",
+          "type": "array"
+        },
+        "recommendation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Recommendation"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "resource_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Resource Type"
+        },
+        "risk_level": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/RiskLevel"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "state": {
+          "$ref": "#/$defs/State"
+        },
+        "timestamp": {
+          "format": "date-time",
+          "title": "Timestamp",
+          "type": "string"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        },
+        "upper": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Upper"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        },
+        "zone_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Parent zone when the entity sits inside one, else null",
+          "title": "Zone Id"
+        }
+      },
+      "required": [
+        "entity_type",
+        "entity_id",
+        "kpi",
+        "timestamp",
+        "horizon_min",
+        "state",
+        "value",
+        "unit"
+      ],
+      "title": "ResultRecord",
+      "type": "object"
+    },
+    "RiskLevel": {
+      "enum": [
+        "green",
+        "amber",
+        "red",
+        "critical"
+      ],
+      "title": "RiskLevel",
+      "type": "string"
+    },
+    "State": {
+      "description": "What kind of value a record carries (docs/02 section 4).",
+      "enum": [
+        "current",
+        "forecast",
+        "scenario"
+      ],
+      "title": "State",
+      "type": "string"
+    },
+    "Status": {
+      "description": "Overall outcome of a model run. `degraded` requires at least one warning.",
+      "enum": [
+        "ok",
+        "degraded",
+        "error"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "UpstreamRef": {
+      "additionalProperties": false,
+      "description": "Provenance of one consumed upstream output (docs/02 sections 4 and 7).",
+      "properties": {
+        "generated_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Generated At"
+        },
+        "model_id": {
+          "examples": [
+            "M01"
+          ],
+          "pattern": "^M(?:0[1-9]|1\\d|2[0-5])$",
+          "title": "Model Id",
+          "type": "string"
+        },
+        "run_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Run Id"
+        },
+        "source": {
+          "$ref": "#/$defs/UpstreamSource"
+        }
+      },
+      "required": [
+        "model_id",
+        "source"
+      ],
+      "title": "UpstreamRef",
+      "type": "object"
+    },
+    "UpstreamSource": {
+      "description": "How an upstream output was obtained (docs/02 section 7 resolution order).",
+      "enum": [
+        "inline",
+        "url",
+        "sample",
+        "stub"
+      ],
+      "title": "UpstreamSource",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "The response body of /predict and /scenario. The only shape any model may return.",
+  "properties": {
+    "as_of": {
+      "format": "date-time",
+      "title": "As Of",
+      "type": "string"
+    },
+    "data_source": {
+      "$ref": "#/$defs/DataSource"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "is_synthetic": {
+      "title": "Is Synthetic",
+      "type": "boolean"
+    },
+    "model_id": {
+      "examples": [
+        "M01"
+      ],
+      "pattern": "^M(?:0[1-9]|1\\d|2[0-5])$",
+      "title": "Model Id",
+      "type": "string"
+    },
+    "model_name": {
+      "minLength": 1,
+      "title": "Model Name",
+      "type": "string"
+    },
+    "model_version": {
+      "examples": [
+        "0.1.0"
+      ],
+      "pattern": "^\\d+\\.\\d+\\.\\d+(?:[-+][0-9A-Za-z.\\-]+)?$",
+      "title": "Model Version",
+      "type": "string"
+    },
+    "results": {
+      "items": {
+        "$ref": "#/$defs/ResultRecord"
+      },
+      "title": "Results",
+      "type": "array"
+    },
+    "run_id": {
+      "title": "Run Id",
+      "type": "string"
+    },
+    "scenario_id": {
+      "default": "S01",
+      "examples": [
+        "S01"
+      ],
+      "pattern": "^S(?:0[1-9]|1[0-5])$",
+      "title": "Scenario Id",
+      "type": "string"
+    },
+    "scenario_overrides": {
+      "additionalProperties": true,
+      "title": "Scenario Overrides",
+      "type": "object"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/Status",
+      "default": "ok"
+    },
+    "upstream": {
+      "items": {
+        "$ref": "#/$defs/UpstreamRef"
+      },
+      "title": "Upstream",
+      "type": "array"
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "model_id",
+    "model_name",
+    "model_version",
+    "as_of",
+    "data_source",
+    "is_synthetic"
+  ],
+  "title": "ModelOutput",
+  "type": "object"
+}

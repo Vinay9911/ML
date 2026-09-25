@@ -149,3 +149,76 @@ Default `/predict`: 156 records, 12 series, **1.2 s** warm.
 ## 10. Open question resolved
 `chronos-2-small` is the right default: it beat the fitted baseline on this world and answers
 in 1.8 s. There is no case for the 120M `amazon/chronos-2` here.
+
+---
+
+# Phase 4 — COMPLETE
+
+All nine forecasting models are built, tested and documented: M01, M05, M06, M15, M17, M18,
+M19, M20, M22, on the shared `twin_common.engines.forecast`.
+
+| Model | Records | `/predict` warm | Tests | Notes |
+|---|---:|---:|---:|---|
+| M01 footfall | 156 | 0.77 s | 42 | the keystone; 13 models read it |
+| M05 parking | 108 | 1.94 s | 57 | occupancy may exceed 100 % by design |
+| M06 transit | 72 | 1.40 s | 58 | first two-upstream model |
+| M15 water | 296 | 1.81 s | 60 | S04 heat path decays with horizon |
+| M17 food | 72 | 1.36 s | 55 | hourly grid; inventory simulated forward |
+| M18 waste | 296 | 1.64 s | 49 | fill projection with collection reset |
+| M19 power | 72 | 0.47 s | 53 | publishes `load_utilization` for M12 |
+| M20 network | 324 | 0.71 s | 55 | 5-minute grid |
+| M22 environment | 66 | 0.27 s | 53 | uses the one REAL table (D13) |
+
+Every one is comfortably inside the 10 s docs/02 §6 budget.
+
+## The two engine-level changes that came out of this phase
+
+**1. Conformal band calibration.** A band labelled `quantile_level: 0.8` was holding the truth
+about half the time. Per-step diagnosis on M01/Z01 showed why: across the horizon the error
+grows 26x while the raw band widens only 1.7x, so coverage is fine for the first hour and
+collapses after it. Every forecasting model now measures its own miss rate on held-out origins
+at startup and widens each horizon step to match. M01 49.5 -> 74.2 % on genuinely held-out
+folds; M05 51.4 -> 89.9 % on its calibration set.
+
+A finding worth keeping: **six-hourly origins beat daily ones**. Calibrating on 20 days of
+daily origins gave 64.6 % held-out coverage; six-hourly origins over six days gave 74.6. The
+series is not stationary - the event builds to a peak - so recency beats diversity, which is
+the opposite of the usual advice.
+
+**2. Common random numbers.** `rng_for` was seeded on the scenario id, so every scenario drew
+different noise. With `arrival_noise_sigma` at 0.08 that swamped small interventions: S04's
+1.8 % water uplift came out 0.2 % NEGATIVE. Every scenario now draws the same noise and differs
+only by its overrides. S02 is now exactly 1.3000x S01 rather than approximately.
+
+## Data problems this phase exposed
+
+Each of these made a KPI carry no information, and each was found by building the model that
+depended on it rather than by reading the spec.
+
+| Found in | Problem | Fix |
+|---|---|---|
+| M05 | Parking capacity 4,800 bays put an ORDINARY day at 140-180 % and the snan peak at 583 % | sized for the design peak: 23,200 |
+| M18 | `bin_capacity_kg` is ONE bin but WB01-08 are zone GROUPS, so every group read 100 % full within one step | added `bins_per_group: 50` |
+| M19 | D18 has one row per (substation, zone); splitting on substation alone silently reported a QUARTER of the load | aggregate before splitting |
+| M19 | Generators never refuelled, so a month of daily outages emptied the tank and backup duration read 0 for the one scenario it exists for | refuel when the grid returns |
+| M17 | Coverage was a snapshot, so S13 (lead time x1.5) was a no-op against a documented "coverage down" | simulate inventory forward |
+| M22 | `facility` had no ID pattern for food outlets (FO01) | extended docs/02 §3 and `ids.py` |
+
+## Findings reported rather than fixed
+
+- **Shuttle fleet**: needs 1,447 vehicles at peak against 80 configured. Left alone because
+  `available` is M24's input, and `shuttle_requirement` stays informative above the fleet.
+- **Tower capacities**: peak utilisation 27.5 %, so M20's capacity-risk KPI is near zero
+  throughout. The threshold was left where an operator would want it rather than lowered to
+  make the number move.
+- **M22 placeholders**: NAQI breakpoints and all three CO2 emission factors are transcription
+  placeholders, and the CO2 traffic term is zero until M04 exists.
+
+## Honest limits carried forward
+
+- **M15/S04**: the heat effect is real (8.5 % at midday) but decays across the horizon -
+  1.100 at 15 min, 0.871 at 180 - because the zero-shot backend reverts to its own seasonal
+  shape and loses a small covariate signal. A 30 % signal like S02 survives; an 8 % one does not.
+- **M01/S04**, **M06/S06+S12**, **M17/S06**, **M18/S06+S12**: declared insensitive rather than
+  returning an unchanged baseline while implying a response. Each mechanism is implemented and
+  tested directly; each is waiting on a Phase 7 model (mostly M04).

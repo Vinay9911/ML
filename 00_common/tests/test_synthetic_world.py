@@ -296,11 +296,49 @@ def test_s08_substation_down_in_the_window(worlds) -> None:
 
 
 def test_s08_generator_fuel_falls_while_running(worlds) -> None:
+    """Fuel drains DURING an outage, measured inside one window.
+
+    Comparing the first and last row of the month no longer measures this: generators refuel
+    when the grid returns, so both ends of the series are full. That refuelling was added
+    because the S08 window recurs daily, and a single cumulative drain emptied the tank long
+    before the demo day - which made `generator_backup_duration` read zero for the one
+    scenario the KPI exists for.
+    """
     power = worlds["S08"].tables["power_15min"]
     affected = power.loc[power["asset_id"] == "SS01"].sort_values("timestamp")
-    fuel = affected["fuel_l"].to_numpy()
-    assert fuel[-1] < fuel[0], "fuel must drain while the generators run"
-    assert (fuel >= 0).all()
+    running = affected.loc[affected["generator_on"]]
+    assert not running.empty, "S08 must run the generators somewhere"
+
+    fuel = running["fuel_l"].to_numpy()
+    assert fuel.min() < fuel.max(), "fuel must fall while a generator is running"
+    assert (affected["fuel_l"] >= 0).all()
+
+
+def test_s08_generators_refuel_between_outages(worlds) -> None:
+    """Between outages the tank is full again, which is what a real operation does.
+
+    Without this the daily S08 window drains a 400 L tank across 31 days and every backup
+    countdown reads zero. See the M19 model card.
+    """
+    from twin_common.config import assumptions
+
+    full = float(assumptions()["power"]["generator_fuel_l"])
+    power = worlds["S08"].tables["power_15min"]
+    affected = power.loc[power["asset_id"] == "SS01"].sort_values("timestamp")
+    idle = affected.loc[~affected["generator_on"], "fuel_l"]
+    assert not idle.empty
+    assert float(idle.min()) == pytest.approx(full), "an idle generator should have a full tank"
+
+
+def test_s08_fuel_never_bottoms_out_on_the_demo_day(worlds) -> None:
+    """The countdown has to be a real number at the moment the demo looks at it."""
+    power = worlds["S08"].tables["power_15min"]
+    affected = power.loc[power["asset_id"] == "SS01"].sort_values("timestamp")
+    day = affected.loc[affected["timestamp"].dt.date.astype(str) == "2027-08-02"]
+    assert not day.empty
+    assert float(day["fuel_l"].min()) > 0.0, (
+        "the tank was empty on the demo day, so generator_backup_duration would read zero"
+    )
 
 
 def test_s09_camera_availability_drops_by_the_outage_share(worlds) -> None:

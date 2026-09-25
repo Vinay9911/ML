@@ -97,6 +97,17 @@ sanitation:
 waste:
   kg_per_person_per_hour_present: 0.05
   bin_capacity_kg: 120
+  # ADDED by this implementation. `bin_capacity_kg` is ONE bin, but D16 and world.yaml model
+  # a bin GROUP per zone (WB01..WB08), and the generator was dividing a whole zone's waste by
+  # a single bin. Every group therefore read 100 percent full within one 15-minute step, so
+  # `waste_bin_fill_level` was pinned at 100 and `bin_overflow_time` at the first step for
+  # every bin in every scenario - both KPIs carried no information.
+  #
+  # Sized from the generated world: over a 4-hour round the busiest group (WB01, the main
+  # ghat) accumulates 6,204 kg at the snan peak. 50 bins x 120 kg = 6,000 kg puts that at
+  # 103 percent - one group overflowing at the peak and the rest below - which is a working
+  # KPI. PLACEHOLDER: replace with the surveyed bin count per zone.
+  bins_per_group: 50
   vehicle_payload_kg: 3000
 
 food:

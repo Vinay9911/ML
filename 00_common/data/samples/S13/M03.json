@@ -1,0 +1,668 @@
+{
+  "schema_version": "1.0",
+  "model_id": "M03",
+  "model_name": "Hotspot / Crush Risk (stub)",
+  "model_version": "0.0.0",
+  "run_id": "f7bd7c5c-4b10-47d5-8a87-711c754d2de9",
+  "generated_at": "2026-09-24T23:45:03.518794+05:30",
+  "as_of": "2027-08-02T06:00:00+05:30",
+  "scenario_id": "S13",
+  "scenario_overrides": {},
+  "data_source": "synthetic",
+  "is_synthetic": true,
+  "status": "degraded",
+  "warnings": [
+    "stub output generated from the synthetic world; not a model result"
+  ],
+  "upstream": [],
+  "results": [
+    {
+      "entity_type": "zone",
+      "entity_id": "Z01",
+      "zone_id": "Z01",
+      "kpi": "crowd_spillover_risk",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 78.76622278131158,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z01",
+      "zone_id": "Z01",
+      "kpi": "bottleneck_probability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 78.76622278131158,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z01",
+      "zone_id": "Z01",
+      "kpi": "crush_risk_score",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 78.76622278131158,
+      "unit": "score_0_100",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "red",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z02",
+      "zone_id": "Z02",
+      "kpi": "crowd_spillover_risk",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 63.012978225049274,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "red",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z02",
+      "zone_id": "Z02",
+      "kpi": "bottleneck_probability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 63.012978225049274,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "red",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z02",
+      "zone_id": "Z02",
+      "kpi": "crush_risk_score",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 63.012978225049274,
+      "unit": "score_0_100",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "red",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z03",
+      "zone_id": "Z03",
+      "kpi": "crowd_spillover_risk",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 70.6230658253655,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z03",
+      "zone_id": "Z03",
+      "kpi": "bottleneck_probability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 70.6230658253655,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "critical",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z03",
+      "zone_id": "Z03",
+      "kpi": "crush_risk_score",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 70.6230658253655,
+      "unit": "score_0_100",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "red",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z04",
+      "zone_id": "Z04",
+      "kpi": "crowd_spillover_risk",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 42.64875181393382,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "red",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z04",
+      "zone_id": "Z04",
+      "kpi": "bottleneck_probability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 42.64875181393382,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "red",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z04",
+      "zone_id": "Z04",
+      "kpi": "crush_risk_score",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 42.64875181393382,
+      "unit": "score_0_100",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "amber",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z05",
+      "zone_id": "Z05",
+      "kpi": "crowd_spillover_risk",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 39.520476303198315,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "amber",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z05",
+      "zone_id": "Z05",
+      "kpi": "bottleneck_probability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 39.520476303198315,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "amber",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z05",
+      "zone_id": "Z05",
+      "kpi": "crush_risk_score",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 39.520476303198315,
+      "unit": "score_0_100",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "green",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z06",
+      "zone_id": "Z06",
+      "kpi": "crowd_spillover_risk",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 12.570425183870281,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "green",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z06",
+      "zone_id": "Z06",
+      "kpi": "bottleneck_probability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 12.570425183870281,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "green",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z06",
+      "zone_id": "Z06",
+      "kpi": "crush_risk_score",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 12.570425183870281,
+      "unit": "score_0_100",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "green",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z07",
+      "zone_id": "Z07",
+      "kpi": "crowd_spillover_risk",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 40.278717768232255,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "red",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z07",
+      "zone_id": "Z07",
+      "kpi": "bottleneck_probability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 40.278717768232255,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "red",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z07",
+      "zone_id": "Z07",
+      "kpi": "crush_risk_score",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 40.278717768232255,
+      "unit": "score_0_100",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "amber",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z08",
+      "zone_id": "Z08",
+      "kpi": "crowd_spillover_risk",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 9.800633404596606,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "green",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z08",
+      "zone_id": "Z08",
+      "kpi": "bottleneck_probability",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 9.800633404596606,
+      "unit": "%",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "green",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    },
+    {
+      "entity_type": "zone",
+      "entity_id": "Z08",
+      "zone_id": "Z08",
+      "kpi": "crush_risk_score",
+      "timestamp": "2027-08-02T06:00:00+05:30",
+      "horizon_min": 0,
+      "state": "scenario",
+      "value": 9.800633404596606,
+      "unit": "score_0_100",
+      "lower": null,
+      "upper": null,
+      "quantile_level": null,
+      "baseline_value": null,
+      "delta": null,
+      "risk_level": "green",
+      "reason_codes": [
+        "SYNTHETIC_DATA"
+      ],
+      "resource_type": null,
+      "recommendation": null,
+      "confidence": 0.3,
+      "details": {
+        "stub": true,
+        "derived_from": "crowd_density"
+      }
+    }
+  ]
+}

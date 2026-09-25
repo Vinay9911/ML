@@ -3,8 +3,8 @@
   "model_id": "M01",
   "model_name": "Footfall Forecast",
   "model_version": "0.1.0",
-  "run_id": "6401161b-5047-4866-9896-6623c94fa8e8",
-  "generated_at": "2026-09-24T19:11:22.468866+05:30",
+  "run_id": "37a0362d-ac9d-4d8b-a5e1-ce022e546ac5",
+  "generated_at": "2026-09-24T19:43:37.918707+05:30",
   "as_of": "2027-08-02T06:00:00+05:30",
   "scenario_id": "S03",
   "scenario_overrides": {

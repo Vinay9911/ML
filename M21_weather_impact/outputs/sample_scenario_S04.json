@@ -3,8 +3,8 @@
   "model_id": "M21",
   "model_name": "Weather Impact",
   "model_version": "0.1.0",
-  "run_id": "7c3a54a7-1438-4ebe-b094-8c2630187c76",
-  "generated_at": "2026-09-24T19:13:23.785705+05:30",
+  "run_id": "91cffccc-cdb4-421c-855c-68c103768d75",
+  "generated_at": "2026-09-24T19:46:30.529885+05:30",
   "as_of": "2027-08-02T06:00:00+05:30",
   "scenario_id": "S04",
   "scenario_overrides": {

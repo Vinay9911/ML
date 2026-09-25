@@ -119,6 +119,11 @@ class Model(TwinModel):
         self._meals[scenario_id] = series_by_entity(
             table, entity_column="outlet_id", value_column="meals_sold"
         )
+        # D17 carries the lead time the world was built with, so read it rather than
+        # recomputing assumptions x override - two copies of the same number drift.
+        self._world_lead_time = getattr(self, "_world_lead_time", {})
+        if "lead_time_h" in table.columns and len(table):
+            self._world_lead_time[scenario_id] = float(table["lead_time_h"].max())
         self._stock[scenario_id] = series_by_entity(
             table, entity_column="outlet_id", value_column="stock_meals"
         )
@@ -312,13 +317,22 @@ class Model(TwinModel):
                     f"{multiplier} through the generic scenario layer"
                 )
 
-        # S13 stretches the lead time. It does not change stock, only whether the stock lasts
-        # long enough for a delivery to arrive.
+        # S13 stretches the lead time, which delays every replenishment.
+        #
+        # A scenario with its own generated world already has the stretched lead time baked
+        # into D17, so it is read from there; only the generic layer has to apply the
+        # multiplier by hand. Applying it on top of a world that already carries it would
+        # double-count.
         lead_multiplier = float(overrides.get("food_lead_time_multiplier", 1.0))
-        lead_time = self._lead_time_hours * lead_multiplier
-        if lead_multiplier != 1.0:
+        from_world = self._world_lead_time.get(source)
+        if source == scenario_id and from_world:
+            lead_time = from_world
+        else:
+            lead_time = self._lead_time_hours * lead_multiplier
+        if lead_time != self._lead_time_hours:
             builder.warn(
-                f"lead time stretched to {lead_time:.1f} h by a factor of {lead_multiplier}"
+                f"lead time is {lead_time:.1f} h against a baseline of "
+                f"{self._lead_time_hours:.1f} h"
             )
 
         entities = self.resolve_entities(request, list(meals))

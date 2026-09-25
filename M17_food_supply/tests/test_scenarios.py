@@ -106,20 +106,47 @@ def test_s13_does_not_change_demand(model, baseline) -> None:
     )
 
 
-def test_a_horizon_shorter_than_the_lead_time_cannot_show_s13(model) -> None:
+def test_no_delivery_can_land_inside_a_horizon_shorter_than_the_lead_time(model) -> None:
     """Documents why the default horizon is 12 h rather than 6.
 
     With a 6 h lead time, nothing ordered inside a 6 h window can arrive inside it, so the
-    stock path is identical whatever the lead time is and the scenario has nothing to show.
-    If this ever starts failing, the horizon and the lead time have drifted apart.
+    model's own inventory simulation cannot produce any replenishment there - only the
+    opening stock differs between scenarios. That is what makes a short horizon a poor place
+    to read a lead-time scenario, and why the default is longer than the lead time.
     """
     short = 360
-    base = model.predict(PredictRequest(horizon_min=short))
     scenario = model.scenario(ScenarioRequest(scenario_id="S13", horizon_min=short))
-    assert _total(scenario, "food_stock_coverage") == pytest.approx(
-        _total(base, "food_stock_coverage"), rel=1e-6
+    arrived = [
+        r.details["meals_arrived"]
+        for r in scenario.results
+        if r.kpi == "food_demand" and "meals_arrived" in r.details
+    ]
+    assert arrived, "no records to inspect"
+    assert max(arrived) == 0.0, (
+        "a delivery landed inside a window shorter than the lead time, which should be "
+        "impossible - the lead time and the simulation have drifted apart"
     )
     assert model.default_horizon_min > model._lead_time_hours * 60
+
+
+def test_the_s13_world_holds_less_stock_overall(model) -> None:
+    """The structural effect of the disruption, measured on the world rather than one instant.
+
+    A delivery ordered under a stretched lead time lands later, so the shelf drains further
+    while it waits: mean stock across the month falls even though each order is larger.
+
+    This is asserted on the MEAN and not at ``as_of``, because at any single instant the sign
+    depends on where each outlet happens to sit in its delivery cycle. At the demo instant
+    S13's FO01 has just taken a large delivery (4,560 meals against S01's 3,157) while FO02 is
+    empty. Averaged over the month the disruption is unambiguous; at one timestamp it is not,
+    and a test that pretended otherwise would be testing the phase of a sawtooth.
+    """
+    baseline = sum(float(series.mean()) for series in model._stock["S01"].values())
+    disrupted = sum(float(series.mean()) for series in model._stock["S13"].values())
+    assert disrupted < baseline, (
+        f"the S13 world holds {disrupted:,.0f} mean meals against {baseline:,.0f} in S01; a "
+        f"longer lead time should drain the shelf, not fill it"
+    )
 
 
 def test_deltas_are_filled_against_the_baseline(model) -> None:

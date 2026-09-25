@@ -1,0 +1,72 @@
+# M19 - Power Load
+#
+# The standard keys are fixed by docs/02 section 8 and are read by twin_common; `params` is
+# yours. EVERY number this model uses belongs under `params` or in 00_common/config -
+# CLAUDE.md forbids thresholds, rates and weights in src/.
+model_id: M19
+model_name: Power Load
+model_version: 0.1.0
+port: 8019
+engine: forecast
+
+data_source: synthetic
+seed: 42
+demo_now: "2027-08-02T06:00:00+05:30"
+
+horizons_min: [15, 60, 180]
+default_horizon_min: 180
+
+# M01 gives arrivals, M21 the temperature that drives the cooling term (the S04 mechanism).
+upstream: [M01, M21]
+
+inputs: [power_15min, footfall_15min, weather_hourly, event_calendar]
+
+kpis:
+  - electricity_demand
+  - generator_backup_duration
+  - backup_generator_requirement
+
+# docs/05 section 1.2 and the docs/03 M19 card: S04 raises load through the cooling term,
+# S08 puts the SS01 zones onto backup with a duration countdown.
+scenarios_supported: [S01, S02, S04, S08]
+
+upstream_timeout_s: 5
+
+# ---------------------------------------------------------------- model parameters
+params:
+  forecast:
+    backend: chronos2
+    hub_model_name: autogluon/chronos-2-small
+    quantiles: [0.1, 0.5, 0.9]
+    input_chunk_length: 96
+    lightgbm_lags: 96
+    seasonality: 96
+    max_context_steps: 2688
+    allow_fallback: true
+    calibration:
+      enabled: true
+      folds: 24
+      stride_steps: 24
+      min_factor: 1.0
+      max_factor: 12.0
+
+  # docs/03 M19 asks for MW. D18 is in kW, so the KPI is divided by this.
+  kw_per_mw: 1000
+
+  # The share of a substation's load that must stay up on backup. Life-safety, lighting,
+  # comms and medical are critical; commercial and amenity load is not. A single fraction is
+  # a placeholder for a proper per-circuit schedule.
+  critical_load_fraction: 0.6
+
+  # A generator runs at this share of its rating while carrying the critical load, which sets
+  # the fuel burn and so the backup duration. Below about half load a diesel set is inefficient
+  # and wet-stacks, so this is also roughly the lowest sensible operating point.
+  assumed_load_fraction: 0.75
+
+  # Backup duration is capped for reporting. An asset with a full tank and almost no load has
+  # an arithmetically enormous runtime; past a day it stops being a useful number and the
+  # binding constraint becomes refuelling, which this model does not represent.
+  max_backup_hours: 24.0
+
+  floor_value: 0.0
+  confidence: 0.5

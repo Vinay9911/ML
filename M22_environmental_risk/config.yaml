@@ -1,0 +1,98 @@
+# M22 - Environmental Risk
+#
+# The standard keys are fixed by docs/02 section 8 and are read by twin_common; `params` is
+# yours. EVERY number this model uses belongs under `params` or in 00_common/config -
+# CLAUDE.md forbids thresholds, rates and weights in src/.
+model_id: M22
+model_name: Environmental Risk
+model_version: 0.1.0
+port: 8022
+engine: forecast
+
+data_source: synthetic
+seed: 42
+demo_now: "2027-08-02T06:00:00+05:30"
+
+# D13 is HOURLY, like D17, so the horizons are whole hours.
+horizons_min: [60, 180, 360]
+default_horizon_min: 360
+
+# M21 supplies wind. The docs/03 M22 card also lists M04 for vehicle volumes, but M04 is a
+# Phase 7 model; until it exists the traffic term is reported as zero and said so in the
+# response rather than invented. Add M04 here once it is built.
+upstream: [M21]
+
+# D18 is needed for the electricity and generator-diesel terms of co2_emissions.
+inputs: [air_quality_hourly, footfall_15min, weather_hourly, event_calendar, power_15min]
+
+kpis: [air_quality_index, pm25, noise_level, co2_emissions]
+
+# docs/05 section 1.2: S02 raises noise and CO2, S08 raises CO2 (generators run), S15 raises
+# PM2.5 near the fire zone.
+scenarios_supported: [S01, S02, S08, S15]
+
+upstream_timeout_s: 5
+
+# ---------------------------------------------------------------- model parameters
+params:
+  forecast:
+    backend: chronos2
+    hub_model_name: autogluon/chronos-2-small
+    quantiles: [0.1, 0.5, 0.9]
+    input_chunk_length: 168
+    lightgbm_lags: 168
+    seasonality: 24
+    max_context_steps: 744
+    allow_fallback: true
+    calibration:
+      enabled: true
+      folds: 24
+      stride_steps: 6
+      min_factor: 1.0
+      max_factor: 12.0
+
+  steps_per_hour: 1
+
+  # --- Indian National AQI (docs/05 section 6) -------------------------------
+  # Sub-index by piecewise-linear interpolation between breakpoints, then AQI = max sub-index.
+  # PLACEHOLDERS transcribed from docs/05: VERIFY AGAINST CPCB BEFORE ANY REAL USE. The
+  # category edges and the pollutant breakpoints must match the published CPCB table, and the
+  # real method uses 24-hour averages for PM2.5 and PM10, not instantaneous readings.
+  naqi:
+    # Index value at the top of each category: Good, Satisfactory, Moderate, Poor, Very Poor,
+    # Severe. The bottom of the first band is 0.
+    index_breakpoints: [50, 100, 200, 300, 400, 500]
+    category_names: [Good, Satisfactory, Moderate, Poor, "Very Poor", Severe]
+    # Concentration at the top of each band, matching index_breakpoints one for one.
+    concentration_breakpoints:
+      pm2_5: [30, 60, 90, 120, 250, 380]
+      pm10: [50, 100, 250, 350, 430, 510]
+    # Reported ceiling. The CPCB scale stops at 500; anything past it is "off the scale"
+    # rather than a larger number.
+    max_index: 500.0
+
+  # --- noise (docs/03 M22) ---------------------------------------------------
+  # noise = base_db + 10 * log10(1 + density / density_ref), a crowd-density term on a
+  # logarithmic scale because decibels are logarithmic.
+  noise:
+    base_db: 55.0
+    density_ref_p_m2: 1.0
+    # Ceiling for reporting. Past this a reading says "dangerously loud" and the exact figure
+    # stops mattering; it also stops a runaway density producing an absurd decibel value.
+    max_db: 120.0
+
+  # --- CO2 (docs/03 M22) -----------------------------------------------------
+  # ALL PLACEHOLDERS. Replace with official emission factors before any published figure.
+  co2:
+    # kg CO2e per vehicle-kilometre. Needs M04 for the vehicle-km; zero until then.
+    kg_per_vehicle_km: 0.18
+    # kg CO2e per kWh of grid electricity (India grid average, placeholder).
+    kg_per_kwh: 0.71
+    # kg CO2e per litre of diesel burnt in a generator.
+    kg_per_diesel_litre: 2.68
+    # kg to tonnes, for the tCO2e/day KPI unit.
+    kg_per_tonne: 1000.0
+    hours_per_day: 24
+
+  floor_value: 0.0
+  confidence: 0.4

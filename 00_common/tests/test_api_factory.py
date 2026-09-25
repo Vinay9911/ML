@@ -284,3 +284,58 @@ def test_model_id_mismatch_between_class_and_config_fails_fast(
     (tmp_path / "config.yaml").write_text(yaml.safe_dump(payload), encoding="utf-8")
     with pytest.raises(ConfigError, match="model_id is 'M07'"):
         dummy_model_class.from_folder(tmp_path)
+
+
+# ---------------------------------------------------------------- /inputs (additive)
+def test_inputs_endpoint_reports_the_declared_tables(client) -> None:
+    """`/inputs` exists so a reader can see what goes IN, not just what comes out."""
+    body = client.get("/inputs").json()
+    assert body["model_id"] == "M21"
+    assert [t["table"] for t in body["tables"]]
+
+
+def test_inputs_describes_a_table_it_cannot_read(client) -> None:
+    """The dummy model has no sliced data, and that must be reported rather than raised.
+
+    A real model folder is exercised against real data in the M21 tests; this asserts the
+    path that matters for a freshly scaffolded folder, where the world has not been sliced
+    yet. A 500 here would make `/inputs` useless exactly when someone most needs it.
+    """
+    body = client.get("/inputs?rows=5").json()
+    for table in body["tables"]:
+        if not table.get("available"):
+            assert "note" in table
+            assert "not sliced" in table["note"]
+
+
+def test_inputs_reports_the_registry_schema_even_with_no_data(client) -> None:
+    """What a table WOULD contain is knowable without the data being present."""
+    body = client.get("/inputs?rows=5").json()
+    described = [t for t in body["tables"] if t["columns"]]
+    assert described, "no table matched the registry"
+    for table in described:
+        assert table["dataset_id"], f"{table['table']} has no D-code"
+        assert all(c["name"] and c["dtype"] for c in table["columns"])
+
+
+def test_inputs_exposes_every_parameter(client) -> None:
+    """params IS the model's assumptions: CLAUDE.md forbids them anywhere else."""
+    body = client.get("/inputs").json()
+    assert isinstance(body["params"], dict)
+    assert body["params"], "a model with no parameters would be suspicious"
+
+
+def test_inputs_sample_is_json_safe(client) -> None:
+    """NaN is not valid JSON; a null column must come back as null, not crash the parse."""
+    import json
+
+    raw = client.get("/inputs?rows=20").text
+    assert "NaN" not in raw
+    json.loads(raw)
+
+
+def test_inputs_does_not_change_the_contract_endpoints(client) -> None:
+    """`/inputs` is additive: the four documented endpoints must be untouched."""
+    for path in ("/health", "/metadata"):
+        assert client.get(path).status_code == 200
+    assert client.post("/predict", json={}).status_code == 200

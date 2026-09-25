@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Event Twin Explainer</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --panel:#ffffff; --ink:#15181d; --muted:#5b6472; --line:#dfe3e9;
+    --accent:#2f5fd0; --accent-soft:#e8eefc; --warn:#8a5a00; --warn-soft:#fdf3e0;
+    --good:#1d6f45; --good-soft:#e6f4ec; --code:#f2f4f7; --shadow:0 1px 2px rgba(20,25,35,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#11141a; --panel:#181c23; --ink:#e8ecf2; --muted:#9aa5b4; --line:#2a303a;
+      --accent:#7aa2f7; --accent-soft:#1c2740; --warn:#e0b060; --warn-soft:#2e2414;
+      --good:#6cc99a; --good-soft:#14291f; --code:#1e232b; --shadow:none;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#11141a; --panel:#181c23; --ink:#e8ecf2; --muted:#9aa5b4; --line:#2a303a;
+    --accent:#7aa2f7; --accent-soft:#1c2740; --warn:#e0b060; --warn-soft:#2e2414;
+    --good:#6cc99a; --good-soft:#14291f; --code:#1e232b; --shadow:none;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  .wrap{max-width:900px; margin:0 auto; padding:0 16px 96px}
+  header.top{padding:48px 0 24px; border-bottom:1px solid var(--line); margin-bottom:8px}
+  h1{font-size:30px; line-height:1.2; margin:0 0 8px; letter-spacing:-.02em}
+  .sub{color:var(--muted); margin:0; font-size:17px}
+  .tag{display:inline-block; background:var(--accent-soft); color:var(--accent);
+       padding:3px 9px; border-radius:99px; font-size:12px; font-weight:600; letter-spacing:.02em}
+  h2{font-size:23px; margin:44px 0 6px; letter-spacing:-.01em; scroll-margin-top:16px}
+  h3{font-size:18px; margin:26px 0 6px}
+  h4{font-size:15px; margin:18px 0 4px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em}
+  p{margin:10px 0}
+  a{color:var(--accent)}
+  code{background:var(--code); padding:1px 5px; border-radius:4px; font-size:.9em;
+       font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  pre{background:var(--code); padding:14px; border-radius:8px; overflow-x:auto; font-size:13px;
+      line-height:1.5; border:1px solid var(--line)}
+  pre code{background:none; padding:0}
+  .panel{background:var(--panel); border:1px solid var(--line); border-radius:10px;
+         padding:18px 20px; margin:16px 0; box-shadow:var(--shadow)}
+  .note{background:var(--accent-soft); border-left:3px solid var(--accent); padding:12px 16px;
+        border-radius:6px; margin:14px 0}
+  .warn{background:var(--warn-soft); border-left:3px solid var(--warn); padding:12px 16px;
+        border-radius:6px; margin:14px 0}
+  .good{background:var(--good-soft); border-left:3px solid var(--good); padding:12px 16px;
+        border-radius:6px; margin:14px 0}
+  table{border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; display:block; overflow-x:auto}
+  th,td{border-bottom:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  th{font-weight:600; color:var(--muted); font-size:13px; text-transform:uppercase; letter-spacing:.04em}
+  td.num,th.num{text-align:right}
+  .flow{background:var(--code); border:1px solid var(--line); border-radius:8px; padding:16px;
+        overflow-x:auto; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+        font-size:12.5px; line-height:1.55; white-space:pre; margin:14px 0}
+  .toc{columns:2; column-gap:28px; font-size:14.5px}
+  .toc a{display:block; padding:2px 0; text-decoration:none}
+  .toc a:hover{text-decoration:underline}
+  @media (max-width:640px){ .toc{columns:1} h1{font-size:25px} }
+  .model{border:1px solid var(--line); border-radius:10px; background:var(--panel);
+         margin:20px 0; overflow:hidden; box-shadow:var(--shadow)}
+  .model > summary{padding:14px 18px; cursor:pointer; font-weight:600; font-size:17px;
+                   list-style:none; display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+  .model > summary::-webkit-details-marker{display:none}
+  .model > summary::before{content:"▸"; color:var(--muted); font-size:13px}
+  .model[open] > summary::before{content:"▾"}
+  .model > summary:hover{background:var(--accent-soft)}
+  .mid{font-family:ui-monospace,monospace; background:var(--accent-soft); color:var(--accent);
+       padding:2px 7px; border-radius:5px; font-size:13px}
+  .port{color:var(--muted); font-weight:400; font-size:13px; font-family:ui-monospace,monospace}
+  .body{padding:2px 18px 18px; border-top:1px solid var(--line)}
+  .kpi{display:inline-block; background:var(--code); border:1px solid var(--line);
+       padding:2px 8px; border-radius:5px; font-size:13px; margin:2px 4px 2px 0;
+       font-family:ui-monospace,monospace}
+  footer{margin-top:56px; padding-top:20px; border-top:1px solid var(--line);
+         color:var(--muted); font-size:14px}
+  .updated{font-size:13px; color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <span class="tag">Living document</span>
+  <h1>Event Digital Twin — how it all works</h1>
+  <p class="sub">A plain-language guide to the project: what it is, how the pieces fit together,
+  what each finished model does, and how to run any of them.</p>
+  <p class="updated">Covers the <strong>10 models built so far</strong> of 25.
+  This file is updated as each new model lands — if it disagrees with <code>PROGRESS.md</code>,
+  <code>PROGRESS.md</code> is right.</p>
+</header>
+
+<div class="good" style="margin-bottom:0">
+<strong>Want to see them actually run?</strong> Start the services with
+<code>uv run python scripts/serve_all.py</code> and open <code>docs/SIMULATION.html</code> — a live
+map where you can run any model, browse the real data going in, and see the real output coming out.
+This page explains <em>how</em> it all works; that one <em>shows</em> it.
+</div>
+
+<nav class="panel">
+  <h4 style="margin-top:0">Contents</h4>
+  <div class="toc">
+    <a href="#what">1. What this project is</a>
+    <a href="#picture">2. The big picture</a>
+    <a href="#world">3. Where the data comes from</a>
+    <a href="#contract">4. What every model returns</a>
+    <a href="#tech">5. The technology, in plain words</a>
+    <a href="#run">6. How to run things</a>
+    <a href="#models">7. The models, one by one</a>
+    <a href="#scenarios">8. Scenarios (what-if)</a>
+    <a href="#left">9. What is still to build</a>
+    <a href="#glossary">10. Glossary</a>
+  </div>
+</nav>
+
+<!-- ============================================================ 1 -->
+<h2 id="what">1. What this project is</h2>
+
+<p>Imagine a control room for a <strong>massive religious gathering</strong> — Kumbh Mela scale,
+tens of millions of people over a month, riverside bathing ghats, a temporary city built for
+the occasion. On the wall is a live dashboard showing what is happening right now and what is
+about to happen.</p>
+
+<p><strong>This repository is not that dashboard.</strong> It is the brain behind it: 25 small,
+independent services, each answering exactly one operational question, each returning its
+answer in the same JSON shape so the dashboard team writes one parser for all 25.</p>
+
+<div class="panel">
+<h4 style="margin-top:0">The three things that define the project</h4>
+<table>
+<tr><td style="width:180px"><strong>No real data yet</strong></td>
+<td>Everything runs on a <em>synthetic world</em> we generate — 31 days, 8 zones, 4 gates,
+roughly 280,000 rows per scenario — plus a few genuinely real public sources. Every row and
+every response carries <code>is_synthetic</code> so nobody can mistake one for the other.</td></tr>
+<tr><td><strong>One fixed contract</strong></td>
+<td>Every service returns the identical JSON structure and exposes the same four endpoints.
+A model that cannot answer still answers — it says <code>status: degraded</code> and explains why.</td></tr>
+<tr><td><strong>Swappable for real data</strong></td>
+<td>Each table can be replaced by a real feed later without touching model code. You change
+<code>data_source: synthetic</code> to <code>replay</code> in a config file.</td></tr>
+</table>
+</div>
+
+<h3>The demo story</h3>
+<p>It is <strong>06:00 on the peak bathing day</strong>. Crowd is building at Ghat A. The system
+warns that density will cross the danger line in about 45 minutes — early enough to act. Every
+model in the project is pointed at that same moment in time
+(<code>demo_now = 2027-08-02T06:00:00+05:30</code>), so their answers line up.</p>
+
+<!-- ============================================================ 2 -->
+<h2 id="picture">2. The big picture</h2>
+
+<p>Data flows in one direction. Real public sources and a synthetic generator build a world;
+the shared library reads it; the models read the library and each other's <em>outputs</em>.</p>
+
+<div class="flow">  REAL SOURCES                      SYNTHETIC GENERATOR
+  ┌──────────────────────┐          ┌──────────────────────────┐
+  │ Open-Meteo weather   │          │ crowd flow · gates       │
+  │ Open-Meteo air qual. │  ──────▶ │ parking · transit · water│
+  │ OpenStreetMap roads  │          │ power · waste · food ... │
+  │ AI4I machine dataset │          │ 31 days x 8 zones        │
+  └──────────────────────┘          └────────────┬─────────────┘
+       (cached to disk,                          │ 28 tables, ~280k rows
+        works offline)                           │ per scenario
+                                                 ▼
+                        ┌────────────────────────────────────┐
+                        │        00_common / twin_common     │
+                        │  contracts · config · engines      │
+                        │  IO · upstream resolution · API    │
+                        └────────────────┬───────────────────┘
+                                         │
+        ┌────────────────┬───────────────┼───────────────┬────────────────┐
+        ▼                ▼               ▼               ▼                ▼
+      M21            →  M01          →  M05          →  M06          →  ... M25
+     weather          footfall         parking         shuttles
+    (no upstream)   (13 models        (M06 reads                    (M25 reads
+                     read this)        both M01+M05)                 11 models)
+</div>
+
+<div class="note">
+<strong>Models never import each other.</strong> A model reads another model's <em>JSON output</em>,
+resolved in a fixed order: inline in the request → a URL in an environment variable → a saved
+sample file → a stub. That means any one service runs completely alone, and the response always
+says which source it actually used.
+</div>
+
+<h3>The operating loop</h3>
+<div class="flow">  Observe  ──▶  Predict  ──▶  Simulate  ──▶  Optimize  ──▶  Act  ──▶  Learn
+  (sensors)     (M01, M05..)  (M11 evac)    (M16, M24)   (human)   (feedback)
+                                                            ▲
+                                    every recommendation ────┘
+                                    carries requires_approval: true
+</div>
+<p>That last point is deliberate and non-negotiable in the contract: <strong>no model can
+propose an action that executes itself.</strong> A human always approves.</p>
+
+<!-- ============================================================ 3 -->
+<h2 id="world">3. Where the data comes from</h2>
+
+<h3>The synthetic world</h3>
+<p>One command builds an entire month of the event:</p>
+<pre><code>uv run python -m twin_common.synthetic.generate --scenario S01</code></pre>
+<p>It produces 28 tables (<code>D01</code>–<code>D25</code>) — footfall, gate entries, parking,
+transit, water, power, waste, food, network, air quality, asset telemetry and more — then runs
+about 130 internal consistency checks and refuses to write if any fail.</p>
+
+<div class="good">
+<strong>Common random numbers.</strong> Every scenario draws the <em>same</em> random noise, so
+the only difference between two worlds is the intervention itself. Without this, comparing "30 %
+more crowd" against the baseline was confounded by several percent of noise — a small effect
+could come out backwards. Now S02 is <em>exactly</em> 1.3000× S01.
+</div>
+
+<h3>The real sources</h3>
+<table>
+<tr><th>Source</th><th>Used for</th><th>Licence</th></tr>
+<tr><td>Open-Meteo archive</td><td>real temperature, humidity, rain, wind</td><td>CC BY 4.0</td></tr>
+<tr><td>Open-Meteo air quality</td><td>real PM2.5, PM10, NO₂, CO — feeds M22</td><td>CC BY 4.0</td></tr>
+<tr><td>OpenStreetMap</td><td>the real road graph (3,098 nodes, 7,510 edges) for Phase 7</td><td>ODbL</td></tr>
+<tr><td>AI4I 2020 (UCI)</td><td>real machine-failure data for M23</td><td>CC BY 4.0</td></tr>
+</table>
+<p>All four cache to disk on first use. Set <code>TWIN_OFFLINE=1</code> and nothing touches the
+network — services degrade and say so rather than failing.</p>
+
+<!-- ============================================================ 4 -->
+<h2 id="contract">4. What every model returns</h2>
+
+<p>This is the single most important thing to understand, because all 25 models return exactly
+this shape. Here is a real response from M01, trimmed:</p>
+
+<pre><code>{
+  "model_id": "M01",
+  "as_of": "2027-08-02T06:00:00+05:30",   <span style="color:var(--muted)">// the moment being answered for</span>
+  "scenario_id": "S01",                    <span style="color:var(--muted)">// which what-if (S01 = normal)</span>
+  "data_source": "synthetic",
+  "is_synthetic": true,                    <span style="color:var(--muted)">// NEVER dropped</span>
+  "status": "degraded",                    <span style="color:var(--muted)">// ok | degraded | failed</span>
+  "warnings": ["upstream M21 resolved from sample; not live model output"],
+  "upstream": [ { "model_id": "M21", "source": "sample" } ],
+  "results": [
+    {
+      "entity_type": "zone",     <span style="color:var(--muted)">// zone | gate | parking_site | route | asset ...</span>
+      "entity_id":  "Z01",       <span style="color:var(--muted)">// which thing</span>
+      "kpi":        "expected_footfall",
+      "timestamp":  "2027-08-02T06:15:00+05:30",
+      "horizon_min": 15,         <span style="color:var(--muted)">// how far ahead this row looks</span>
+      "state":      "forecast",  <span style="color:var(--muted)">// current | forecast | scenario</span>
+      "value":      23766.8,
+      "unit":       "persons/hr",
+      "lower":      23457.6,     <span style="color:var(--muted)">// uncertainty band...</span>
+      "upper":      25161.0,
+      "quantile_level": 0.8,     <span style="color:var(--muted)">// ...meaning an 80% band</span>
+      "risk_level": "red",       <span style="color:var(--muted)">// green | amber | red | critical</span>
+      "reason_codes": ["SURGE"], <span style="color:var(--muted)">// mandatory from amber upwards</span>
+      "recommendation": null,    <span style="color:var(--muted)">// or an action needing approval</span>
+      "details": { "backend": "chronos2", "band_calibrated": true }
+    }
+  ]
+}</code></pre>
+
+<h4>The rules that make it trustworthy</h4>
+<ul>
+<li><strong>A coloured warning must explain itself.</strong> Any record at amber or worse
+<em>must</em> carry a reason code. The contract rejects one that does not.</li>
+<li><strong>No self-executing actions.</strong> Every <code>recommendation</code> has
+<code>requires_approval: true</code>, enforced by the type system.</li>
+<li><strong>Bands mean what they say.</strong> <code>quantile_level: 0.8</code> means the truth
+should land inside that band about 80 % of the time — and we measure whether it actually does
+(see <a href="#calib">calibration</a>).</li>
+<li><strong>Degrade, never vanish.</strong> If an upstream model is missing or a library will not
+load, the service still answers and says what it fell back to.</li>
+</ul>
+
+<h3>The four endpoints</h3>
+<table>
+<tr><th>Endpoint</th><th>What it does</th></tr>
+<tr><td><code>GET /health</code></td><td>Is the service alive?</td></tr>
+<tr><td><code>GET /metadata</code></td><td>What does this model do, what KPIs, what limitations?</td></tr>
+<tr><td><code>POST /predict</code></td><td>The normal forecast</td></tr>
+<tr><td><code>POST /scenario</code></td><td>A what-if — same shape, plus a comparison to baseline</td></tr>
+</table>
+
+<!-- ============================================================ 5 -->
+<h2 id="tech">5. The technology, in plain words</h2>
+
+<div class="warn">
+<strong>Worth correcting a common assumption:</strong> most of these are <em>not</em> machine
+learning models. Of the 25, nine use a forecasting foundation model, exactly one is a classic
+trained classifier, and fifteen are deterministic — formulas, rules, graph algorithms,
+optimisation and simulation. That is a deliberate choice: an operator has to be able to argue
+with a recommendation before approving it.
+</div>
+
+<table>
+<tr><th>Family</th><th class="num">Models</th><th>What it actually is</th></tr>
+<tr><td><strong>forecast</strong></td><td class="num">9</td>
+<td><strong>Chronos-2</strong>, a transformer foundation model for time series — like a language
+model, but for numbers. Used <em>zero-shot</em>: never trained on our data. Falls back to
+<strong>LightGBM</strong> (gradient-boosted decision trees) then a naive seasonal baseline.</td></tr>
+<tr><td><strong>rules</strong></td><td class="num">4</td>
+<td>Threshold and weighted-score logic. No learning: "if density &gt; X for Y minutes and it is
+raining, risk = red". Every number lives in a YAML file.</td></tr>
+<tr><td><strong>network</strong></td><td class="num">3</td>
+<td>Graph algorithms on the real OpenStreetMap road graph — shortest paths, plus the
+<strong>BPR volume-delay function</strong>, a standard traffic-engineering formula.</td></tr>
+<tr><td><strong>vision</strong></td><td class="num">2</td>
+<td><strong>RF-DETR</strong> (transformer object detector) + <strong>ByteTrack</strong> (tracking)
++ <strong>LWCC</strong> (crowd-counting CNN). Pretrained, used as-is. Plus optical flow.</td></tr>
+<tr><td><strong>formula</strong></td><td class="num">2</td>
+<td>Published equations. M21 uses the <strong>NOAA/NWS heat index</strong> — a polynomial from a
+meteorology paper. M07 will use a Poisson/Negative-Binomial GLM.</td></tr>
+<tr><td><strong>optimize</strong></td><td class="num">2</td>
+<td><strong>Mixed-integer linear programming</strong> (PuLP / OR-Tools). Operations research:
+"minimise cost subject to these constraints".</td></tr>
+<tr><td><strong>location</strong></td><td class="num">1</td>
+<td><strong>MCLP / LSCP</strong> facility-location models — "where do I put ambulances to cover
+the most people".</td></tr>
+<tr><td><strong>pedsim</strong></td><td class="num">1</td>
+<td><strong>JuPedSim</strong>: simulates individual pedestrians walking and colliding. Physics.</td></tr>
+<tr><td><strong>mlclf</strong></td><td class="num">1</td>
+<td>The <em>only</em> conventional supervised model — a LightGBM classifier trained on the real
+AI4I 2020 machine-failure dataset.</td></tr>
+</table>
+
+<h3 id="calib">Two things worth understanding about the forecasts</h3>
+
+<h4>The naive baseline exists to be beaten</h4>
+<p><code>NaiveSeasonal</code> is the dumbest forecast that is not random: <em>"whatever happened
+exactly one day ago will happen again."</em> No learning, no training, 30 milliseconds. Its entire
+job is to be the floor. If a transformer cannot beat "just copy yesterday", the transformer is
+adding nothing. It turns "our error is 190" — a number that means nothing alone — into "we are
+43 % better than copying yesterday."</p>
+<table>
+<tr><th>Backend on M01</th><th class="num">Error (MAE)</th><th>vs naive</th></tr>
+<tr><td>Chronos-2 (zero-shot)</td><td class="num">190.4</td><td><strong>43 % better</strong></td></tr>
+<tr><td>LightGBM (fitted)</td><td class="num">223.2</td><td>33 % better</td></tr>
+<tr><td>NaiveSeasonal</td><td class="num">335.3</td><td>— the floor</td></tr>
+</table>
+
+<h4>The uncertainty bands had to be fixed</h4>
+<p>A band labelled "80 %" originally held the truth about <strong>half</strong> the time. The
+reason showed up immediately once measured per step: across a 3-hour horizon the error grows
+<strong>26×</strong> while the raw band widens only <strong>1.7×</strong>.</p>
+<table>
+<tr><th>Horizon step</th><th class="num">1</th><th class="num">4</th><th class="num">8</th><th class="num">12</th></tr>
+<tr><td>Typical error</td><td class="num">17</td><td class="num">69</td><td class="num">243</td><td class="num">455</td></tr>
+<tr><td>Band width</td><td class="num">76</td><td class="num">91</td><td class="num">104</td><td class="num">132</td></tr>
+<tr><td>Coverage</td><td class="num">86 %</td><td class="num">86 %</td><td class="num">43 %</td><td class="num">57 %</td></tr>
+</table>
+<p>Every forecasting model now runs a <strong>conformal calibration</strong> at startup: it
+forecasts two dozen held-out moments from the past, measures how often the truth actually fell
+outside the band at each step, and widens each step to match. Coverage went from ~50 % to
+74–90 %. Each record carries <code>details.band_calibrated</code> so you can tell.</p>
+
+<!-- ============================================================ 6 -->
+<h2 id="run">6. How to run things</h2>
+
+<h3>One-time setup</h3>
+<pre><code>cd event-twin-claude-kit
+uv venv --python 3.11
+uv pip install -e "00_common[dev,geo,network,forecast,formula,mlclf,opt,vision,pedsim]"</code></pre>
+
+<h3>Everyday commands</h3>
+<table>
+<tr><th>What you want</th><th>Command</th></tr>
+<tr><td>Run every test</td><td><code>uv run pytest -q</code></td></tr>
+<tr><td>Test one model</td><td><code>uv run pytest M05_parking_demand/tests -q</code></td></tr>
+<tr><td>Check the whole repo</td><td><code>uv run python scripts/validate_all.py</code></td></tr>
+<tr><td>Rebuild the world</td><td><code>uv run python -m twin_common.synthetic.generate --scenario S01</code></td></tr>
+<tr><td>Tidy the code</td><td><code>uv run ruff check . --fix &amp;&amp; uv run ruff format .</code></td></tr>
+</table>
+
+<h3>Running a model as a web service</h3>
+<pre><code>uv run uvicorn api:app --app-dir M05_parking_demand --port 8005</code></pre>
+<p>Then ask it something:</p>
+<pre><code><span style="color:var(--muted)"># the default forecast — no body needed</span>
+curl -X POST localhost:8005/predict -H 'content-type: application/json' -d '{}'
+
+<span style="color:var(--muted)"># narrow it down</span>
+curl -X POST localhost:8005/predict -H 'content-type: application/json' -d '{
+  "as_of": "2027-08-02T06:00:00+05:30",
+  "horizon_min": 180,
+  "entity_ids": ["P1", "P2"],
+  "kpis": ["parking_occupancy"]
+}'
+
+<span style="color:var(--muted)"># a what-if, with the difference against normal</span>
+curl -X POST localhost:8005/scenario -H 'content-type: application/json' -d '{
+  "scenario_id": "S02",
+  "compare_to_baseline": true
+}'</code></pre>
+
+<h3>Running one without a server</h3>
+<pre><code>cd M05_parking_demand
+uv run python -m src.run --out outputs/                 <span style="color:var(--muted)"># writes sample_output.json</span>
+uv run python -m src.run --scenario S02 --out outputs/</code></pre>
+
+<div class="note">
+<strong>The four inputs every model accepts.</strong> All are optional — send <code>{}</code> and
+you get a sensible default.
+<table style="margin-bottom:0">
+<tr><th>Field</th><th>Meaning</th></tr>
+<tr><td><code>as_of</code></td><td>the moment to answer for; defaults to the demo instant</td></tr>
+<tr><td><code>horizon_min</code></td><td>how far ahead to look, in minutes</td></tr>
+<tr><td><code>entity_ids</code></td><td>only these zones / gates / sites</td></tr>
+<tr><td><code>kpis</code></td><td>only these measures</td></tr>
+</table>
+</div>
+
+<div class="warn">
+<strong>First start takes 10–25 seconds.</strong> The model loads a month of history, fits the
+forecaster once and calibrates its bands. That is startup cost, not per-request cost — requests
+afterwards take well under 2 seconds.
+</div>
+
+<!-- ============================================================ 7 -->
+<h2 id="models">7. The models, one by one</h2>
+<p>Click any model to expand. <strong>10 of 25 are built.</strong> Every one below is finished,
+tested and has a full model card in its folder.</p>
+
+<!-- ---------------- M21 -->
+<details class="model" open>
+<summary><span class="mid">M21</span> Weather Impact <span class="port">port 8021 · formula</span></summary>
+<div class="body">
+<p><strong>Question it answers:</strong> what is the weather now and over the next few hours, and
+how does it change risk everywhere else?</p>
+<p>This one was built first because almost everything else depends on it, and because it needs no
+upstream model at all. It is a <em>formula</em> model — no learning, no training.</p>
+<h4>What it gives you</h4>
+<p><span class="kpi">temperature</span><span class="kpi">heat_index</span>
+<span class="kpi">rainfall_intensity</span><span class="kpi">waterlogging_probability</span>
+plus three multipliers other models read.</p>
+<h4>How it works</h4>
+<ul>
+<li><strong>Heat index</strong> — the NOAA/NWS Rothfusz regression, the same polynomial the US
+weather service uses. Verified against 15 cells of the published NWS chart.</li>
+<li><strong>Waterlogging</strong> — a logistic curve in rainfall against each zone's own drainage
+capacity, plus a bonus for low-lying zones.</li>
+</ul>
+<h4>Try it</h4>
+<pre><code>curl -X POST localhost:8021/predict -H 'content-type: application/json' -d '{}'
+<span style="color:var(--muted)"># 182 records: 9 entities (EVENT + 8 zones) x 3 hours</span></code></pre>
+<p><strong>Scenarios:</strong> S01 normal · S03 heavy rain · S04 extreme heat</p>
+<div class="warn"><strong>Honest limit:</strong> the "forecast" is a replay of stored weather, not
+a prediction. The docs allow this for the demo, but a real deployment needs a real weather API.</div>
+</div>
+</details>
+
+<!-- ---------------- M01 -->
+<details class="model">
+<summary><span class="mid">M01</span> Footfall Forecast <span class="port">port 8001 · forecast</span></summary>
+<div class="body">
+<p><strong>Question it answers:</strong> how many people will arrive, by zone, by gate, over time?</p>
+<div class="note"><strong>This is the keystone.</strong> Thirteen of the other 24 models read it.
+If M01 is wrong, most of the twin is wrong.</div>
+<h4>What it gives you</h4>
+<p><span class="kpi">expected_footfall</span><span class="kpi">peak_footfall</span></p>
+<p>156 records — 12 entities (8 zones Z01–Z08 + 4 gates G01–G04) × 12 fifteen-minute steps.</p>
+<h4>How it works</h4>
+<p>Chronos-2 forecasts all 12 series at once. It is told things it genuinely knows in advance —
+hour of day, day of week, whether it is a bathing day, temperature and rain — which is what makes
+a zero-shot forecast useful here.</p>
+<h4>Try it</h4>
+<pre><code>curl -X POST localhost:8001/predict -H 'content-type: application/json' -d '{
+  "entity_ids": ["Z01"], "kpis": ["peak_footfall"]
+}'</code></pre>
+<p><strong>Upstream:</strong> M21 &nbsp;·&nbsp; <strong>Scenarios:</strong> S01 · S02 more crowd ·
+S03 rain · S05 gate closure</p>
+<div class="warn"><strong>Honest limit:</strong> M01 declares itself <em>insensitive to S04</em>
+(extreme heat) even though the spec lists it — nothing M01 reads responds to heat, and returning
+an unchanged answer while implying sensitivity would be worse than saying so.</div>
+</div>
+</details>
+
+<!-- ---------------- M05 -->
+<details class="model">
+<summary><span class="mid">M05</span> Parking Demand <span class="port">port 8005 · forecast</span></summary>
+<div class="body">
+<p><strong>Question it answers:</strong> how full will each car park get, and when does it overflow?</p>
+<h4>What it gives you</h4>
+<p><span class="kpi">parking_demand</span><span class="kpi">parking_occupancy</span>
+<span class="kpi">parking_search_time</span> — 108 records for 3 sites (P1, P2, P3).</p>
+<div class="warn">
+<strong>Occupancy can go above 100 %.</strong> That is deliberate. The stored data caps "occupied"
+at the number of bays, so a model trained on it could <em>never</em> predict an overflow — the one
+thing this model exists to warn about. M05 forecasts <em>demand</em> instead. 130 % means 30 % of
+arriving drivers have nowhere to go. <code>details.occupied_spaces</code> has the capped figure.
+</div>
+<h4>Try it</h4>
+<pre><code>curl -X POST localhost:8005/predict -H 'content-type: application/json' -d '{}'
+<span style="color:var(--muted)"># at the demo instant P1 reads ~123% — overflowing, with a shuttle diversion recommended</span></code></pre>
+<p><strong>Upstream:</strong> M01 &nbsp;·&nbsp; <strong>Scenarios:</strong> S01 · S02</p>
+</div>
+</details>
+
+<!-- ---------------- M06 -->
+<details class="model">
+<summary><span class="mid">M06</span> Transit / Shuttle Demand <span class="port">port 8006 · forecast</span></summary>
+<div class="body">
+<p><strong>Question it answers:</strong> how many passengers and how many shuttle vehicles does each
+route need?</p>
+<p>The first model with <strong>two upstreams</strong> (M01 and M05) — the first real test of the
+dependency chain.</p>
+<h4>What it gives you</h4>
+<p><span class="kpi">shuttle_demand</span><span class="kpi">shuttle_requirement</span>
+<span class="kpi">passenger_wait_time</span> — 72 records for 2 routes (SH1, SH2).</p>
+<div class="warn">
+<strong>Finding: the fleet is far too small.</strong> The routes need 369 vehicles on an ordinary
+day and <strong>1,447 at the peak</strong>, against a configured fleet of 80 — 18× short. This was
+deliberately <em>not</em> "fixed", because fleet size belongs to M24 (not built yet). M06 reports
+the true requirement and recommends the shortfall. <em>The gap is the finding.</em>
+</div>
+<p><strong>Scenarios:</strong> S01 · S02 &nbsp;·&nbsp; insensitive to S06/S12 (needs M04)</p>
+</div>
+</details>
+
+<!-- ---------------- M15 -->
+<details class="model">
+<summary><span class="mid">M15</span> Water Demand <span class="port">port 8015 · forecast</span></summary>
+<div class="body">
+<p><strong>Question it answers:</strong> how much water does each zone need, is there a shortfall,
+and how many water points and tankers?</p>
+<h4>What it gives you</h4>
+<p><span class="kpi">expected_water_demand</span><span class="kpi">water_supply_demand_gap</span>
+<span class="kpi">drinking_water_point_requirement</span><span class="kpi">water_tanker_requirement</span>
+— 296 records across 8 zones.</p>
+<p><strong>A positive gap means a shortage.</strong> A surplus is reported as a negative number
+rather than hidden, because "how much spare have we got" is a real question.</p>
+<h4>Try it</h4>
+<pre><code>curl -X POST localhost:8015/scenario -H 'content-type: application/json' -d '{
+  "scenario_id": "S08"   <span style="color:var(--muted)">// power cut: a pump stops, the gap widens, tankers called</span>
+}'</code></pre>
+<p><strong>Upstream:</strong> M01, M21 &nbsp;·&nbsp; <strong>Scenarios:</strong> S01 · S02 ·
+S04 heat · S08 power failure</p>
+<div class="warn"><strong>Honest limit:</strong> the heat effect (S04) is real but <em>small and
+short-lived</em> — 0.1 % at 06:00 (a cool morning), 8.5 % at midday — and it decays across the
+horizon, so treat it as a one-hour signal. Leakage is not modelled at all.</div>
+</div>
+</details>
+
+<!-- ---------------- M17 -->
+<details class="model">
+<summary><span class="mid">M17</span> Food &amp; Supply <span class="port">port 8017 · forecast</span></summary>
+<div class="body">
+<p><strong>Question it answers:</strong> how much food is needed, how long does stock last, how many
+deliveries?</p>
+<p>The decision is <em>whether to place an order now</em>, which drives every design choice.</p>
+<h4>What it gives you</h4>
+<p><span class="kpi">food_demand</span><span class="kpi">food_stock_coverage</span>
+<span class="kpi">delivery_requirement</span> — 72 records for 2 outlets.</p>
+<div class="note">
+<strong>Two things are different here.</strong> The data is <strong>hourly</strong>, not 15-minute.
+And the default horizon is <strong>12 hours, deliberately longer than the 6-hour supplier lead
+time</strong> — inside a window shorter than the lead time, nothing you order can arrive, so a
+supply disruption would show no effect at all.
+</div>
+<p>Stock is <em>simulated forward</em>: an order placed now arrives <code>lead_time</code> hours
+later, and if that falls outside the window the shelf keeps draining. Under a supply disruption
+(S13) coverage falls to 0.88× and stockout warnings double.</p>
+<p><strong>Upstream:</strong> M01 &nbsp;·&nbsp; <strong>Scenarios:</strong> S01 · S02 · S13</p>
+</div>
+</details>
+
+<!-- ---------------- M18 -->
+<details class="model">
+<summary><span class="mid">M18</span> Waste Generation <span class="port">port 8018 · forecast</span></summary>
+<div class="body">
+<p><strong>Question it answers:</strong> how much waste, when do bins overflow, how many collection
+trips?</p>
+<h4>What it gives you</h4>
+<p><span class="kpi">waste_generation</span><span class="kpi">waste_bin_fill_level</span>
+<span class="kpi">waste_collection_trips</span><span class="kpi">bin_overflow_time</span>
+— 296 records across 8 bin groups.</p>
+<p>Fill is projected forward from the last reading and <em>reset when the collection round
+arrives</em>. <code>bin_overflow_time</code> says how many minutes until a group is full; a bin that
+is not going to overflow reports 999 rather than 0, so "fine" cannot be misread as "overflowing
+now".</p>
+<div class="warn">
+<strong>A bug worth knowing about.</strong> <code>bin_capacity_kg</code> is <em>one bin</em> (120 kg),
+but each WB01–WB08 is a whole zone's <em>group</em> of bins. The generator was dividing a zone's
+waste by a single bin, so every group read 100 % full within one step — both fill KPIs carried no
+information at all. Adding <code>bins_per_group: 50</code> fixed it; the busiest group now peaks at
+97 % instead of being pinned at 100 %.
+</div>
+<p><strong>Upstream:</strong> M01 &nbsp;·&nbsp; <strong>Scenarios:</strong> S01 · S02</p>
+</div>
+</details>
+
+<!-- ---------------- M19 -->
+<details class="model">
+<summary><span class="mid">M19</span> Power Load <span class="port">port 8019 · forecast</span></summary>
+<div class="body">
+<p><strong>Question it answers:</strong> what electrical load is expected, and how long can backup
+generators last?</p>
+<h4>What it gives you</h4>
+<p><span class="kpi">electricity_demand</span><span class="kpi">generator_backup_duration</span>
+<span class="kpi">backup_generator_requirement</span> — 72 records for 2 substations.</p>
+<p>Reported in <strong>MW</strong>; the kW figure is kept in <code>details</code>. It also publishes
+<code>details.load_utilization</code> specifically for M12 (fire risk) to consume later.</p>
+<h4>Try it</h4>
+<pre><code>curl -X POST localhost:8019/scenario -H 'content-type: application/json' -d '{
+  "scenario_id": "S08"   <span style="color:var(--muted)">// SS01 fails: on backup, countdown starts</span>
+}'</code></pre>
+<div class="warn">
+<strong>Two bugs this model exposed.</strong> First, the data has one row per
+<em>(substation, zone)</em> pair — splitting on substation alone silently reported a
+<em>quarter</em> of the real load, with no error anywhere. Second, generators never refuelled, so
+after a month of daily outages the tank was empty and the backup countdown read <strong>zero for
+the one scenario the KPI exists for</strong>. Both fixed.
+</div>
+<p><strong>Upstream:</strong> M01, M21 &nbsp;·&nbsp; <strong>Scenarios:</strong> S01 · S02 · S04 · S08</p>
+</div>
+</details>
+
+<!-- ---------------- M20 -->
+<details class="model">
+<summary><span class="mid">M20</span> Network Capacity <span class="port">port 8020 · forecast</span></summary>
+<div class="body">
+<p><strong>Question it answers:</strong> will communications — CCTV backhaul and command links —
+overload or fail?</p>
+<p>Everything in the control room depends on this. The KPIs separate <em>congestion</em> from
+<em>availability</em>, because a tower can be perfectly uncongested and still be off.</p>
+<h4>What it gives you</h4>
+<p><span class="kpi">bandwidth_utilization</span><span class="kpi">network_availability</span>
+<span class="kpi">network_capacity_risk</span> — 324 records for 3 towers. Data is on a
+<strong>5-minute</strong> grid here.</p>
+<div class="warn">
+<strong>Finding: this world never runs out of bandwidth.</strong> Peak utilisation is 27.5 %, so
+the capacity-risk KPI sits near zero. That is the <em>correct</em> answer for these tower
+capacities — and the threshold was deliberately left where an operator would want it rather than
+lowered to make the number look exciting. The real constraint here is power-driven availability,
+not congestion.
+</div>
+<p><strong>Upstream:</strong> M01 &nbsp;·&nbsp; <strong>Scenarios:</strong> S01 · S02 · S08 power ·
+S09 CCTV failure</p>
+</div>
+</details>
+
+<!-- ---------------- M22 -->
+<details class="model">
+<summary><span class="mid">M22</span> Environmental Risk <span class="port">port 8022 · forecast</span></summary>
+<div class="body">
+<p><strong>Question it answers:</strong> where will air quality or noise get worse, and what are the
+emissions?</p>
+<div class="good">
+<strong>This model uses the one genuinely REAL table in the project</strong> — cached Open-Meteo
+air-quality history. Its rows carry <code>is_synthetic: false</code>.
+</div>
+<h4>What it gives you</h4>
+<p><span class="kpi">pm25</span><span class="kpi">air_quality_index</span>
+<span class="kpi">noise_level</span><span class="kpi">co2_emissions</span> — 66 records.</p>
+<ul>
+<li><strong>AQI</strong> — the Indian National AQI: a sub-index per pollutant, and the AQI is the
+<em>worst</em> of them, not the average. Averaging would let a clean pollutant mask a dangerous one.</li>
+<li><strong>Noise</strong> — logarithmic in crowd density, which is why 30 % more crowd is only
+about 1 % more decibels.</li>
+</ul>
+<div class="warn">
+<strong>Do not publish numbers from this model yet.</strong> The AQI breakpoints are transcription
+placeholders and need checking against the official CPCB table; all three CO₂ emission factors are
+placeholders; and the CO₂ traffic term is <strong>zero</strong> because M04 does not exist yet —
+every record says so in <code>details.traffic_term</code>.
+</div>
+<p><strong>Upstream:</strong> M21 (M04 pending) &nbsp;·&nbsp; <strong>Scenarios:</strong> S01 · S02 ·
+S08 · S15 fire</p>
+</div>
+</details>
+
+<!-- ============================================================ 8 -->
+<h2 id="scenarios">8. Scenarios — the what-if machine</h2>
+
+<p>A scenario is a named change to the world. You ask any model the same question under that
+change, and it answers in the identical shape with <code>state: "scenario"</code>.</p>
+
+<table>
+<tr><th>ID</th><th>What it is</th><th>Who responds</th></tr>
+<tr><td><code>S01</code></td><td>Normal day — the baseline</td><td>everyone</td></tr>
+<tr><td><code>S02</code></td><td>30 % more crowd</td><td>M01 M05 M06 M15 M17 M18 M19 M20 M22</td></tr>
+<tr><td><code>S03</code></td><td>Heavy rain</td><td>M01 M21</td></tr>
+<tr><td><code>S04</code></td><td>Extreme heat (+6 °C)</td><td>M15 M19 M21</td></tr>
+<tr><td><code>S05</code></td><td>Gate G02 closed</td><td>M01</td></tr>
+<tr><td><code>S08</code></td><td>Power failure (substation SS01)</td><td>M15 M19 M20 M22</td></tr>
+<tr><td><code>S09</code></td><td>20 % of cameras fail</td><td>M20</td></tr>
+<tr><td><code>S13</code></td><td>Food supply disruption</td><td>M17</td></tr>
+<tr><td><code>S15</code></td><td>Fire and evacuation</td><td>M22</td></tr>
+</table>
+
+<div class="note">
+<strong>A model that cannot respond says so.</strong> Ask M01 about extreme heat and it returns the
+baseline with <code>status: degraded</code> and a warning "insensitive to S04" — rather than
+returning unchanged numbers and letting you believe it considered the heat. That honesty is
+enforced by tests in every model.
+</div>
+
+<!-- ============================================================ 9 -->
+<h2 id="left">9. What is still to build</h2>
+
+<table>
+<tr><th>Phase</th><th>Models</th><th>Needs</th></tr>
+<tr><td><strong>5</strong></td><td>M03 hotspot risk · M07 medical · M09 security · M12 fire · M23 asset failure</td>
+    <td>rules + GLM + the one real ML classifier</td></tr>
+<tr><td><strong>7</strong></td><td>M04 traffic · M08 ambulances · M13 VIP route · M14 diversions · M16 toilets · M24 resources</td>
+    <td>road graph (already cached) + optimisation</td></tr>
+<tr><td><strong>6</strong></td><td>M02 crowd density · M10 CCTV anomaly</td>
+    <td><strong>⚠ crowd video clips you supply</strong></td></tr>
+<tr><td><strong>8</strong></td><td>M11 evacuation simulation</td><td>JuPedSim (installed)</td></tr>
+<tr><td><strong>9</strong></td><td>M25 overall risk + end-to-end + delivery packaging</td><td>everything above</td></tr>
+</table>
+
+<div class="warn">
+<strong>The one thing only you can do:</strong> Phase 6 needs 2–4 crowd video clips you have the
+rights to use — ideally one gate/queue view and one dense-crowd view. Everything else can proceed
+without you.
+</div>
+
+<h3>Open questions carried forward</h3>
+<ul>
+<li><strong>Shuttle fleet</strong> — 80 vehicles against a need of 1,447 at peak. Is the fleet
+really that short, or is the 35 % bus mode share too high for two routes?</li>
+<li><strong>Tower capacities</strong> — over-provisioned, so M20's risk KPI carries no signal.</li>
+<li><strong>AQI breakpoints and CO₂ factors</strong> — placeholders that must be replaced before
+any figure leaves the demo.</li>
+</ul>
+
+<!-- ============================================================ 10 -->
+<h2 id="glossary">10. Glossary</h2>
+<table>
+<tr><td style="width:190px"><strong>KPI</strong></td><td>One measured quantity, e.g. <code>parking_occupancy</code>. There are 109 defined across the project.</td></tr>
+<tr><td><strong>Zone</strong></td><td>A named area: Z01–Z08 (ghats, corridors, market, transit hub).</td></tr>
+<tr><td><strong>Snan day</strong></td><td>The peak ritual bathing day — the busiest day of the event.</td></tr>
+<tr><td><strong>Horizon</strong></td><td>How far ahead an answer looks, in minutes.</td></tr>
+<tr><td><strong>Upstream</strong></td><td>A model whose output another model reads.</td></tr>
+<tr><td><strong>Degraded</strong></td><td>The service answered, but something was missing — and it says what.</td></tr>
+<tr><td><strong>Zero-shot</strong></td><td>A model used without training it on our data.</td></tr>
+<tr><td><strong>Covariate</strong></td><td>Something known in advance that helps a forecast — the hour, the weather, whether it is a bathing day.</td></tr>
+<tr><td><strong>Conformal calibration</strong></td><td>Measuring how often a band was actually right, and widening it until it is.</td></tr>
+<tr><td><strong>Common random numbers</strong></td><td>Giving every scenario the same random noise so comparisons measure the change, not luck.</td></tr>
+</table>
+
+<footer>
+<p><strong>Where to go next.</strong> <code>PROGRESS.md</code> is the live status.
+<code>docs/02_CONTRACTS.md</code> is the output contract in full. Each model folder has a
+<code>model_card.md</code> with its method, assumptions, measured results and — most usefully —
+its honest limitations.</p>
+<p class="updated">This file grows with the project: a new section appears here each time a model
+is finished.</p>
+</footer>
+
+</div>
+</body>
+</html>

@@ -3,8 +3,8 @@
   "model_id": "M01",
   "model_name": "Footfall Forecast",
   "model_version": "0.1.0",
-  "run_id": "725fa7a1-6d49-4249-b250-c6d977abd626",
-  "generated_at": "2026-09-24T19:10:56.642004+05:30",
+  "run_id": "48e76012-f677-467e-bffb-251e18969a16",
+  "generated_at": "2026-09-24T19:43:12.530554+05:30",
   "as_of": "2027-08-02T06:00:00+05:30",
   "scenario_id": "S02",
   "scenario_overrides": {
@@ -19,9 +19,9 @@
   "upstream": [
     {
       "model_id": "M21",
-      "run_id": "c90aabf4-f357-4a15-8d65-4492b58963f8",
+      "run_id": "73b66923-8481-4f60-b586-a9bba05e64a2",
       "source": "sample",
-      "generated_at": "2026-09-24T18:51:56.765715+05:30"
+      "generated_at": "2026-09-24T19:30:21.560794+05:30"
     }
   ],
   "results": [

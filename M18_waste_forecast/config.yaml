@@ -1,0 +1,77 @@
+# M18 - Waste Generation
+#
+# The standard keys are fixed by docs/02 section 8 and are read by twin_common; `params` is
+# yours. EVERY number this model uses belongs under `params` or in 00_common/config -
+# CLAUDE.md forbids thresholds, rates and weights in src/.
+model_id: M18
+model_name: Waste Generation
+model_version: 0.1.0
+port: 8018
+engine: forecast
+
+data_source: synthetic
+seed: 42
+demo_now: "2027-08-02T06:00:00+05:30"
+
+horizons_min: [15, 60, 180]
+default_horizon_min: 180
+
+upstream: [M01]
+
+inputs: [waste, footfall_15min, event_calendar]
+
+kpis:
+  - waste_generation
+  - waste_bin_fill_level
+  - waste_collection_trips
+  - bin_overflow_time
+
+# docs/05 section 1.2: S02 raises generation. The docs/03 M18 card adds "S06/S12 delay
+# collection", which needs M04 to say how much longer a closed road makes a collection round;
+# M04 is Phase 7. The delay override is wired and tested, so M18 declares itself insensitive
+# to S06/S12 rather than inventing a delay. See the model card.
+scenarios_supported: [S01, S02]
+
+upstream_timeout_s: 5
+
+# ---------------------------------------------------------------- model parameters
+params:
+  forecast:
+    backend: chronos2
+    hub_model_name: autogluon/chronos-2-small
+    quantiles: [0.1, 0.5, 0.9]
+    input_chunk_length: 96
+    lightgbm_lags: 96
+    seasonality: 96
+    max_context_steps: 2688
+    allow_fallback: true
+    calibration:
+      enabled: true
+      folds: 24
+      stride_steps: 24
+      min_factor: 1.0
+      max_factor: 12.0
+
+  steps_per_hour: 4
+  hours_per_day: 24
+
+  # How often a bin group is emptied on the normal round. The fill projection runs from the
+  # last observed level until the next collection, so this sets how far ahead a bin can fill.
+  collection_interval_min: 240
+
+  # A scenario can stretch the round (a closed road, a diverted vehicle). 1.0 is the normal
+  # round; S06/S12 would raise it once M04 can say by how much.
+  collection_delay_multiplier: 1.0
+
+  # Fill is a percentage of bin capacity and is reported clipped to this range. A bin cannot
+  # be more than full: what happens past 100 percent is waste on the ground, which is what
+  # `bin_overflow_time` is for.
+  max_fill_pct: 100.0
+
+  # Reported when a bin is not projected to overflow inside the window. Chosen over null so
+  # the series is numeric for a dashboard, and over 0 so "no overflow" cannot be misread as
+  # "overflowing now".
+  no_overflow_minutes: 999.0
+
+  floor_value: 0.0
+  confidence: 0.5

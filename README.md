@@ -17,10 +17,10 @@ JSON shape, so the dashboard team writes one parser for all twenty-five.
 
 | | |
 |---|---|
-| Phases complete | **4 of 10** (0–3); Phase 4 in progress |
-| Models complete | **3 of 25** — M01, M05, M21 |
-| Tests | **790 passing** |
-| Repository checks | `validate_all.py` 32 passed, 0 failed |
+| Phases complete | **5 of 10** — 0, 1, 2, 3 and **4** |
+| Models complete | **10 of 25** — M01, M05, M06, M15, M17, M18, M19, M20, M21, M22 |
+| Tests | **1,282 passing** |
+| Repository checks | `validate_all.py` 73 passed, 0 failed |
 
 `PROGRESS.md` is the live tracker: per-phase status, per-model status, and a decisions log
 recording every assumption that was changed and why.
@@ -31,11 +31,19 @@ recording every assumption that was changed and why.
 ├── 00_common/          the shared package `twin_common` — contracts, config, engines,
 │                       synthetic world generator, API factory. Everything else depends on it.
 ├── M01_footfall_forecast/   ┐
-├── M05_parking_demand/      ├─ one self-contained service per model, identical structure
-├── M21_weather_impact/      ┘
+├── M05_parking_demand/      │
+├── M06_transit_demand/      │
+├── M15_water_demand/        ├─ one self-contained service per model, identical structure
+├── M17_food_supply/         │  (10 of 25 built so far)
+├── M18_waste_forecast/      │
+├── M19_power_load/          │
+├── M20_network_capacity/    │
+├── M21_weather_impact/      │
+├── M22_environmental_risk/  ┘
 ├── docs/               the specification: brief, contracts, 25 model cards, data model,
 │                       scenarios and KPIs, tech stack, implementation phases
-├── scripts/            scaffolding, world slicing, sample refresh, repository validation
+├── scripts/            scaffolding, world slicing, sample refresh, repository validation,
+│                       and serve_all.py — every built model on one port for the live demo
 ├── templates/          the model-folder template `new_model.py` renders
 ├── plans/              the approved plan for each phase
 ├── CLAUDE.md           project rules loaded by Claude Code every session
@@ -94,7 +102,9 @@ entirely — services degrade and say so rather than failing.
         ┌───────────────┼───────────────┐
         ▼               ▼               ▼
       M21 ──────────▶ M01 ──────────▶ M05 ──▶ M06 ──▶ ... ──▶ M25
-    weather        footfall         parking
+    weather        footfall         parking    shuttles
+                  (13 models                  (reads BOTH
+                   read this)                  M01 and M05)
 ```
 
 Models never import each other. A model reads an upstream model's **JSON output**, resolved
@@ -133,12 +143,51 @@ recommendation carries `requires_approval: true`.
 
 | You want | Read |
 |---|---|
+| **To see the models actually run** | **`docs/SIMULATION.html`** — start the services first, see below |
 | A plain-language tour of the project | **`docs/EXPLAINER.html`** — open it in a browser |
 | The current state of the build | `PROGRESS.md` |
 | The output contract and API | `docs/02_CONTRACTS.md` |
 | What one model does and why | that model's `model_card.md` |
 | Why an assumption was changed | the decisions log in `PROGRESS.md` |
 
-`docs/EXPLAINER.html` is a living document: it covers workflow, technologies, and every model
-that has actually been built, and **it is updated as each new model lands**. If it disagrees
-with `PROGRESS.md`, `PROGRESS.md` is right.
+### About `docs/SIMULATION.html` — the live model map
+
+```bash
+uv run python scripts/serve_all.py      # one process, every built model, port 8000
+# then open docs/SIMULATION.html in a browser
+```
+
+A page that runs the real models and shows the whole pipeline: the input tables flowing in, the
+model working, the output coming out. Click the input box to browse the actual rows being read;
+click the model box for a plain-English explanation of the algorithm; click the output for every
+record with its risk colour, any recommended actions, and the raw JSON the dashboard receives.
+A scenario selector re-runs any model under a what-if.
+
+**Nothing on the page is illustrative.** Inputs are read from the generated world on disk,
+outputs are what the model actually returned, and the timings are measured. Models that are not
+built yet appear as greyed-out roadmap tiles, so the page grows by itself as the project does —
+it discovers what exists from `/models` rather than having a hard-coded list.
+
+Two things worth knowing before demoing it:
+
+- **Warm-up takes about 2½ minutes** for all ten models (M01 alone is ~50 s: it reads a month of
+  history, fits a forecaster and calibrates its uncertainty bands). The page enables each model
+  as it becomes ready, so you can start after the first one.
+- **It needs the services running on the same machine.** Opening the file with nothing running
+  shows a banner telling you the command, not a broken page — but it cannot show live numbers to
+  someone who does not have the repo.
+
+### About `docs/EXPLAINER.html`
+
+Open it in any browser — it is a single self-contained file, no server or build step needed.
+
+It is written for someone who has never seen this repository: what the project is, how the
+pieces fit together, what technology sits behind each model, how to run one, what you can ask
+it and what you get back. Every model that has actually been built gets its own section with a
+runnable example and an honest list of what it cannot do.
+
+**It is a living document and is updated every time a model is finished** — a new section
+appears, the counts in its header move, and the "still to build" table shrinks. This is part of
+the per-model workflow in `CLAUDE.md`, not a manual step someone has to remember.
+
+If it ever disagrees with `PROGRESS.md`, `PROGRESS.md` is right.

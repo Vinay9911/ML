@@ -14,9 +14,16 @@ Method       Path              Body                Returns
 ===========  ================  ==================  ==============
 GET          /health           -                   HealthResponse
 GET          /metadata         -                   Metadata
+GET          /inputs           -                   InputsResponse
 POST         /predict          PredictRequest      ModelOutput
 POST         /scenario         ScenarioRequest     ModelOutput
 ===========  ================  ==================  ==============
+
+``/inputs`` is an addition to docs/02 section 6, not part of the frontend contract. It exists
+so a reader can see WHAT GOES IN to a model, not just what comes out: every declared table
+with its real schema and a real sample of the rows that drive the answer, the full parameter
+block, and the upstream models. Nothing else depends on it, so a change here cannot break a
+consumer of the four contract endpoints.
 
 Error mapping: 422 for validation (FastAPI default), 404 for an unknown entity or scenario,
 500 with ``{"status": "error", "detail": ...}`` for anything else. CORS allows all origins
@@ -50,6 +57,7 @@ from ..errors import (
 )
 from ..logging import get_logger
 from ..model import TwinModel
+from .inputs import describe_inputs
 
 log = get_logger(__name__)
 
@@ -139,6 +147,16 @@ def create_app(
     @app.get("/metadata", response_model=Metadata, tags=["service"])
     def metadata() -> Metadata:
         return model.metadata()
+
+    @app.get("/inputs", tags=["service"])
+    def inputs(scenario_id: str = "S01", rows: int = 40) -> dict[str, Any]:
+        """What this model reads, with a real sample of it.
+
+        Deliberately shows the rows AROUND ``as_of`` rather than the head of the table: those
+        are the ones that actually drive the answer, and the first rows of a 31-day table are
+        four weeks of irrelevant history.
+        """
+        return describe_inputs(model, scenario_id=scenario_id, sample_rows=rows)
 
     @app.post("/predict", response_model=ModelOutput, tags=["model"])
     def predict(request: PredictRequest) -> ModelOutput:

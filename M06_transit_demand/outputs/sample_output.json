@@ -3,8 +3,8 @@
   "model_id": "M06",
   "model_name": "Transit / Shuttle Demand",
   "model_version": "0.1.0",
-  "run_id": "d34c1cae-1287-4912-90a8-ef61003c81c0",
-  "generated_at": "2026-09-24T19:10:03.170375+05:30",
+  "run_id": "9a5aab15-e893-40c9-86d0-e18b31a20aca",
+  "generated_at": "2026-09-24T19:41:59.205002+05:30",
   "as_of": "2027-08-02T06:00:00+05:30",
   "scenario_id": "S01",
   "scenario_overrides": {},
@@ -18,15 +18,15 @@
   "upstream": [
     {
       "model_id": "M01",
-      "run_id": "1fd99f4c-375e-4420-819c-f4c89fbb7de7",
+      "run_id": "d435c314-224b-490f-ba50-e2f0f63d516c",
       "source": "sample",
-      "generated_at": "2026-09-24T18:52:20.852546+05:30"
+      "generated_at": "2026-09-24T19:30:44.756817+05:30"
     },
     {
       "model_id": "M05",
-      "run_id": "d7795fba-7b7a-4f43-ac67-f151df6cb47a",
+      "run_id": "9fcce002-6a80-4996-af09-5bc26251dd0c",
       "source": "sample",
-      "generated_at": "2026-09-24T18:53:58.144149+05:30"
+      "generated_at": "2026-09-24T19:32:01.045814+05:30"
     }
   ],
   "results": [
