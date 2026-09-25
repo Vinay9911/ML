@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Event Twin Field Guide</title>
+<style>
+  :root{
+    --bg:#fbfaf8; --panel:#ffffff; --ink:#1b1a18; --muted:#6a6560; --line:#e4e0d9;
+    --accent:#8a5a2b; --accent-soft:#f5ece1; --in:#2c6e8f; --in-soft:#e6f0f5;
+    --out:#4a7c4e; --out-soft:#e9f2ea;
+    --green:#3c7d52; --amber:#9a6b12; --red:#b04a35; --crit:#8e2f5e;
+    --code:#f4f1ec; --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#14130f; --panel:#1c1a16; --ink:#ece8e0; --muted:#9d968c; --line:#302c25;
+      --accent:#d9a273; --accent-soft:#2a2118; --in:#7fc0dd; --in-soft:#15242c;
+      --out:#8fc494; --out-soft:#16241a;
+      --green:#7bbd8c; --amber:#d3a44e; --red:#e08a73; --crit:#dd7fae;
+      --code:#201d18; color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#14130f; --panel:#1c1a16; --ink:#ece8e0; --muted:#9d968c; --line:#302c25;
+    --accent:#d9a273; --accent-soft:#2a2118; --in:#7fc0dd; --in-soft:#15242c;
+    --out:#8fc494; --out-soft:#16241a;
+    --green:#7bbd8c; --amber:#d3a44e; --red:#e08a73; --crit:#dd7fae;
+    --code:#201d18; color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.65 ui-serif,Georgia,'Times New Roman',serif}
+  .wrap{max-width:880px;margin:0 auto;padding-block:0 90px;padding-left:18px;padding-right:18px}
+  h1{font-size:31px;line-height:1.15;margin:44px 0 6px;letter-spacing:-.02em;text-wrap:balance}
+  h2{font-size:24px;margin:50px 0 8px;letter-spacing:-.01em;scroll-margin-top:14px;
+     padding-bottom:7px;border-bottom:2px solid var(--accent)}
+  h3{font-size:19px;margin:30px 0 6px}
+  h4{font-family:var(--mono);font-size:12px;margin:20px 0 5px;color:var(--muted);
+     text-transform:uppercase;letter-spacing:.09em}
+  p{margin:10px 0}
+  .lede{font-size:18px;color:var(--muted);margin:0 0 6px}
+  code{background:var(--code);padding:1px 5px;border-radius:4px;font:13px var(--mono)}
+  a{color:var(--accent)}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:16px 19px;margin:16px 0}
+  .in{border-left:4px solid var(--in)}
+  .out{border-left:4px solid var(--out)}
+  .tagI{display:inline-block;background:var(--in-soft);color:var(--in);font:700 11px var(--mono);
+    padding:3px 8px;border-radius:5px;letter-spacing:.05em}
+  .tagO{display:inline-block;background:var(--out-soft);color:var(--out);font:700 11px var(--mono);
+    padding:3px 8px;border-radius:5px;letter-spacing:.05em}
+  .mid{font:700 13px var(--mono);background:var(--accent-soft);color:var(--accent);
+    padding:3px 9px;border-radius:5px}
+  table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14.5px;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+  .scroll{overflow-x:auto}
+  th,td{border-bottom:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+  th{font:600 11.5px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+  td.f{font-family:var(--mono);font-size:13px;white-space:nowrap}
+  td.n{text-align:right;font-variant-numeric:tabular-nums}
+  .note{background:var(--accent-soft);border-left:3px solid var(--accent);padding:11px 15px;
+    border-radius:0 6px 6px 0;margin:14px 0;font-size:15px}
+  .pill{display:inline-block;padding:1px 8px;border-radius:5px;font:700 11.5px var(--mono)}
+  .g{background:color-mix(in srgb,var(--green) 18%,transparent);color:var(--green)}
+  .a{background:color-mix(in srgb,var(--amber) 20%,transparent);color:var(--amber)}
+  .r{background:color-mix(in srgb,var(--red) 18%,transparent);color:var(--red)}
+  .c{background:color-mix(in srgb,var(--crit) 20%,transparent);color:var(--crit)}
+  .toc{columns:2;column-gap:26px;font-size:15px;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+  .toc a{display:block;padding:2px 0;text-decoration:none}
+  .toc a:hover{text-decoration:underline}
+  @media (max-width:620px){.toc{columns:1}h1{font-size:26px}}
+  .ex{font:13px var(--mono);background:var(--code);border:1px solid var(--line);
+    border-radius:7px;padding:10px 12px;margin:10px 0;overflow-x:auto;white-space:pre}
+  .flow{font:12.5px var(--mono);background:var(--code);border:1px solid var(--line);
+    border-radius:7px;padding:14px;margin:14px 0;overflow-x:auto;white-space:pre;line-height:1.5}
+  footer{margin-top:52px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Field guide: what goes in, what comes out</h1>
+<p class="lede">Every input table and every output number for the ten models built so far —
+what each field means, in plain words.</p>
+
+<div class="card">
+<h4 style="margin-top:0">Read this first — three conventions that explain most confusion</h4>
+
+<p><strong>The event is in August 2027.</strong> That is not a typo. You forecast an event before
+it happens. The world runs <code>2027-07-04</code> → <code>2027-08-03</code>: four weeks of
+ordinary build-up, then arrival day, the peak bathing day, and the day after. Every model is
+frozen at the same instant — <strong>2027-08-02 06:00</strong>, the morning of the peak day.</p>
+
+<p><strong>Times are 24-hour, India time (+05:30).</strong> So <code>06:15</code> is quarter past
+six in the <em>morning</em>. That matters: ritual bathing happens at dawn, so 03:00–09:00 is the
+busiest window of the entire month. The demo sits in the middle of it.</p>
+
+<p><strong>A timestamp repeats, and that is correct.</strong> Each table has a <em>grain</em> —
+what one row represents. D01's grain is <em>zone × 15 min</em>, so one timestamp has eight rows,
+one per zone:</p>
+<div class="ex">2027-08-02 05:30   Z01    5,884 entries   31,285 people   3.72 p/m²
+2027-08-02 05:30   Z02    3,923 entries   20,856 people   2.98 p/m²
+2027-08-02 05:30   Z03   16,204 entries   15,852 people   3.30 p/m²
+   … 8 rows, one per zone, then the clock moves on
+2027-08-02 05:45   Z01 …
+
+2,976 timestamps  ×  8 zones  =  23,808 rows</div>
+</div>
+
+<h2 id="toc">Contents</h2>
+<div class="toc">
+  <a href="#colours">The risk colours</a>
+  <a href="#shape">The shape every output shares</a>
+  <a href="#m21">M21 — Weather Impact</a>
+  <a href="#m01">M01 — Footfall Forecast</a>
+  <a href="#m05">M05 — Parking Demand</a>
+  <a href="#m06">M06 — Transit / Shuttle</a>
+  <a href="#m15">M15 — Water Demand</a>
+  <a href="#m17">M17 — Food &amp; Supply</a>
+  <a href="#m18">M18 — Waste Generation</a>
+  <a href="#m19">M19 — Power Load</a>
+  <a href="#m20">M20 — Network Capacity</a>
+  <a href="#m22">M22 — Environmental Risk</a>
+  <a href="#shared">Tables shared by many models</a>
+</div>
+
+<!-- ================================================= colours -->
+<h2 id="colours">The risk colours</h2>
+<p>Every output record can carry a colour. It is not a place — it is the severity of
+<em>that one number, for that one thing, at that one moment</em>. Each KPI is scored against a
+band table:</p>
+<div class="scroll">
+<table>
+<tr><th>Band table</th><th><span class="pill g">green</span></th><th><span class="pill a">amber</span></th><th><span class="pill r">red</span></th><th><span class="pill c">critical</span></th><th>Used by</th></tr>
+<tr><td class="f">utilization_pct</td><td>0–80%</td><td>80–90%</td><td>90–100%</td><td>over 100%</td><td>parking, bins, bandwidth</td></tr>
+<tr><td class="f">probability_pct</td><td>0–20%</td><td>20–40%</td><td>40–70%</td><td>70–100%</td><td>waterlogging, network risk</td></tr>
+<tr><td class="f">crowd_density_p_m2</td><td>0–2.0</td><td>2.0–4.0</td><td>4.0–5.0</td><td>over 5.0</td><td>crowd density</td></tr>
+<tr><td class="f">score_0_100</td><td>0–40</td><td>40–60</td><td>60–80</td><td>80–100</td><td>composite risk scores</td></tr>
+</table>
+</div>
+
+<div class="note">
+<strong>The one trick worth knowing.</strong> For some KPIs a <em>high</em> number is good —
+availability of 100% is perfect. Those are marked <code>band_input: complement_100</code>, so the
+band is applied to the <strong>shortfall</strong> instead. Verified live:
+<div class="ex">network_availability  100.00  →  band sees   0.00  →  green
+network_availability   60.00  →  band sees  40.00  →  red
+bandwidth_utilization  85.00  →  band sees  85.00  →  amber
+bandwidth_utilization 105.00  →  band sees 105.00  →  critical</div>
+Without that, a perfectly healthy network would have shown as critical.
+</div>
+
+<p><strong>Amber or worse must always carry a reason code.</strong> The contract rejects a record
+that turns amber without saying why — a colour with no explanation is not actionable.</p>
+
+<!-- ================================================= shape -->
+<h2 id="shape">The shape every output record shares</h2>
+<p>All ten models return the same record structure, which is why one dashboard parser serves
+all of them:</p>
+<div class="scroll">
+<table>
+<tr><th>Field</th><th>What it means</th></tr>
+<tr><td class="f">entity_id</td><td>Which thing: a zone <code>Z01</code>, gate <code>G02</code>, car park <code>P1</code>, tower <code>NT01</code>…</td></tr>
+<tr><td class="f">entity_type</td><td>What kind of thing it is: zone, gate, parking_site, route, asset, facility, service_point, event</td></tr>
+<tr><td class="f">kpi</td><td>Which measure this row reports</td></tr>
+<tr><td class="f">timestamp</td><td>The moment being described (not the moment you asked)</td></tr>
+<tr><td class="f">horizon_min</td><td>How far ahead of "now" that is, in minutes. <code>15</code> = quarter of an hour from now</td></tr>
+<tr><td class="f">value</td><td>The number</td></tr>
+<tr><td class="f">unit</td><td>Its unit — enforced against the registry so a model cannot drift</td></tr>
+<tr><td class="f">lower / upper</td><td>The uncertainty band. <code>quantile_level: 0.8</code> means the truth should land inside it about 80% of the time</td></tr>
+<tr><td class="f">risk_level</td><td>green / amber / red / critical, from the tables above</td></tr>
+<tr><td class="f">reason_codes</td><td>Why it is coloured. Mandatory from amber upwards</td></tr>
+<tr><td class="f">recommendation</td><td>A proposed action — always with <code>requires_approval: true</code></td></tr>
+<tr><td class="f">details</td><td>Model-specific working: which backend ran, intermediate figures, the capped view of a number</td></tr>
+</table>
+</div>
+
+<!-- ================================================= M21 -->
+<h2 id="m21">M21 — Weather Impact</h2>
+<p class="lede">What is the weather, and how does it change risk everywhere else?</p>
+<p>The only model that depends on nothing else. Built first because nine others read it.
+Pure formula — no learning, no training, no randomness.</p>
+
+<div class="card in"><span class="tagI">INPUT</span>
+<h3 style="margin-top:8px">D12 <code>weather_hourly</code> — 744 rows, one per hour</h3>
+<div class="scroll"><table>
+<tr><th>Field</th><th>Means</th><th>Real value at 06:00</th></tr>
+<tr><td class="f">temperature_c</td><td>air temperature, °C</td><td class="n">22.4</td></tr>
+<tr><td class="f">humidity_pct</td><td>relative humidity</td><td class="n">95.0</td></tr>
+<tr><td class="f">rain_mm</td><td>rainfall that hour, mm</td><td class="n">0.0</td></tr>
+<tr><td class="f">wind_kmh</td><td>wind speed — disperses pollution and heat</td><td class="n">13.6</td></tr>
+<tr><td class="f">heat_index_c</td><td>what it <em>feels</em> like once humidity is counted</td><td class="n">23.2</td></tr>
+<tr><td class="f">visibility_m</td><td>visibility, may be empty</td><td class="n">—</td></tr>
+</table></div>
+<p><strong>This data is real.</strong> Fetched from Open-Meteo for this location, then shifted
+onto the 2027 event dates. So: real weather patterns, on the event's calendar.</p>
+<p>Also reads <strong>D03 <code>zones</code></strong> for each zone's drainage capacity and
+whether it sits low — which is what decides where water pools.</p>
+</div>
+
+<div class="card out"><span class="tagO">OUTPUT</span> <span style="color:var(--muted);font-size:14px">182 records · 9 entities (the venue + 8 zones) · every 15 min for 3 hours</span>
+<div class="scroll"><table>
+<tr><th>KPI</th><th>Unit</th><th>What it tells you</th></tr>
+<tr><td class="f">temperature</td><td>°C</td><td>Plain air temperature.</td></tr>
+<tr><td class="f">heat_index</td><td>°C</td><td>What it feels like. In humid air this runs well above the thermometer, and it is what drives heat casualties — not the raw temperature.</td></tr>
+<tr><td class="f">rainfall_intensity</td><td>mm/hr</td><td>How hard it is raining.</td></tr>
+<tr><td class="f">waterlogging_probability</td><td>%</td><td><strong>Per zone.</strong> Chance of standing water, from rainfall against <em>that zone's own</em> drainage, plus a penalty if it is low-lying. A slip hazard in a dense crowd.</td></tr>
+<tr><td class="f">weather_arrival_multiplier</td><td>ratio</td><td>How much the weather suppresses attendance. 0.85 means 15% fewer people turn up.</td></tr>
+<tr><td class="f">weather_medical_multiplier</td><td>ratio</td><td>How much it raises medical cases. Heat makes people faint.</td></tr>
+<tr><td class="f">weather_traffic_speed_multiplier</td><td>ratio</td><td>How much it slows traffic.</td></tr>
+</table></div>
+<p>Those three multipliers are the whole point of the model: <strong>other models read them.</strong>
+M21 does not just report weather, it translates weather into the language each other model speaks.</p>
+</div>
+
+<!-- ================================================= M01 -->
+<h2 id="m01">M01 — Footfall Forecast</h2>
+<p class="lede">How many people will arrive, by zone and gate, over the next three hours?</p>
+<p><strong>The keystone.</strong> Nine of the other built models read it. If M01 is wrong, most of
+the twin is wrong.</p>
+
+<div class="card in"><span class="tagI">INPUT</span>
+<h3 style="margin-top:8px">D01 <code>footfall_15min</code> — 23,808 rows · zone × 15 min</h3>
+<div class="scroll"><table>
+<tr><th>Field</th><th>Means</th></tr>
+<tr><td class="f">zone_id</td><td>Which area: Z01–Z08 (the ghats, corridors, market, transit hub)</td></tr>
+<tr><td class="f">entries</td><td>People who walked <em>into</em> this zone during those 15 minutes</td></tr>
+<tr><td class="f">exits</td><td>People who walked out</td></tr>
+<tr><td class="f">population</td><td>People standing there at the end of the step — the running total</td></tr>
+<tr><td class="f">density_p_m2</td><td><strong>People per square metre.</strong> The safety number. Above 4 is dangerous; above 5 is a crush risk</td></tr>
+<tr><td class="f">gate_id</td><td>Set only on gate rows</td></tr>
+</table></div>
+<p>Plus <strong>gate_entries</strong> (queue length and capacity at each of the four gates),
+<strong>D12 weather</strong>, <strong>D21 event_calendar</strong> and <strong>D03 zones</strong>.
+Upstream: <strong>M21</strong>.</p>
+</div>
+
+<div class="card out"><span class="tagO">OUTPUT</span> <span style="color:var(--muted);font-size:14px">156 records · 12 entities (8 zones + 4 gates) · every 15 min for 3 hours</span>
+<div class="scroll"><table>
+<tr><th>KPI</th><th>Unit</th><th>What it tells you</th></tr>
+<tr><td class="f">expected_footfall</td><td>persons/hr</td><td>The arrival rate at each zone and gate, with an 80% band. This is the number everything downstream is built on.</td></tr>
+<tr><td class="f">peak_footfall</td><td>persons/hr</td><td>The single busiest moment in the window, and <code>details.peak_at</code> says <em>when</em>. That timing is the operational value: it tells you how long you have.</td></tr>
+</table></div>
+<div class="ex">Z01  expected_footfall  =  23,767 persons/hr   band 23,458 – 25,161</div>
+</div>
+
+<!-- ================================================= M05 -->
+<h2 id="m05">M05 — Parking Demand</h2>
+<p class="lede">How full will each car park get, and when does it overflow?</p>
+
+<div class="card in"><span class="tagI">INPUT</span>
+<h3 style="margin-top:8px">D06 <code>parking_15min</code> — site × 15 min</h3>
+<div class="scroll"><table>
+<tr><th>Field</th><th>Means</th><th>At 06:00</th></tr>
+<tr><td class="f">parking_id</td><td>P1 North lot, P2 Main lot, P3 Market lot</td><td>—</td></tr>
+<tr><td class="f">entries</td><td>Cars <em>arriving</em> — note this is demand, not cars admitted</td><td class="n">1,495</td></tr>
+<tr><td class="f">exits</td><td>Cars leaving</td><td class="n">1,307</td></tr>
+<tr><td class="f">occupied</td><td>Bays in use — <strong>capped at capacity</strong></td><td class="n">7,300</td></tr>
+<tr><td class="f">capacity</td><td>Total bays at that site</td><td class="n">7,300</td></tr>
+</table></div>
+<p>Plus <strong>D01 footfall</strong> and <strong>D21 calendar</strong>. Upstream: <strong>M01</strong>.</p>
+</div>
+
+<div class="card out"><span class="tagO">OUTPUT</span> <span style="color:var(--muted);font-size:14px">108 records · 3 car parks</span>
+<div class="scroll"><table>
+<tr><th>KPI</th><th>Unit</th><th>What it tells you</th></tr>
+<tr><td class="f">parking_demand</td><td>vehicles</td><td>How many cars want a bay. Can exceed the number of bays.</td></tr>
+<tr><td class="f">parking_occupancy</td><td>%</td><td>Demand ÷ capacity. <strong>Can go above 100%.</strong> 123% means 23% of arriving drivers have nowhere to go.</td></tr>
+<tr><td class="f">parking_search_time</td><td>min</td><td>How long to find a space. Flat until the lot is 80% full, then climbs steeply — which is how parking actually behaves.</td></tr>
+</table></div>
+<div class="note"><strong>Why occupancy exceeds 100%.</strong> The stored <code>occupied</code>
+column is capped at capacity, so a model trained on it could <em>never</em> predict an overflow —
+the one thing this model exists to warn about. So M05 forecasts <em>demand</em> instead.
+<code>details.occupied_spaces</code> still carries the capped, physically-parked count.</div>
+</div>
+
+<!-- ================================================= M06 -->
+<h2 id="m06">M06 — Transit / Shuttle Demand</h2>
+<p class="lede">How many passengers and how many shuttle vehicles does each route need?</p>
+<p>The first model with <strong>two</strong> upstreams — M01 and M05.</p>
+
+<div class="card in"><span class="tagI">INPUT</span>
+<h3 style="margin-top:8px">D07 <code>transit_15min</code> — route × 15 min</h3>
+<div class="scroll"><table>
+<tr><th>Field</th><th>Means</th><th>At 06:00</th></tr>
+<tr><td class="f">route_id</td><td>SH1 (car park P2 → gate G01), SH2 (P3 → G04)</td><td>—</td></tr>
+<tr><td class="f">boardings</td><td>People getting on</td><td class="n">13,968</td></tr>
+<tr><td class="f">alightings</td><td>People getting off</td><td class="n">13,270</td></tr>
+<tr><td class="f">vehicles_active</td><td>Buses currently running the route</td><td class="n">877</td></tr>
+<tr><td class="f">avg_wait_min</td><td>Average wait at the stop</td><td class="n">0.0</td></tr>
+</table></div>
+</div>
+
+<div class="card out"><span class="tagO">OUTPUT</span> <span style="color:var(--muted);font-size:14px">72 records · 2 routes</span>
+<div class="scroll"><table>
+<tr><th>KPI</th><th>Unit</th><th>What it tells you</th></tr>
+<tr><td class="f">shuttle_demand</td><td>persons/hr</td><td>Passengers wanting to travel on that route.</td></tr>
+<tr><td class="f">shuttle_requirement</td><td>vehicles</td><td>Buses needed to carry them, given a 40-minute round trip and 50 seats at 85% load.</td></tr>
+<tr><td class="f">passenger_wait_time</td><td>min</td><td>Expected wait. Half the gap between buses — stretched when the fleet cannot carry everyone, because full buses go past.</td></tr>
+</table></div>
+<div class="note"><strong>A finding, not a bug.</strong> The routes need about <strong>1,447
+vehicles</strong> at the peak against a configured fleet of <strong>80</strong>. That was left
+alone deliberately: fleet size belongs to M24, which is not built. M06 reports the true
+requirement and recommends the shortfall. The gap <em>is</em> the finding.</div>
+</div>
+
+<!-- ================================================= M15 -->
+<h2 id="m15">M15 — Water Demand</h2>
+<p class="lede">How much water does each zone need, is there a shortfall, and how many tankers?</p>
+
+<div class="card in"><span class="tagI">INPUT</span>
+<h3 style="margin-top:8px">D14 <code>water_15min</code> — 23,808 rows · zone × 15 min</h3>
+<div class="scroll"><table>
+<tr><th>Field</th><th>Means</th></tr>
+<tr><td class="f">consumption_l</td><td>Litres drunk and used in that zone in 15 minutes</td></tr>
+<tr><td class="f">supply_l</td><td>Litres the pumps delivered to it</td></tr>
+<tr><td class="f">storage_l</td><td>Litres sitting in tanks</td></tr>
+<tr><td class="f">asset_id</td><td>The pump serving that zone (PMP01–03), empty where there is none</td></tr>
+</table></div>
+<p>Plus <strong>D01 footfall</strong>, <strong>D12 weather</strong>, <strong>D21 calendar</strong>.
+Upstream: <strong>M01</strong> and <strong>M21</strong> — 48,400 input rows in total.</p>
+</div>
+
+<div class="card out"><span class="tagO">OUTPUT</span> <span style="color:var(--muted);font-size:14px">296 records · 8 zones</span>
+<div class="scroll"><table>
+<tr><th>KPI</th><th>Unit</th><th>What it tells you</th></tr>
+<tr><td class="f">expected_water_demand</td><td>L/hr</td><td>Litres per hour that zone will want.</td></tr>
+<tr><td class="f">water_supply_demand_gap</td><td>L/hr</td><td><strong>Positive means a shortage.</strong> Negative is spare capacity — reported rather than hidden, because "how much slack have we got" is a real question.</td></tr>
+<tr><td class="f">drinking_water_point_requirement</td><td>points</td><td>Taps needed, sized once against the busiest moment in the window — you place a water point for the peak, not the average.</td></tr>
+<tr><td class="f">water_tanker_requirement</td><td>vehicles</td><td>Tankers to cover the shortfall for four hours.</td></tr>
+</table></div>
+<p>Under a power failure a pump loses output, the gap widens, and tankers get called.
+<strong>Leakage is not modelled</strong> — a real network loses a lot between pump and tap, so
+the true gap would be worse.</p>
+</div>
+
+<!-- ================================================= M17 -->
+<h2 id="m17">M17 — Food &amp; Supply</h2>
+<p class="lede">How much food is needed, how long does stock last, how many deliveries?</p>
+
+<div class="card in"><span class="tagI">INPUT</span>
+<h3 style="margin-top:8px">D17 <code>food_inventory_hourly</code> — outlet × <strong>hour</strong></h3>
+<div class="scroll"><table>
+<tr><th>Field</th><th>Means</th></tr>
+<tr><td class="f">outlet_id</td><td>FO01, FO02 — the two food outlets</td></tr>
+<tr><td class="f">meals_sold</td><td>Meals sold that hour</td></tr>
+<tr><td class="f">stock_meals</td><td>Meals left on the shelf</td></tr>
+<tr><td class="f">deliveries</td><td>Meals that arrived that hour</td></tr>
+<tr><td class="f">lead_time_h</td><td><strong>Hours between ordering and arrival.</strong> The number the whole model turns on</td></tr>
+</table></div>
+</div>
+
+<div class="card out"><span class="tagO">OUTPUT</span> <span style="color:var(--muted);font-size:14px">72 records · 2 outlets · hourly for 12 hours</span>
+<div class="scroll"><table>
+<tr><th>KPI</th><th>Unit</th><th>What it tells you</th></tr>
+<tr><td class="f">food_demand</td><td>meals/hr</td><td>Meals people will want.</td></tr>
+<tr><td class="f">food_stock_coverage</td><td>hours</td><td>How long the shelf lasts at that rate. <strong>The decision number</strong> — if it is shorter than the delivery lead time, ordering now is already too late.</td></tr>
+<tr><td class="f">delivery_requirement</td><td>trips/day</td><td>Vehicle trips needed, at 2,000 meals per load.</td></tr>
+</table></div>
+<div class="note"><strong>Two things differ here.</strong> The data is <strong>hourly</strong>, not
+15-minute. And the horizon is <strong>12 hours</strong>, deliberately longer than the 6-hour lead
+time — inside a shorter window nothing you order can arrive, so a supply disruption would show
+no effect at all.</div>
+</div>
+
+<!-- ================================================= M18 -->
+<h2 id="m18">M18 — Waste Generation</h2>
+<p class="lede">How much waste, when do bins overflow, how many collection trips?</p>
+
+<div class="card in"><span class="tagI">INPUT</span>
+<h3 style="margin-top:8px">D16 <code>waste</code> — bin group × 15 min</h3>
+<div class="scroll"><table>
+<tr><th>Field</th><th>Means</th></tr>
+<tr><td class="f">bin_group_id</td><td>WB01–WB08 — <strong>one group per zone</strong>, not one bin. Each holds 50 bins</td></tr>
+<tr><td class="f">kg_added</td><td>Kilograms thrown away in those 15 minutes</td></tr>
+<tr><td class="f">fill_pct</td><td>How full the group is, 0–100</td></tr>
+<tr><td class="f">collected_kg</td><td>Kilograms taken away when the truck called</td></tr>
+</table></div>
+</div>
+
+<div class="card out"><span class="tagO">OUTPUT</span> <span style="color:var(--muted);font-size:14px">296 records · 8 bin groups</span>
+<div class="scroll"><table>
+<tr><th>KPI</th><th>Unit</th><th>What it tells you</th></tr>
+<tr><td class="f">waste_generation</td><td>kg/day</td><td>Rubbish produced, as a daily rate.</td></tr>
+<tr><td class="f">waste_bin_fill_level</td><td>%</td><td>How full, projected forward and reset each time the collection round arrives.</td></tr>
+<tr><td class="f">waste_collection_trips</td><td>trips/day</td><td>Truck trips needed, at 3,000 kg per load.</td></tr>
+<tr><td class="f">bin_overflow_time</td><td>min</td><td><strong>Minutes until it is full.</strong> A bin not going to overflow reports <code>999</code>, never <code>0</code> — so "fine" can never be misread as "overflowing now".</td></tr>
+</table></div>
+</div>
+
+<!-- ================================================= M19 -->
+<h2 id="m19">M19 — Power Load</h2>
+<p class="lede">What electrical load is expected, and how long can backup generators last?</p>
+
+<div class="card in"><span class="tagI">INPUT</span>
+<h3 style="margin-top:8px">D18 <code>power_15min</code> — (substation × zone) × 15 min</h3>
+<div class="scroll"><table>
+<tr><th>Field</th><th>Means</th><th>At 06:00</th></tr>
+<tr><td class="f">asset_id</td><td>SS01, SS02 — the two substations</td><td>—</td></tr>
+<tr><td class="f">kw</td><td>Power being drawn right now, kilowatts</td><td class="n">315.4</td></tr>
+<tr><td class="f">kwh</td><td>Energy used in that step</td><td class="n">78.9</td></tr>
+<tr><td class="f">voltage</td><td>Supply voltage — sags under load</td><td class="n">414.1</td></tr>
+<tr><td class="f">grid_available</td><td>Is mains power on?</td><td>true</td></tr>
+<tr><td class="f">generator_on</td><td>Is the backup generator running?</td><td>false</td></tr>
+<tr><td class="f">fuel_l</td><td>Litres left in the generator tank</td><td class="n">400.0</td></tr>
+</table></div>
+<div class="note"><strong>A trap worth knowing.</strong> One row exists per <em>(substation, zone)</em>
+pair, so SS01 appears four times at every timestamp — once per zone it feeds. Reading it naively
+reports a <strong>quarter</strong> of the real load, with no error anywhere. The rows must be
+summed first.</div>
+</div>
+
+<div class="card out"><span class="tagO">OUTPUT</span> <span style="color:var(--muted);font-size:14px">72 records · 2 substations</span>
+<div class="scroll"><table>
+<tr><th>KPI</th><th>Unit</th><th>What it tells you</th></tr>
+<tr><td class="f">electricity_demand</td><td>MW</td><td>Expected load in megawatts. The kilowatt figure stays in <code>details</code>.</td></tr>
+<tr><td class="f">generator_backup_duration</td><td>hours</td><td><strong>The countdown.</strong> How long the fuel lasts at the load being carried. When the grid fails, this is the number in the room.</td></tr>
+<tr><td class="f">backup_generator_requirement</td><td>units</td><td>Generators needed to hold the critical load, with a 1.25× redundancy factor.</td></tr>
+</table></div>
+<p>It also publishes <code>details.load_utilization</code> specifically for M12 (fire risk) to read
+later — overloaded electrics start fires.</p>
+</div>
+
+<!-- ================================================= M20 -->
+<h2 id="m20">M20 — Network Capacity</h2>
+<p class="lede">Will communications — CCTV backhaul and command links — overload or fail?</p>
+<p>Everything in the control room depends on this. If the backhaul dies, the operators lose the
+cameras, the dashboards and each other.</p>
+
+<div class="card in"><span class="tagI">INPUT</span>
+<h3 style="margin-top:8px">D19 <code>network_5min</code> — tower × <strong>5 min</strong></h3>
+<div class="scroll"><table>
+<tr><th>Field</th><th>Means</th><th>At 06:00</th></tr>
+<tr><td class="f">tower_id</td><td>NT01, NT02, NT03</td><td>—</td></tr>
+<tr><td class="f">bandwidth_used_mbps</td><td>Traffic flowing — camera streams plus the crowd's phones</td><td class="n">391.7</td></tr>
+<tr><td class="f">capacity_mbps</td><td>What the link can carry</td><td class="n">2,000.0</td></tr>
+<tr><td class="f">latency_ms</td><td>Round-trip delay</td><td class="n">12.0</td></tr>
+<tr><td class="f">packet_loss_pct</td><td>Share of data lost</td><td class="n">0.0</td></tr>
+<tr><td class="f">up</td><td>Is the tower alive?</td><td>true</td></tr>
+</table></div>
+<p>This is the <strong>finest-grained table in the project</strong> — every 5 minutes, because a
+network problem develops in seconds, not quarter-hours.</p>
+</div>
+
+<div class="card out"><span class="tagO">OUTPUT</span> <span style="color:var(--muted);font-size:14px">324 records · 3 towers · every 5 min for 3 hours</span>
+<div class="scroll"><table>
+<tr><th>KPI</th><th>Unit</th><th>What it tells you</th></tr>
+<tr><td class="f">bandwidth_utilization</td><td>%</td><td>How much of the link is in use. 19.81% of a 2,000 Mbps link is 396 Mbps.</td></tr>
+<tr><td class="f">network_availability</td><td>%</td><td>Share of time the tower is up. <strong>Higher is better</strong> — the colour is applied to the shortfall.</td></tr>
+<tr><td class="f">network_capacity_risk</td><td>%</td><td>Chance of running out of headroom. An S-curve that is near zero while quiet and climbs sharply past 70% usage — so it warns <em>before</em> saturation rather than reporting it after.</td></tr>
+</table></div>
+<div class="note"><strong>Being straight about this one:</strong> in this world the network never
+runs out. Peak usage is 27.5%, so it is green all day and <code>network_capacity_risk</code> sits
+near zero. That is the <em>correct</em> answer for these tower capacities — the threshold was left
+where an operator would want it rather than lowered to make the demo livelier. The genuinely
+useful KPI here is <strong>availability</strong>, which drops when a substation fails and takes
+NT02 down with it.</div>
+</div>
+
+<!-- ================================================= M22 -->
+<h2 id="m22">M22 — Environmental Risk</h2>
+<p class="lede">Where will air quality or noise get worse, and what are the emissions?</p>
+
+<div class="card in"><span class="tagI">INPUT</span>
+<h3 style="margin-top:8px">D13 <code>air_quality_hourly</code> — venue × hour</h3>
+<div class="scroll"><table>
+<tr><th>Field</th><th>Means</th><th>At 06:00</th></tr>
+<tr><td class="f">pm2_5</td><td>Fine particles, µg/m³ — the ones that reach deep into lungs</td><td class="n">28.5</td></tr>
+<tr><td class="f">pm10</td><td>Coarser dust</td><td class="n">51.7</td></tr>
+<tr><td class="f">no2</td><td>Nitrogen dioxide — mostly vehicles</td><td class="n">17.4</td></tr>
+<tr><td class="f">co</td><td>Carbon monoxide</td><td class="n">267.6</td></tr>
+<tr><td class="f">noise_db</td><td>Ambient noise, decibels</td><td class="n">65.1</td></tr>
+</table></div>
+<p><strong>This is the one genuinely real table in the project</strong> — cached Open-Meteo
+air-quality history. Its rows carry <code>is_synthetic: false</code>. It is also venue-wide, so
+there is no per-zone air quality to report.</p>
+</div>
+
+<div class="card out"><span class="tagO">OUTPUT</span> <span style="color:var(--muted);font-size:14px">66 records · hourly for 6 hours</span>
+<div class="scroll"><table>
+<tr><th>KPI</th><th>Unit</th><th>What it tells you</th></tr>
+<tr><td class="f">pm25</td><td>µg/m³</td><td>Forecast fine-particle concentration.</td></tr>
+<tr><td class="f">air_quality_index</td><td>index</td><td>The Indian National AQI, 0–500. Takes the <strong>worst</strong> pollutant, never the average — averaging would let a clean pollutant mask a dangerous one.</td></tr>
+<tr><td class="f">noise_level</td><td>dB</td><td><strong>Per zone.</strong> Rises with crowd density, logarithmically — which is why 30% more people is only about 1% more decibels.</td></tr>
+<tr><td class="f">co2_emissions</td><td>tCO₂e/day</td><td>Carbon from electricity and generator diesel. A reporting figure, not an operational one.</td></tr>
+</table></div>
+<div class="note"><strong>Do not publish numbers from this model yet.</strong> The AQI breakpoints
+are transcription placeholders that need checking against the official CPCB table; all three CO₂
+emission factors are placeholders; and the CO₂ traffic term is <strong>zero</strong> because M04
+does not exist — every record says so in <code>details.traffic_term</code>.</div>
+</div>
+
+<!-- ================================================= shared -->
+<h2 id="shared">Tables shared by many models</h2>
+
+<div class="card in"><span class="tagI">D21</span>
+<h3 style="margin-top:8px"><code>event_calendar</code> — read by nine of the ten</h3>
+<div class="scroll"><table>
+<tr><th>Field</th><th>Means</th></tr>
+<tr><td class="f">date</td><td>The day</td></tr>
+<tr><td class="f">session</td><td>Which part of the day</td></tr>
+<tr><td class="f">start / end</td><td>When that session runs</td></tr>
+<tr><td class="f">expected_attendance_multiplier</td><td>How much busier than a normal day</td></tr>
+<tr><td class="f">is_snan_day</td><td><strong>Is this the peak ritual bathing day?</strong> The single most important flag in the project — it is why 2027-08-02 is several times busier than any other day</td></tr>
+<tr><td class="f">vip_flag</td><td>Is a VIP movement scheduled?</td></tr>
+</table></div>
+<p>Every forecasting model is told the snan flag in advance, because it is genuinely known ahead
+of time — that is what makes forecasting this event tractable at all.</p>
+</div>
+
+<div class="card in"><span class="tagI">D03</span>
+<h3 style="margin-top:8px"><code>zones</code> — the venue itself, 8 rows</h3>
+<div class="scroll"><table>
+<tr><th>Field</th><th>Means</th></tr>
+<tr><td class="f">zone_id / name / type</td><td>Z01–Z08; ghat, corridor, holding, bridge, market, hub</td></tr>
+<tr><td class="f">area_m2</td><td>Total floor area</td></tr>
+<tr><td class="f">usable_area_m2</td><td>Area people can actually stand on, once structures are removed</td></tr>
+<tr><td class="f">safe_capacity</td><td>How many people fit safely — usable area × 2 people/m²</td></tr>
+<tr><td class="f">low_lying</td><td>Does water pool here?</td></tr>
+<tr><td class="f">drainage_capacity_mm_hr</td><td>Rain it can shed per hour before flooding</td></tr>
+</table></div>
+</div>
+
+<footer>
+<p>Every figure quoted here was read from the running models or the generated world, not written
+from memory. This file is updated as each new model is finished.</p>
+<p>See also <code>docs/EXPLAINER.html</code> for how the project fits together, and
+<code>docs/SIMULATION.html</code> to watch the models run.</p>
+</footer>
+
+</div>
+</body>
+</html>

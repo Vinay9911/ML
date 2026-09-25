@@ -52,6 +52,9 @@ The original PDF (if present in `docs/reference/`) is background only — do not
 - Also add the model to `MODEL_NOTES` in `docs/SIMULATION.html` (its question, the one thing worth
   knowing about it, and its top limitations). The tiles and readiness come from `/models`
   automatically, so nothing else there needs touching.
+- And add its section to `docs/DATA_GUIDE.html`: each input table field by field, each output KPI
+  with its unit and what it tells an operator. Quote real values read from the model or the world,
+  never remembered ones.
 - Before marking a model done, run the `model-reviewer` subagent and fix blocking gaps only.
 - End of phase: run `scripts/validate_all.py`, update `PROGRESS.md`, commit (`feat(M05): …`), stop and report.
 - When compacting, preserve: current phase, model in progress, files modified, failing tests, open questions.

@@ -145,6 +145,7 @@ recommendation carries `requires_approval: true`.
 |---|---|
 | **To see the models actually run** | **`docs/SIMULATION.html`** — start the services first, see below |
 | A plain-language tour of the project | **`docs/EXPLAINER.html`** — open it in a browser |
+| What every table field and every output number means | **`docs/DATA_GUIDE.html`** |
 | The current state of the build | `PROGRESS.md` |
 | The output contract and API | `docs/02_CONTRACTS.md` |
 | What one model does and why | that model's `model_card.md` |
@@ -178,6 +179,16 @@ Two things worth knowing before demoing it:
   someone who does not have the repo. It also cannot be published as a shareable web page: a
   hosted page is not allowed to call `localhost`, so a published copy could never reach the
   services. Share `docs/EXPLAINER.html` instead, or screen-share the simulation.
+
+### About `docs/DATA_GUIDE.html` — the field guide
+
+A reference for anyone reading the data: every input table with each field explained, every
+output KPI with its unit and what it actually tells you, and the risk-band tables that decide
+the colours. It also covers the three conventions that confuse people first — why the dates are
+in 2027, why a timestamp repeats, and why `06:15` is the morning.
+
+Every figure in it was read from the running models or the generated world rather than written
+from memory.
 
 ### About `docs/EXPLAINER.html`
 
